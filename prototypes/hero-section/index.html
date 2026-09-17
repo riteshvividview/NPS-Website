@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Niraj Public School — Hero Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="styles.css?v=20">
+</head>
+<body>
+
+<main>
+
+  <!-- Persistent, page-level scroll-progress indicator — fixed on the right
+       edge, vertically centered, independent of both sections below (does
+       not live inside either .hero or .section2, so it never pins/scrolls
+       away with them). One entry per section; script.js toggles is-active
+       via ScrollTrigger as each section enters/leaves the viewport. -->
+  <nav class="page-progress" aria-label="Page sections">
+    <span class="page-progress-chev page-progress-chev--up">︿</span>
+    <span class="page-progress-current" id="page-progress-current">01</span>
+    <div class="page-progress-track">
+      <span class="page-progress-fill" id="page-progress-fill"></span>
+    </div>
+    <span class="page-progress-chev page-progress-chev--down">﹀</span>
+  </nav>
+
+  <section class="hero" id="hero">
+    <div class="hero-canvas" id="hero-canvas">
+     <div class="hero-stage" id="hero-stage">
+
+      <!-- Layer 1: Sky (base, opaque) -->
+      <div class="layer layer-sky">
+        <img class="scene-img" src="../../assets/Home%20Page/hero%20section/homepage-layer1.png" alt="">
+      </div>
+
+      <!-- Layer 1b: Clouds — a 150-frame image sequence, drawn to canvas and
+           scrubbed directly against scroll progress (not autoplaying video).
+           Falls back to the static image if the frames fail to load. -->
+      <div class="layer layer-clouds" id="layer-clouds">
+        <canvas class="scene-img cloud-canvas" id="cloud-canvas" width="1672" height="941"></canvas>
+        <img class="scene-img cloud-fallback" src="../../assets/Home%20Page/hero%20section/cloud-layer-fallback-of-video.png" alt="" id="cloud-fallback">
+      </div>
+
+      <!-- Layer 2: Distant trees — pre-scaled replacement asset (04.webp) -->
+      <div class="layer layer-trees">
+        <img class="scene-img" src="../../assets/Home%20Page/hero%20section/04.webp" alt="">
+      </div>
+
+      <!-- Layer 3: School building — pre-scaled replacement asset (03.webp) -->
+      <div class="layer layer-school">
+        <img class="scene-img" src="../../assets/Home%20Page/hero%20section/03.webp" alt="Niraj Public School campus building">
+      </div>
+
+      <!-- Layer 4: Children — pre-scaled replacement asset (02.webp) -->
+      <div class="layer layer-children">
+        <img class="scene-img" src="../../assets/Home%20Page/hero%20section/02.webp" alt="Students looking up, full of hope">
+      </div>
+
+      <!-- Layer 5: Decorative hero content (real HTML — nav, headline, stats, script accent) -->
+      <div class="layer layer-content">
+
+        <header class="hero-nav">
+          <a class="brand" href="#">
+            <img class="brand-mark" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><circle cx='24' cy='24' r='23' fill='none' stroke='%231e4d3a' stroke-width='1.5'/><path d='M24 12 L32 18 L32 30 L24 36 L16 30 L16 18 Z' fill='none' stroke='%23c9a227' stroke-width='1.3'/></svg>" alt="">
+            <span class="brand-text">
+              <span class="brand-name">Niraj Public School</span>
+              <span class="brand-tagline">LEARN &nbsp;·&nbsp; GROW &nbsp;·&nbsp; BELONG</span>
+            </span>
+          </a>
+          <nav class="hero-nav-links">
+            <a href="#">About</a>
+            <a href="#">Academics</a>
+            <a href="#">Student Life</a>
+            <a href="#">Admissions</a>
+            <a href="#">Beyond Classroom</a>
+            <a href="#">Contact</a>
+          </nav>
+          <div class="hero-nav-actions">
+            <button class="icon-btn" aria-label="Search">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+            <a class="pill-btn" href="#">Parent Login
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </header>
+
+        <div class="hero-copy">
+          <p class="eyebrow">Empowering Young Minds</p>
+          <h1 class="headline">A Kinder,<br>Brighter<br><em>Tomorrow</em></h1>
+          <p class="subcopy">At Niraj Public School, we nurture curious minds, compassionate hearts and confident leaders for a brighter tomorrow.</p>
+          <div class="cta-row">
+            <a class="btn-primary" href="#">Explore Our School
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <a class="btn-watch" href="#">
+              <span class="play-dot">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </span>
+              Watch Our Story
+            </a>
+          </div>
+          <div class="stats-row">
+            <div class="stat"><span class="stat-value">40+</span><span class="stat-label">Years of Legacy</span></div>
+            <div class="stat"><span class="stat-value">2000+</span><span class="stat-label">Happy Students</span></div>
+            <div class="stat"><span class="stat-value">100+</span><span class="stat-label">Dedicated Educators</span></div>
+          </div>
+        </div>
+
+        <div class="script-accent" aria-hidden="true">
+          <span class="script-text">A Brighter<br>Tomorrow</span>
+          <svg class="birds" viewBox="0 0 80 30" fill="none" aria-hidden="true">
+            <path d="M4 14 Q9 6 14 14 Q19 6 24 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M40 6 Q45 -2 50 6 Q55 -2 60 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <div class="scroll-cue">
+          <span class="scroll-cue-icon">
+            <svg width="16" height="24" viewBox="0 0 16 24" fill="none"><rect x="1" y="1" width="14" height="22" rx="7" stroke="currentColor" stroke-width="1.2"/><circle class="scroll-dot" cx="8" cy="7" r="2" fill="currentColor"/></svg>
+          </span>
+          Scroll to Explore
+        </div>
+
+      </div>
+
+      <!-- Layer 6+7 combined: book + foreground foliage as one pre-composited,
+           pre-scaled asset (01.webp) — its own "More than a school / a place
+           to belong" text is already baked in, so the separate HTML overlay
+           is gone. This single layer is what rises to cover the scene. -->
+      <div class="layer layer-book" id="layer-book">
+        <img class="scene-img" src="../../assets/Home%20Page/hero%20section/01.webp" alt="">
+      </div>
+
+     </div>
+    </div>
+  </section>
+
+  <section class="section2" id="section2">
+    <div class="section2-canvas" id="section2-canvas">
+     <div class="section2-stage" id="section2-stage">
+
+      <!-- Background: full scene (book/grass/kids/tree/school), 1920×1080 -->
+      <div class="layer s2-bg" data-depth="0.04">
+        <img class="scene-img" src="../../assets/Home%20Page/second-section/main-image.png" alt="Students exploring, learning and building together on an open book in a green landscape">
+      </div>
+
+      <!-- Globe — floating discovery element -->
+      <div class="layer s2-globe" data-depth="0.22">
+        <img class="scene-img" src="../../assets/Home%20Page/second-section/globe-ele.webp" alt="">
+      </div>
+
+      <!-- Sitting boy reading, left side -->
+      <div class="layer s2-boy" data-depth="0.16">
+        <img class="scene-img" src="../../assets/Home%20Page/second-section/sitting-boy-left-side.webp" alt="">
+      </div>
+
+      <!-- Flying elements — books, leaves, paper airplane. Each on its own
+           registered 1920×1080 canvas, each given a different parallax
+           depth so they drift at different rates (the differential
+           parallax effect), same registration principle as the hero. -->
+      <div class="layer s2-fly" data-depth="0.34">
+        <img class="scene-img" src="../../assets/Home%20Page/second-section/flyingele-1.webp" alt="">
+      </div>
+      <div class="layer s2-fly" data-depth="0.26">
+        <img class="scene-img" src="../../assets/Home%20Page/second-section/flyingele-2.webp" alt="">
+      </div>
+      <div class="layer s2-fly" data-depth="0.3">
+        <img class="scene-img" src="../../assets/Home%20Page/second-section/flyingele-3.webp" alt="">
+      </div>
+      <div class="layer s2-fly" data-depth="0.2">
+        <img class="scene-img" src="../../assets/Home%20Page/second-section/flyingele-4.webp" alt="">
+      </div>
+      <div class="layer s2-fly" data-depth="0.38">
+        <img class="scene-img" src="../../assets/Home%20Page/second-section/flyingele-5.webp" alt="">
+      </div>
+      <div class="layer s2-fly" data-depth="0.32">
+        <img class="scene-img" src="../../assets/Home%20Page/second-section/flyingele-6.webp" alt="">
+      </div>
+      <div class="layer s2-fly" data-depth="0.36">
+        <img class="scene-img" src="../../assets/Home%20Page/second-section/flyingele-7.webp" alt="">
+      </div>
+
+      <!-- Real HTML content, matching finished-section.png's layout -->
+      <div class="layer s2-content">
+
+        <header class="s2-nav">
+          <a class="s2-brand" href="#">
+            <img class="s2-brand-mark" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><circle cx='24' cy='24' r='23' fill='none' stroke='%23bfe3cf' stroke-width='1.5'/><path d='M24 12 L32 18 L32 30 L24 36 L16 30 L16 18 Z' fill='none' stroke='%23e8d28a' stroke-width='1.3'/></svg>" alt="">
+            <span>Niraj Public School</span>
+          </a>
+          <span class="s2-tag-right">A Brighter Tomorrow —</span>
+        </header>
+
+        <div class="s2-headline">
+          <p class="eyebrow">More Than Learning</p>
+          <h2>A World<br><em>of Possibilities</em></h2>
+          <span class="s2-rule"></span>
+        </div>
+
+        <ul class="s2-values" aria-hidden="false">
+          <li class="s2-value s2-value--curiosity">
+            <span class="s2-value-icon"><i class="fa-regular fa-lightbulb"></i></span>
+            <span>Curiosity</span>
+          </li>
+          <li class="s2-value s2-value--discovery">
+            <span class="s2-value-icon"><i class="fa-solid fa-earth-americas"></i></span>
+            <span>Discovery</span>
+          </li>
+          <li class="s2-value s2-value--creativity">
+            <span class="s2-value-icon"><i class="fa-solid fa-palette"></i></span>
+            <span>Creativity</span>
+          </li>
+          <li class="s2-value s2-value--collaboration">
+            <span class="s2-value-icon"><i class="fa-solid fa-people-group"></i></span>
+            <span>Collaboration</span>
+          </li>
+        </ul>
+
+        <div class="s2-scroll-cue">
+          <span class="scroll-cue-icon">
+            <svg width="16" height="24" viewBox="0 0 16 24" fill="none"><rect x="1" y="1" width="14" height="22" rx="7" stroke="currentColor" stroke-width="1.2"/><circle class="scroll-dot" cx="8" cy="7" r="2" fill="currentColor"/></svg>
+          </span>
+          Scroll to Explore
+        </div>
+
+        <div class="s2-tag-corner">Same Values<br>A Brighter Tomorrow</div>
+
+      </div>
+
+     </div>
+    </div>
+  </section>
+
+  <!-- Fake Section 3 — placeholder only, so there's real scroll room after
+       Section 2 for its full differential-parallax range (top bottom →
+       bottom top) to actually play out and be visible, instead of the
+       page just ending right under it. Not part of the design spec. -->
+  <section class="fake-section3" id="section3">
+    <p class="fake-section3-label">Section 3 — placeholder<br><span>(to preview Section 2's parallax as it scrolls away)</span></p>
+  </section>
+
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="script.js?v=20"></script>
+</body>
+</html>
