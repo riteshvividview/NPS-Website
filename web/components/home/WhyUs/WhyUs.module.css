@@ -1,0 +1,257 @@
+/* z-index 4 — Section 3 (the sibling right before this one in the page)
+   has an explicit z-index:3, which would otherwise paint over the rocket
+   once it flies up past this section's own top edge into Section 3's
+   area, even though Section 3 comes earlier in the DOM: a positioned
+   element with an explicit z-index always paints above a z-index:auto
+   sibling regardless of source order. */
+.outerWrap {
+  position: relative;
+  z-index: 4;
+}
+
+.section {
+  position: relative;
+  background: linear-gradient(135deg, var(--green-deep) 0%, #123244 55%, #0f2a3c 100%);
+  color: var(--paper);
+  padding: 116px 8vw 64px;
+  overflow: hidden;
+}
+
+/* ---------- Decorative parallax layers ----------
+   The user's source images (public/aboutus-section/*.webp) are each a huge
+   ~1522×483 mostly-transparent canvas with the actual artwork occupying
+   only a small corner of it (found via sharp's trim() — e.g. the rocket's
+   real content is just 96×71px). Using those full canvases directly with
+   object-fit made the art nearly invisible at real size. Pre-cropped
+   versions (rocket.webp/medal.webp/trophy.webp/pages.webp, same folder)
+   contain just the actual artwork, sized/positioned as ordinary small
+   corner accents below. drop-shadow (not box-shadow) because these are
+   transparent — box-shadow would shadow the rectangular image box, not
+   the artwork's actual silhouette.
+
+   Text must always stay legible, so .deco renders BEHIND .inner (z-index
+   1 vs 3) — the section's own top padding was increased (64→116px) to
+   give the rocket a dedicated clear band to sit in above the text, instead
+   of relying on z-index alone to paper over an overlap. Trophy/pages sit
+   in the side/bottom margins outside .inner's own width, so they don't
+   compete with text at all. */
+
+.deco {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.4));
+}
+.deco :global(img) {
+  width: 100%;
+  height: 100%;
+}
+
+.decoRocket { left: 24px; top: 8px; width: 150px; height: 111px; }
+.decoTrophy { left: -12px; bottom: -12px; width: 256px; height: 238px; }
+.decoPages { right: -12px; bottom: -12px; width: 460px; height: 184px; }
+
+.inner {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  gap: 64px;
+  max-width: 1480px;
+  margin: 0 auto;
+}
+
+.intro {
+  flex: 0 0 460px;
+}
+
+.eyebrow {
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #a9e0c4;
+  margin-bottom: 14px;
+}
+
+.headline {
+  font-family: var(--font-fraunces), serif;
+  font-weight: 500;
+  font-size: 40px;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+.headline em {
+  font-style: italic;
+  font-weight: 400;
+  color: #a9e0c4;
+}
+
+.statBlock {
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.statValue {
+  display: block;
+  font-family: var(--font-fraunces), serif;
+  font-weight: 600;
+  font-size: 56px;
+  line-height: 1;
+  color: #fff;
+}
+
+.statLabel {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.tagline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+.tagline::before {
+  content: "";
+  display: block;
+  width: 26px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.list {
+  flex: 1;
+  min-width: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.row {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.rowButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 0;
+  background: none;
+  border: none;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+
+.rowIndex {
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+  flex-shrink: 0;
+  width: 22px;
+  transition: color 0.3s ease;
+}
+
+.rowIcon {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+.toneTrophy  { background: rgba(47, 107, 70, 0.35); color: #bfe3cf; }
+.tonePeople  { background: rgba(184, 144, 31, 0.28); color: #e8d28a; }
+.toneCap     { background: rgba(47, 111, 163, 0.3); color: #bcd7ea; }
+.toneShield  { background: rgba(47, 107, 70, 0.35); color: #bfe3cf; }
+.toneChart   { background: rgba(201, 162, 39, 0.28); color: #e8d28a; }
+
+.row:global(.is-open) .rowIcon {
+  transform: scale(1.08);
+}
+
+.rowTitle {
+  flex: 1;
+  font-family: var(--font-fraunces), serif;
+  font-weight: 500;
+  font-size: 21px;
+  color: rgba(255, 255, 255, 0.75);
+  transition: color 0.3s ease;
+}
+
+.row:global(.is-open) .rowTitle,
+.rowButton:hover .rowTitle {
+  color: #fff;
+}
+.row:global(.is-open) .rowIndex {
+  color: #a9e0c4;
+}
+
+.rowToggle {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+.row:global(.is-open) .rowToggle {
+  transform: rotate(45deg);
+  background: #fff;
+  color: var(--green-deep);
+}
+
+.rowPanel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s ease;
+}
+.row:global(.is-open) .rowPanel {
+  grid-template-rows: 1fr;
+}
+.rowPanelInner {
+  overflow: hidden;
+}
+.rowDescription {
+  padding: 0 0 16px 78px;
+  max-width: 44ch;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+@media (max-width: 1100px) {
+  .section {
+    padding: 90px 6vw 80px;
+  }
+  .inner {
+    flex-direction: column;
+    gap: 48px;
+  }
+  .intro {
+    flex-basis: auto;
+  }
+  .deco {
+    display: none;
+  }
+  .rowDescription {
+    padding-left: 62px;
+  }
+}

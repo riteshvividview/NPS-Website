@@ -1,0 +1,68 @@
+:root {
+  --ink: #1c2b22;
+  --green-deep: #14371f;
+  --green-mid: #2f6b46;
+  --gold: #c9a227;
+  --paper: #f7f3ea;
+  --paper-warm: #efe6d3;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+  background: var(--paper);
+  font-family: var(--font-public-sans), sans-serif;
+  color: var(--ink);
+}
+
+img {
+  display: block;
+  max-width: none;
+}
+
+/* ---------- Home-page text/card motion (components/home/fx) ----------
+   html.fx is added by an inline script in layout.tsx only when JS is on and
+   reduced-motion is off. Tagged elements stay hidden until useHomeFx flags
+   them data-fx-ready, so there's no flash of un-animated content. A 6s
+   safety timeout in the same script removes the class regardless. */
+.fx [data-fx]:not([data-fx-ready]),
+.fx [data-card-fx]:not([data-fx-ready]) {
+  visibility: hidden;
+}
+
+.fx-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+.fx-char {
+  display: inline-block;
+}
+.fx-mask {
+  overflow: hidden;
+  vertical-align: top;
+  padding: 0 0.08em 0.16em;
+  margin: 0 -0.08em -0.16em;
+}
+.fx-word-inner {
+  display: inline-block;
+  will-change: transform;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

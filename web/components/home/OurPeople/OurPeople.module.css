@@ -1,0 +1,358 @@
+.section {
+  position: relative;
+  background: var(--paper);
+  padding: 32px 6vw 0;
+  overflow: hidden;
+}
+
+.bgPhoto {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.bgPhoto :global(img) {
+  object-fit: cover;
+  object-position: center bottom;
+}
+
+/* ---------- Decorative parallax layers ----------
+   Same "crop to real content first" treatment as Why Us / Beyond the
+   Classroom — these source files are full 1920×1080 mostly-transparent
+   canvases; s5-*.webp here are already the cropped, content-only versions.
+   z-index 1-2, below the actual page content (z-index 3+ below) but above
+   the background photo (z-index 0). */
+.deco {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  filter: drop-shadow(0 14px 24px rgba(40, 30, 15, 0.2));
+}
+.deco :global(img) {
+  width: 100%;
+  height: 100%;
+}
+
+.decoPenbox {
+  left: 16px;
+  bottom: -4px;
+  width: 80px;
+  height: 117px;
+}
+.decoBooks {
+  left: 96px;
+  bottom: -6px;
+  width: 300px;
+  height: 162px;
+}
+/* Above everything (nav, portraits, arch band) — moves right, off-screen,
+   as the section scrolls, so it needs to clear all of it. */
+.decoGlobe {
+  z-index: 10;
+  right: -10px;
+  bottom: 40px;
+  width: 120px;
+  height: 348px;
+}
+
+
+.navRow {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: 0.8;
+}
+.navRow::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.4;
+}
+
+.layout {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  /* Was align-items:end — with the intro column taller than the portraits
+     column, that pushed the (shorter) portraits down to match intro's
+     bottom, leaving a big empty gap above the cards. start keeps both
+     columns flush with the top of the row instead. */
+  align-items: start;
+  gap: 32px;
+  max-width: 1560px;
+  margin: 16px auto 0;
+}
+
+/* ---------- Left copy column ---------- */
+
+.intro {
+  padding-bottom: 20px;
+}
+
+.eyebrow {
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 14px;
+}
+
+.headline {
+  font-family: var(--font-fraunces), serif;
+  font-weight: 500;
+  font-size: 42px;
+  line-height: 1.16;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.headline em {
+  display: block;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--green-mid);
+}
+
+.rule {
+  display: block;
+  width: 56px;
+  height: 1px;
+  background: rgba(28, 43, 34, 0.3);
+  margin: 20px 0;
+}
+
+.subcopy {
+  font-size: 15px;
+  line-height: 1.65;
+  color: #4a544c;
+  max-width: 32ch;
+}
+
+.features {
+  display: flex;
+  gap: 22px;
+  margin-top: 36px;
+}
+
+.featureItem {
+  flex: 1;
+  padding-left: 18px;
+  border-left: 1px solid rgba(28, 43, 34, 0.15);
+}
+.featureItem:first-child {
+  padding-left: 0;
+  border-left: none;
+}
+
+.featureIcon {
+  color: var(--green-deep);
+  margin-bottom: 12px;
+  display: block;
+}
+
+.featureLabel {
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.noteLeft {
+  display: block;
+  margin-top: 46px;
+  font-family: var(--font-script), var(--font-fraunces), serif;
+  font-size: 24px;
+  line-height: 1.35;
+  color: var(--green-mid);
+  transform: rotate(-3deg);
+}
+
+/* ---------- Portraits row ---------- */
+
+.portraitsCol {
+  position: relative;
+}
+
+.scriptNote {
+  position: absolute;
+  top: -10px;
+  left: 56%;
+  font-family: var(--font-script), var(--font-fraunces), serif;
+  font-size: 24px;
+  line-height: 1.3;
+  color: var(--green-mid);
+  transform: rotate(-4deg);
+  z-index: 2;
+}
+
+.quoteBlock {
+  position: absolute;
+  top: -20px;
+  right: 6px;
+  max-width: 220px;
+  z-index: 2;
+}
+.quoteMark {
+  color: var(--gold);
+  font-style: normal;
+  margin-left: 3px;
+  font-size: 1.8em;
+  position: relative;
+  top: 10px;
+}
+.quoteText {
+  font-family: var(--font-fraunces), serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 1.3;
+  color: var(--ink);
+}
+.quoteRule {
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: rgba(28, 43, 34, 0.3);
+  margin-top: 12px;
+}
+
+.portraitsRow {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 16px;
+  padding-top: 56px;
+}
+
+.portrait {
+  position: relative;
+  width: 220px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 20px 34px rgba(20, 40, 30, 0.2));
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.portrait:nth-child(1) { height: 380px; transform: rotate(-3deg); }
+.portrait:nth-child(2) { height: 415px; transform: rotate(-1deg); }
+.portrait:nth-child(3) { height: 398px; transform: rotate(1.5deg); }
+.portrait:nth-child(4) { height: 370px; transform: rotate(3.5deg); }
+
+/* Slight downward pull on hover — keeps each card's own resting rotation,
+   just adds a translateY on top of it. */
+.portrait:nth-child(1):hover { transform: rotate(-3deg) translateY(14px); }
+.portrait:nth-child(2):hover { transform: rotate(-1deg) translateY(14px); }
+.portrait:nth-child(3):hover { transform: rotate(1.5deg) translateY(14px); }
+.portrait:nth-child(4):hover { transform: rotate(3.5deg) translateY(14px); }
+
+.portraitClip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #d8cfc0;
+}
+.portraitClip :global(img) {
+  object-fit: cover;
+  object-position: center top;
+}
+
+.portraitFade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10, 20, 15, 0.55) 0%, rgba(10, 20, 15, 0) 42%);
+  pointer-events: none;
+}
+
+.portraitCaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 20px;
+  text-align: center;
+  color: #fff;
+}
+.portraitCaptionLine1 {
+  display: block;
+  font-family: var(--font-fraunces), serif;
+  font-weight: 500;
+  font-size: 19px;
+}
+.portraitCaptionLine1:global(.is-underlined) {
+  position: relative;
+  padding-bottom: 6px;
+}
+.portraitCaptionLine1:global(.is-underlined)::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 34px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.7);
+}
+.portraitCaptionLine2 {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.spacer {
+  height: 170px;
+}
+
+@media (max-width: 1150px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  .intro {
+    padding-bottom: 0;
+    margin-bottom: 40px;
+  }
+  .scriptNote,
+  .quoteBlock {
+    display: none;
+  }
+  .portraitsRow {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 640px) {
+  .headline {
+    font-size: 32px;
+  }
+  .features {
+    flex-direction: column;
+    gap: 14px;
+  }
+  .featureItem {
+    border-left: none;
+    padding-left: 0;
+  }
+  .portrait {
+    width: 150px;
+  }
+  .portrait:nth-child(1),
+  .portrait:nth-child(2),
+  .portrait:nth-child(3),
+  .portrait:nth-child(4) {
+    height: 280px;
+  }
+}

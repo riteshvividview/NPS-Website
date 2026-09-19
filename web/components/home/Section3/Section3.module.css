@@ -1,0 +1,139 @@
+.section3 {
+  position: relative;
+  z-index: 3;
+  width: 100vw;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #cfe3f2;
+}
+.section3Canvas {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+.section3Stage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1672px;
+  height: 941px;
+  transform: translate(-50%, -50%);
+  transform-origin: center center;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.layer :global(img) {
+  object-fit: cover;
+  object-position: center;
+}
+
+.s3Bg { z-index: 1; }
+.s3BottomLeftFar { z-index: 2; }
+.s3BottomRight { z-index: 2; }
+.s3BottomLeftNear { z-index: 3; }
+.s3Birds { z-index: 4; }
+.s3Plane { z-index: 4; transform-origin: 0 100%; }
+.s3TopLeft { z-index: 5; transform-origin: 0 0; }
+.s3Content {
+  z-index: 6;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.s3Content :global(a) {
+  pointer-events: auto;
+}
+
+.s3Nav {
+  position: absolute;
+  top: 32px;
+  left: 48px;
+  right: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+}
+.s3Brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.s3BrandMark {
+  flex-shrink: 0;
+}
+.s3TagRight {
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.s3Copy {
+  position: absolute;
+  left: 100px;
+  top: 230px;
+  width: 440px;
+  color: var(--ink);
+}
+.eyebrow {
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--green-mid);
+}
+.s3Heading {
+  font-family: var(--font-fraunces), serif;
+  font-weight: 500;
+  font-size: 54px;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  margin-top: 16px;
+}
+.s3Heading em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--green-mid);
+}
+.s3Rule {
+  display: block;
+  width: 56px;
+  height: 1px;
+  background: rgba(28, 43, 34, 0.3);
+  margin: 22px 0;
+}
+.s3Subcopy {
+  font-size: 16px;
+  line-height: 1.55;
+  color: #3a453e;
+  max-width: 36ch;
+}
+
+.s3ScrollCue {
+  position: absolute;
+  left: 100px;
+  bottom: 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: 0.85;
+}
