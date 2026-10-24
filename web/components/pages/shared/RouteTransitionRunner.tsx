@@ -3,14 +3,18 @@ import { useEffect, useLayoutEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import gsap from "gsap";
+import styles from "./RouteTransition.module.css";
 const pagePath =
   /^\/(?:$|gallery$|isc$|careers$|routes$|privacy-policy$|terms-and-conditions$|(?:the-place|the-people|nps-programs)\/[a-z-]+$)/;
-/** Client navigation only. Page entrances animate the content, never a covering screen. */
+const emptyInk = "M0 110 Q25 110 50 110 T100 110 V110 H0 Z";
+const fullInk = "M0 -20 Q25 -40 50 -20 T100 -20 V110 H0 Z";
 export default function RouteTransitionRunner() {
   const router = useRouter(),
     pathname = usePathname();
   const pending = useRef<{ path: string; hash: string } | null>(null);
-  const transition = useRef<gsap.core.Tween | null>(null);
+  const transition = useRef<gsap.core.Timeline | null>(null);
+  const curtain = useRef<HTMLDivElement>(null);
+  const watchdog = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
     const navigate = (href: string) => {
       const url = new URL(href, location.href);
@@ -23,16 +27,27 @@ export default function RouteTransitionRunner() {
         }
         return !url.hash;
       }
+      if (pending.current) return true;
       pending.current = { path: url.pathname, hash: url.hash };
-      transition.current?.revert();
-      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        const main = document.querySelector("main");
-        if (main) transition.current = gsap.to(main, {
-          opacity: 0.65, duration: 0.2, ease: "power2.out",
-        });
+      transition.current?.kill();
+      const go = () => {
+        window.dispatchEvent(new Event("nps:navigating"));
+        router.push(url.pathname + url.search + url.hash);
+      };
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches || !curtain.current) go();
+      else {
+        curtain.current.style.pointerEvents = "auto";
+        const paths = curtain.current.querySelectorAll("path");
+        gsap.set(paths, { attr: { d: emptyInk } });
+        transition.current = gsap.timeline().to(paths, {
+          attr: { d: fullInk }, duration: .55, stagger: .08, ease: "power3.inOut",
+        }).call(go);
       }
-      window.dispatchEvent(new Event("nps:navigating"));
-      router.push(url.pathname + url.search + url.hash);
+      watchdog.current = setTimeout(() => {
+        transition.current?.kill();
+        if (curtain.current) { gsap.set(curtain.current.querySelectorAll("path"), {attr:{d:emptyInk}}); curtain.current.style.pointerEvents = "none"; }
+        pending.current = null;
+      }, 10000);
       return true;
     };
     const click = (e: MouseEvent) => {
@@ -83,18 +98,21 @@ export default function RouteTransitionRunner() {
       document.removeEventListener("pointerover", prefetch);
       document.removeEventListener("focusin", prefetch);
       window.removeEventListener("nps:page-transition", custom);
-      transition.current?.revert();
+      transition.current?.kill();
+      if(watchdog.current) clearTimeout(watchdog.current);
     };
   }, [router]);
   useLayoutEffect(() => {
     if (pending.current?.path !== pathname) return;
     const hash = pending.current.hash;
     pending.current = null;
-    transition.current?.revert();
-    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      const main = document.querySelector("main");
-      if (main) transition.current = gsap.fromTo(main, { opacity: 0.35 }, {
-        opacity: 1, duration: 0.45, ease: "power2.out", clearProps: "opacity",
+    if (watchdog.current) clearTimeout(watchdog.current);
+    transition.current?.kill();
+    if (curtain.current) {
+      const panel = curtain.current;
+      transition.current = gsap.timeline({ onComplete: () => { panel.style.pointerEvents = "none"; } }).to(panel.querySelectorAll("path"), {
+        attr: {d: emptyInk}, duration: matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : .65,
+        stagger: .07, ease: "power3.inOut",
       });
     }
     const frame = requestAnimationFrame(() => {
@@ -114,5 +132,5 @@ export default function RouteTransitionRunner() {
     });
     return () => cancelAnimationFrame(frame);
   }, [pathname]);
-  return null;
+  return <div ref={curtain} className={styles.curtain} aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><path d={emptyInk} fill="#c9ad70" /><path d={emptyInk} fill="#153b30" /></svg></div>;
 }

@@ -5,6 +5,7 @@ import gsap from "gsap";
 export default function PageEntranceRunner() {
   const pathname = usePathname();
   useLayoutEffect(() => {
+    if (pathname === "/") return;
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const hero = document.querySelector("main h1")?.closest("section");
     if (!hero) return;

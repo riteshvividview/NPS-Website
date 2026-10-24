@@ -376,7 +376,7 @@
 /* Text overlays the full-width slide artwork. */
 .carouselSlide{display:flex;align-items:flex-end;min-height:100svh;padding:140px 7vw 100px;isolation:isolate;background:#172f28}
 .carouselVisual{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto;z-index:-2;background:#172f28}
-.carouselVisual>img{object-fit:contain!important}
+.carouselVisual>img{object-fit:cover!important;object-position:center!important}
 .carouselSlide::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(0deg,#10251fe6,transparent 75%)}
 .carouselCopy{position:relative;width:min(720px,85%);padding:0;color:#fff8e8}
 .carouselCopy h1,.carouselCopy h2{font-size:clamp(36px,4.2vw,66px)}

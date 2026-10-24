@@ -1,3 +1,5 @@
+import HomeLoader from "@/components/home/HomeLoader";
+import HomeReadyAnimations from "@/components/home/HomeReadyAnimations";
 import polish from "@/components/home/HomePolish.module.css";
 import type { Metadata } from "next";
 import Hero from "@/components/home/Hero/Hero";
@@ -9,8 +11,6 @@ import BeyondClassroom from "@/components/home/BeyondClassroom/BeyondClassroom";
 import OurPeople from "@/components/home/OurPeople/OurPeople";
 import LifeAtNiraj from "@/components/home/LifeAtNiraj/LifeAtNiraj";
 import InstagramSection from "@/components/home/InstagramSection/InstagramSection";
-import HomeAnimationsRunner from "@/components/home/HomeAnimationsRunner";
-import HomeFxRunner from "@/components/home/fx/HomeFxRunner";
 import { homeContent } from "@/content/home";
 import { teachingMethodologyContent } from "@/content/teachingMethodology";
 import { whyUsContent } from "@/content/whyUs";
@@ -29,6 +29,8 @@ export const metadata: Metadata = buildMetadata({
 export default function Home() {
   return (
     <>
+      <HomeLoader />
+      <noscript><style>{`[data-home-loader]{display:none!important}`}</style></noscript>
       <main className={polish.home}>
         <Hero content={homeContent.hero} />
         <Section2 content={homeContent.section2} />
@@ -40,8 +42,7 @@ export default function Home() {
         <LifeAtNiraj content={lifeAtNirajContent} />
         <InstagramSection content={instagramFeedContent} />
       </main>
-      <HomeAnimationsRunner />
-      <HomeFxRunner />
+      <HomeReadyAnimations />
     </>
   );
 }
