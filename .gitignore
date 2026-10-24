@@ -1,0 +1,3 @@
+# Local rollback snapshots and visual review artifacts
+.local-backups/
+.local-previews/
