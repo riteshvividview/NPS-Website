@@ -16,8 +16,7 @@
 }
 
 .opacityReveal {
-  opacity: 0;
-  transform: translateY(24px);
+  opacity: 1;
 }
 
 .brandCol {
@@ -235,8 +234,7 @@
   bottom: 14%;
   max-width: 34%;
   color: #fff;
-  opacity: 0;
-  transform: translateY(20px);
+  opacity: 1;
 }
 
 .waveQuoteLine {

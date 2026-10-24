@@ -20,6 +20,7 @@ gsap.registerPlugin(ScrollTrigger);
  */
 export function useHomeAnimations() {
   useEffect(() => {
+    const context = gsap.context(() => {
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
@@ -197,7 +198,9 @@ export function useHomeAnimations() {
 
     return () => {
       cleanupFns.forEach((fn) => fn());
-      ScrollTrigger.getAll().forEach((st) => st.kill());
+
     };
+    });
+    return () => context.revert();
   }, []);
 }

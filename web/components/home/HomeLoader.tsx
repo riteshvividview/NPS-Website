@@ -12,6 +12,18 @@ export default function HomeLoader() {
   const release = useRef<() => void>(() => {});
 
   useEffect(() => {
+    let visited = document.documentElement.dataset.homeVisited === "true";
+    try { visited ||= localStorage.getItem("nps:home-visited") === "true"; } catch {}
+    if (visited) {
+      document.documentElement.dataset.homeVisited = "true";
+      setGone(true);
+      const frame = requestAnimationFrame(() => {
+        document.querySelectorAll<HTMLImageElement>("main img, header img, footer img").forEach(img => { img.loading = "eager"; });
+        window.dispatchEvent(new Event("nps:home-ready"));
+        ScrollTrigger.refresh();
+      });
+      return () => cancelAnimationFrame(frame);
+    }
     let cancelled = false, finished = false;
     const timers: ReturnType<typeof setTimeout>[] = [];
     const cleanups: (() => void)[] = [];
@@ -36,6 +48,8 @@ export default function HomeLoader() {
         timers.push(setTimeout(() => {
           if (cancelled) return;
           unlock(); setGone(true);
+          document.documentElement.dataset.homeVisited = "true";
+          try { localStorage.setItem("nps:home-visited", "true"); } catch {}
           ScrollTrigger.refresh();
           window.dispatchEvent(new Event("nps:home-ready"));
         }, matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 800));
@@ -64,7 +78,7 @@ export default function HomeLoader() {
     });
     const frame = requestAnimationFrame(() => {
       const tasks: Promise<unknown>[] = [];
-      document.querySelectorAll<HTMLImageElement>("main img, header img").forEach(img => tasks.push(waitImage(img)));
+      document.querySelectorAll<HTMLImageElement>("main img, header img, footer img").forEach(img => tasks.push(waitImage(img)));
       // Include CSS artwork as well as responsive <img> elements.
       const backgrounds = new Set<string>();
       main?.querySelectorAll<HTMLElement>("*").forEach(el => {
