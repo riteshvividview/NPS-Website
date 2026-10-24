@@ -1,0 +1,105 @@
+.section {
+  position: relative;
+  background: var(--paper-warm);
+  padding: 80px 6vw;
+}
+
+.intro {
+  max-width: 640px;
+  margin: 0 auto 48px;
+  text-align: center;
+}
+
+.eyebrow {
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--green-mid);
+  margin-bottom: 14px;
+}
+
+.headline {
+  font-family: var(--font-fraunces), serif;
+  font-weight: 500;
+  font-size: clamp(28px, 4.4vw, 42px);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.card {
+  position: relative;
+  background: #fff;
+  border-radius: 24px;
+  padding: 32px 28px;
+  box-shadow: 0 20px 40px rgba(20, 40, 30, 0.08);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+}
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 28px 54px rgba(20, 40, 30, 0.14);
+}
+
+.cardIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: rgba(47, 107, 70, 0.1);
+  color: var(--green-deep);
+  padding: 13px;
+  margin-bottom: 20px;
+}
+
+.cardTitle {
+  font-family: var(--font-fraunces), serif;
+  font-weight: 500;
+  font-size: 20px;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+
+.cardDescription {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: #56604f;
+}
+
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .section {
+    padding: 56px 5vw;
+  }
+  .intro {
+    margin-bottom: 32px;
+  }
+  .card {
+    padding: 26px 22px;
+  }
+}
+
+.section{background:#294b36;color:#f5eddb;padding-block:90px}.headline{color:#f5eddb;font-size:clamp(38px,5vw,65px)}.eyebrow{color:#dfcb86}.card{background:#34563f;border:1px solid #8eaa7644;box-shadow:none;border-radius:50px 5px 5px 5px;padding:35px 25px}.cardTitle{color:#f4ecd6;font-size:24px}.cardDescription{color:#d4ddc7;line-height:1.8}.cardIcon{background:#435f3e;color:#dbc57b;width:65px;height:65px}
+
+/* Warm school-story palette */
+.section{background:#efe4d4;color:#403947}.headline{color:#403947}.eyebrow{color:#a3654c}.card{background:#faf6ef;border:1px solid #d8c7b3;box-shadow:0 14px 34px #59483912}.cardTitle{color:#514653}.cardDescription{color:#625c59}.cardIcon{background:#ead6c8;color:#a3654c}

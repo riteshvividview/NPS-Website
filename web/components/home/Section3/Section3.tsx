@@ -73,24 +73,6 @@ export default function Section3({ content }: { content: HomeContent["section3"]
               <span className={styles.s3Rule} data-fx="wipe" data-fx-delay="0.6" />
               <p className={styles.s3Subcopy} data-fx="blur" data-fx-delay="0.7">{content.subcopy}</p>
             </div>
-
-            <div className={styles.s3ScrollCue}>
-              <span>
-                <svg width="16" height="24" viewBox="0 0 16 24" fill="none">
-                  <rect
-                    x="1"
-                    y="1"
-                    width="14"
-                    height="22"
-                    rx="7"
-                    stroke="currentColor"
-                    strokeWidth="1.2"
-                  />
-                  <circle cx="8" cy="7" r="2" fill="currentColor" />
-                </svg>
-              </span>
-              {content.scrollCueLabel}
-            </div>
           </div>
         </div>
       </div>

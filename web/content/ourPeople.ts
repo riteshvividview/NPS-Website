@@ -42,28 +42,28 @@ export const ourPeopleContent: OurPeopleContent = {
   quoteLine3: "Futures.",
   portraits: [
     {
-      image: "/our-people-section/portrait-1.png",
+      image: "/Home Page/06-our-people/portrait-1.png",
       alt: "School founder / director portrait",
       captionLine1: "Vision",
       captionLine2: "For Generations",
       underline: true,
     },
     {
-      image: "/our-people-section/portrait-2.png",
+      image: "/Home Page/06-our-people/portrait-2.png",
       alt: "Principal portrait",
       captionLine1: "Leadership",
       captionLine2: "With Empathy",
       underline: false,
     },
     {
-      image: "/our-people-section/portrait-3.png",
+      image: "/Home Page/06-our-people/portrait-3.png",
       alt: "Vice principal portrait",
       captionLine1: "Progress",
       captionLine2: "Through Education",
       underline: true,
     },
     {
-      image: "/our-people-section/portrait-4.png",
+      image: "/Home Page/06-our-people/portrait-4.png",
       alt: "Academic coordinator portrait",
       captionLine1: "Commitment",
       captionLine2: "To Brighter Tomorrows",

@@ -5,7 +5,7 @@ import Image from "next/image";
 import gsap from "gsap";
 import styles from "./LifeAtNiraj.module.css";
 import type { LifeAtNirajContent } from "@/content/lifeAtNiraj";
-import { PlayIcon, ArrowLeft, ArrowRight } from "./icons";
+import { ArrowLeft, ArrowRight } from "./icons";
 import FilterTabs from "./FilterTabs";
 
 export default function LifeAtNirajBody({ content }: { content: LifeAtNirajContent }) {
@@ -14,7 +14,15 @@ export default function LifeAtNirajBody({ content }: { content: LifeAtNirajConte
   // "Next" from "All" lands on "Events", then "Activities", and so on.
   const [index, setIndex] = useState(0);
   const gridRef = useRef<HTMLDivElement>(null);
-
+  const tileStyle = (aspectRatio: string, compact = false) => {
+    const [width, height] = aspectRatio.split("/").map(Number);
+    const ratio = width / height;
+    return {
+      aspectRatio,
+      maxWidth: !compact && ratio < 1 ? `${ratio * 48}vh` : "100%",
+      marginInline: "auto" as const,
+    };
+  };
   function go(next: number) {
     setIndex(((next % content.filters.length) + content.filters.length) % content.filters.length);
   }
@@ -30,6 +38,7 @@ export default function LifeAtNirajBody({ content }: { content: LifeAtNirajConte
   }, [index]);
 
   const g = content.groups[index];
+  const fullColumnCards = index === 0 || index === 2;
 
   return (
     <>
@@ -54,9 +63,10 @@ export default function LifeAtNirajBody({ content }: { content: LifeAtNirajConte
         </div>
       </div>
 
-      <div className={styles.grid} ref={gridRef}>
-        <div className={`${styles.tile} ${styles.tileHero} js-mosaic-tile`}>
-          <Image src={g.hero.image} alt={g.hero.alt} fill sizes="(max-width: 1150px) 100vw, 30vw" style={{ objectFit: "cover" }} />
+      <div className={`${styles.grid} ${index === 2 ? styles.prePrimaryGrid : ""}`} ref={gridRef}>
+        <div className={index === 2 ? styles.prePrimaryPhotos : styles.standardPhotos}>
+        <div className={`${styles.tile} ${styles.tileHero} js-mosaic-tile`} style={tileStyle(g.hero.aspectRatio, fullColumnCards)}>
+          <Image src={g.hero.image} alt={g.hero.alt} fill sizes="(max-width: 1150px) 96vw, 52vw" style={{ objectFit: "contain" }} />
           <div className={styles.heroFade} />
           <div className={styles.heroCaption}>
             <span className={styles.heroCaptionText}>{g.hero.captionLine1}</span>
@@ -65,23 +75,23 @@ export default function LifeAtNirajBody({ content }: { content: LifeAtNirajConte
           </div>
         </div>
 
-        <div className={`${styles.tile} ${styles.tileTop1} js-mosaic-tile`}>
-          <Image src={g.top1.image} alt={g.top1.alt} fill sizes="(max-width: 1150px) 50vw, 20vw" style={{ objectFit: "cover" }} />
+        <div className={`${styles.tile} ${styles.tileTop1} js-mosaic-tile`} style={tileStyle(g.top1.aspectRatio, fullColumnCards)}>
+          <Image src={g.top1.image} alt={g.top1.alt} fill sizes="(max-width: 640px) 96vw, (max-width: 1150px) 48vw, 25vw" style={{ objectFit: "contain" }} />
         </div>
 
-        <div className={`${styles.tile} ${styles.tileTop2} js-mosaic-tile`}>
-          <Image src={g.top2.image} alt={g.top2.alt} fill sizes="(max-width: 1150px) 50vw, 18vw" style={{ objectFit: "cover" }} />
+        <div className={`${styles.tile} ${styles.tileTop2} js-mosaic-tile`} style={tileStyle(g.top2.aspectRatio, fullColumnCards)}>
+          <Image src={g.top2.image} alt={g.top2.alt} fill sizes="(max-width: 640px) 96vw, (max-width: 1150px) 48vw, 25vw" style={{ objectFit: "contain" }} />
         </div>
 
-        <div className={`${styles.tile} ${styles.tileTop3} js-mosaic-tile`}>
-          <Image src={g.top3.image} alt={g.top3.alt} fill sizes="(max-width: 1150px) 50vw, 12vw" style={{ objectFit: "cover" }} />
+        <div className={`${styles.tile} ${styles.tileTop3} js-mosaic-tile`} style={tileStyle(g.top3.aspectRatio, fullColumnCards)}>
+          <Image src={g.top3.image} alt={g.top3.alt} fill sizes="(max-width: 640px) 96vw, (max-width: 1150px) 48vw, 25vw" style={{ objectFit: "contain" }} />
         </div>
 
-        <a className={`${styles.tile} ${styles.tileVideo} js-mosaic-tile`} href="#" aria-label={g.video.titleLine1 + " " + g.video.titleLine2}>
-          <Image src={g.video.thumbnail} alt={g.video.alt} fill sizes="(max-width: 1150px) 100vw, 24vw" style={{ objectFit: "cover" }} />
+        <a className={`${styles.tile} ${styles.tileVideo} js-mosaic-tile`} href={content.ctaHref} aria-label={`${g.video.titleLine1} ${g.video.titleLine2}: open the full gallery`} style={tileStyle(g.video.aspectRatio, fullColumnCards)}>
+          <Image src={g.video.thumbnail} alt={g.video.alt} fill sizes="(max-width: 1150px) 96vw, 52vw" style={{ objectFit: "contain" }} />
           <div className={styles.videoFade} />
           <span className={styles.playBtn}>
-            <PlayIcon />
+            <ArrowRight />
           </span>
           <div className={styles.videoCaption}>
             <span className={styles.videoCaptionTitle}>
@@ -91,32 +101,69 @@ export default function LifeAtNirajBody({ content }: { content: LifeAtNirajConte
             </span>
             <span className={styles.videoCaptionTag}>{g.video.tag}</span>
           </div>
-          <span className={styles.videoDuration}>{g.video.duration}</span>
+          {g.video.duration && <span className={styles.videoDuration}>{g.video.duration}</span>}
         </a>
 
-        <div className={`${styles.tile} ${styles.tileBottom} js-mosaic-tile`}>
-          <Image src={g.bottom.image} alt={g.bottom.alt} fill sizes="(max-width: 1150px) 50vw, 12vw" style={{ objectFit: "cover" }} />
+        <div className={`${styles.tile} ${styles.tileBottom} js-mosaic-tile`} style={tileStyle(g.bottom.aspectRatio, fullColumnCards)}>
+          <Image src={g.bottom.image} alt={g.bottom.alt} fill sizes="(max-width: 640px) 96vw, (max-width: 1150px) 48vw, 25vw" style={{ objectFit: "contain" }} />
         </div>
 
-        <div className={`${styles.sidebar} js-mosaic-tile`}>
-          <span className={styles.sideTag}>
-            {content.sideTagLines.map((line, i) => (
-              <span key={i}>
-                {line}
-                <br />
-              </span>
-            ))}
-            <span className={styles.sideTagRule} />
-          </span>
-          <div className={styles.navBtns}>
-            <button className={styles.navBtn} onClick={() => go(index - 1)} aria-label="Previous">
-              <ArrowLeft />
-            </button>
-            <button className={`${styles.navBtn} ${styles.navBtnNext}`} onClick={() => go(index + 1)} aria-label="Next">
-              <ArrowRight />
-            </button>
-          </div>
+        <div className={`${styles.tile} ${styles.tileExtra} js-mosaic-tile`} style={tileStyle(g.extra.aspectRatio, fullColumnCards)}>
+          <Image src={g.extra.image} alt={g.extra.alt} fill sizes="(max-width: 640px) 96vw, (max-width: 1150px) 48vw, 25vw" style={{ objectFit: "contain" }} />
         </div>
+        {g.additional.slice(3).map((photo) => (
+          <div className={`${styles.tile} ${styles.tileAdditional} js-mosaic-tile`} style={tileStyle(photo.aspectRatio, true)} key={photo.image}>
+            <Image src={photo.image} alt={photo.alt} fill sizes="(max-width: 640px) 25vw, (max-width: 1150px) 20vw, 16vw" style={{ objectFit: "contain" }} />
+          </div>
+        ))}
+        </div>
+
+        {index === 2 && (
+          <aside className={styles.prePrimaryAside}>
+            <div className={`${styles.sidebar} js-mosaic-tile`}>
+              <span className={styles.sideTag}>
+                {content.sideTagLines.map((line, i) => (
+                  <span key={i}>
+                    {line}
+                    <br />
+                  </span>
+                ))}
+                <span className={styles.sideTagRule} />
+              </span>
+              <div className={styles.navBtns}>
+                <button className={styles.navBtn} onClick={() => go(index - 1)} aria-label="Previous">
+                  <ArrowLeft />
+                </button>
+                <button className={`${styles.navBtn} ${styles.navBtnNext}`} onClick={() => go(index + 1)} aria-label="Next">
+                  <ArrowRight />
+                </button>
+              </div>
+            </div>
+            <div className={styles.prePrimaryRail}>
+            {g.additional.slice(0, 3).map((photo) => (
+              <div className={`${styles.tile} ${styles.tileAdditional} js-mosaic-tile`} style={tileStyle(photo.aspectRatio, true)} key={photo.image}>
+                <Image src={photo.image} alt={photo.alt} fill sizes="(max-width: 640px) 33vw, (max-width: 1150px) 25vw, 16vw" style={{ objectFit: "contain" }} />
+              </div>
+            ))}
+            </div>
+          </aside>
+        )}
+
+        {index !== 2 && (
+          <div className={`${styles.sidebar} js-mosaic-tile`}>
+            <span className={styles.sideTag}>
+              {content.sideTagLines.map((line, i) => (
+                <span key={i}>{line}<br /></span>
+              ))}
+              <span className={styles.sideTagRule} />
+            </span>
+            <div className={styles.navBtns}>
+              <button className={styles.navBtn} onClick={() => go(index - 1)} aria-label="Previous"><ArrowLeft /></button>
+              <button className={`${styles.navBtn} ${styles.navBtnNext}`} onClick={() => go(index + 1)} aria-label="Next"><ArrowRight /></button>
+            </div>
+          </div>
+        )}
+
       </div>
     </>
   );

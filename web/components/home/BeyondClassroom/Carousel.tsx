@@ -81,7 +81,13 @@ export default function Carousel({
               className={styles.cardClip}
               style={{ clipPath: `url(#beyond-card-clip-${slot})` }}
             >
-              <Image src={slide.image} alt={slide.alt} fill sizes="300px" />
+              <Image
+                src={slide.image}
+                alt={slide.alt}
+                fill
+                sizes="(max-width: 700px) 56vw, (max-width: 1200px) 32vw, 22vw"
+                quality={100}
+              />
             </div>
             <span className={styles.badge}>
               <span className={styles.badgeIcon}>{slideIcons[slide.icon]}</span>

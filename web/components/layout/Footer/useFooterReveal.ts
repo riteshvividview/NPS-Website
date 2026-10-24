@@ -26,7 +26,19 @@ export function useFooterReveal() {
     if (!footer) return;
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduceMotion) return;
+    if (reduceMotion) {
+      // .opacityReveal/.js-wave-quote start at opacity:0 and only the
+      // tweens below ever bring them to 1 — skipping setup entirely (as
+      // this used to) left the whole footer permanently invisible for
+      // reduced-motion users instead of just unanimated.
+      gsap.set(footer.querySelectorAll<HTMLElement>(".js-footer-reveal"), {
+        opacity: 1,
+        y: 0,
+      });
+      const waveQuote = footer.querySelector<HTMLElement>(".js-wave-quote");
+      if (waveQuote) gsap.set(waveQuote, { opacity: 1, y: 0 });
+      return;
+    }
 
     let cancelled = false;
     const triggers: ScrollTrigger[] = [];

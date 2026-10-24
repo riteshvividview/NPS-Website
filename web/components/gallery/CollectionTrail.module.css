@@ -1,0 +1,147 @@
+.trail {
+  background: #294a36;
+  color: #f5efdf;
+  padding: 80px 0 50px;
+  overflow: clip;
+}
+.heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 25px;
+  padding: 0 7vw;
+}
+.heading small {
+  font: 10px monospace;
+  letter-spacing: 0.16em;
+  color: #d8c58a;
+}
+.heading h2 {
+  font: 400 clamp(35px, 4.6vw, 68px) / 1.08 var(--font-fraunces);
+  letter-spacing: -0.04em;
+  margin: 18px 0;
+}
+.heading p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #d2dccb;
+}
+.arrows {
+  display: flex;
+  gap: 10px;
+}
+.arrows button {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  color: #f3e9c7;
+  border: 1px solid #b7c6a466;
+  border-radius: 50%;
+  font-size: 22px;
+  cursor: pointer;
+}
+.rail {
+  display: flex;
+  overflow-x: auto;
+  gap: 35px;
+  padding: 60px 7vw 50px;
+  scroll-snap-type: x proximity;
+  scrollbar-color: #8b9e79 #294a36;
+}
+.card {
+  flex: 0 0 310px;
+  background: #f6efdd;
+  border: 0;
+  padding: 13px 13px 22px;
+  text-align: left;
+  color: #284530;
+  cursor: pointer;
+  scroll-snap-align: center;
+  box-shadow: 10px 15px 0 #142c2060;
+  position: relative;
+}
+.frame {
+  display: block;
+  position: relative;
+  aspect-ratio: 1.05;
+  overflow: hidden;
+  background: #d0d7c2;
+}
+.frame img {
+  object-fit: cover;
+  transition: transform 0.6s;
+}
+.card:hover img {
+  transform: scale(1.05);
+}
+.frame i {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #f6efdd;
+  padding: 8px;
+  font: 10px monospace;
+  font-style: normal;
+}
+.card strong {
+  font: 24px/1.15 var(--font-fraunces);
+  font-weight: 400;
+  display: block;
+  margin: 22px 8px 12px;
+  min-height: 55px;
+}
+.card > span:last-child {
+  font: 9px monospace;
+  letter-spacing: 0.08em;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 8px;
+}
+.card b {
+  font: 20px sans-serif;
+}
+.trail button:focus-visible {
+  outline: 3px solid #dec46a;
+  outline-offset: 6px;
+}
+@media (max-width: 600px) {
+  .trail {
+    padding: 55px 0 35px;
+  }
+  .heading {
+    padding: 0 24px;
+    align-items: start;
+    flex-direction: column;
+  }
+  .heading h2 {
+    font-size: 39px;
+  }
+  .rail {
+    gap: 24px;
+    padding: 35px 24px;
+  }
+  .card {
+    flex-basis: 255px;
+    transform: none !important;
+  }
+  .card strong {
+    font-size: 22px;
+  }
+  .arrows button {
+    width: 40px;
+    height: 40px;
+  }
+  .heading p {
+    font-size: 14px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .frame img {
+    transition: none;
+  }
+  .card {
+    transform: none !important;
+  }
+}

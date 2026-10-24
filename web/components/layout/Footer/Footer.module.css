@@ -280,6 +280,19 @@
   color: rgba(255, 255, 255, 0.55);
 }
 
+.legalLinks {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.legalLinks a {
+  color: rgba(255, 255, 255, 0.68);
+  text-decoration: none;
+  font-size: 12px;
+  transition: color 0.2s ease;
+}
+.legalLinks a:hover { color: #fff; }
+
 .bottomRight {
   display: flex;
   align-items: center;
@@ -305,10 +318,19 @@
     flex-direction: column;
     text-align: center;
   }
+  /* 1600:420 (~3.8:1) makes for a strip barely 90-100px tall at phone
+     widths — not enough room for the two-line italic quote, which ended
+     up overlapping the wave's peak instead of sitting inside it. */
+  .photoBand {
+    aspect-ratio: auto;
+    min-height: 280px;
+  }
   .waveQuote {
-    max-width: 60%;
+    max-width: 62%;
+    left: 7%;
+    bottom: 18%;
   }
   .waveQuoteLine {
-    font-size: 22px;
+    font-size: 21px;
   }
 }

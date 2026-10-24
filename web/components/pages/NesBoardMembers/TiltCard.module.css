@@ -1,0 +1,21 @@
+.tilt {
+  --rx: 0deg;
+  --ry: 0deg;
+  perspective: 800px;
+}
+
+.tilt > * {
+  transform: rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform 0.4s ease;
+  transform-style: preserve-3d;
+}
+
+.tilt:hover > * {
+  transition: transform 0.08s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tilt > * {
+    transform: none !important;
+  }
+}

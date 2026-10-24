@@ -1,0 +1,11 @@
+/* ---------- "Students at NPS" accent ----------
+   A deep archival maroon/brass pairing — distinct from "The Place"
+   (green/gold) and the "School Leadership" blue — fitting for a page
+   that reads like a ledger of press releases and certificates.
+   Scoped to this page's <main> only, never touching global :root. */
+.page {
+  --accent: #8a2a2a;
+  --accent-deep: #5e1b1b;
+  --accent-soft: rgba(138, 42, 42, 0.1);
+  --accent-gold: #c9a227;
+}

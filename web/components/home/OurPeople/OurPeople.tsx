@@ -33,7 +33,7 @@ export default function OurPeople({ content }: { content: OurPeopleContent }) {
 
       <div className={styles.bgPhoto}>
         <Image
-          src="/section5/section5-bgimage.png"
+          src="/Home Page/06-our-people/section5-bgimage.png"
           alt=""
           fill
           style={{ objectFit: "cover", objectPosition: "center bottom" }}
@@ -42,13 +42,13 @@ export default function OurPeople({ content }: { content: OurPeopleContent }) {
       </div>
 
       <div className={`${styles.deco} ${styles.decoPenbox}`} id="people-penbox" aria-hidden="true">
-        <Image src="/section5/s5-penbox.webp" alt="" width={80} height={117} />
+        <Image src="/Home Page/06-our-people/s5-penbox.webp" alt="" width={80} height={117} />
       </div>
       <div className={`${styles.deco} ${styles.decoBooks}`} id="people-books" aria-hidden="true">
-        <Image src="/section5/s5-books.webp" alt="" width={300} height={162} />
+        <Image src="/Home Page/06-our-people/s5-books.webp" alt="" width={300} height={162} />
       </div>
       <div className={`${styles.deco} ${styles.decoGlobe}`} id="people-globe" aria-hidden="true">
-        <Image src="/section5/s5-globe.webp" alt="" width={120} height={348} />
+        <Image src="/Home Page/06-our-people/s5-globe.webp" alt="" width={120} height={348} />
       </div>
 
       <div className={styles.navRow} data-fx="blur">{content.navRight}</div>

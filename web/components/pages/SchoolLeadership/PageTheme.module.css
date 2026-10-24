@@ -1,0 +1,8 @@
+/* Forest, sage and warm paper keep leadership within the Niraj palette. */
+.page {
+  --accent: #456a40;
+  --accent-deep: #264831;
+  --accent-soft: rgba(69, 106, 64, 0.12);
+}
+
+:global(body):has(.page){overflow-x:clip}

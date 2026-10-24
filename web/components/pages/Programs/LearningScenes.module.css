@@ -1,0 +1,975 @@
+.scene {
+  position: relative;
+  padding: 90px max(6vw, 24px);
+  color: #243e30;
+  isolation: isolate;
+}
+.scene * {
+  box-sizing: border-box;
+}
+.scene h2 {
+  font-family: var(--font-fraunces), sans-serif;
+  font-weight: 400;
+  font-size: clamp(38px, 4.6vw, 70px);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  margin: 16px 0 28px;
+}
+.scene h3 {
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 20px 0;
+}
+.scene p {
+  font-size: 16px;
+  line-height: 1.8;
+  margin: 0;
+}
+.scene small {
+  display: block;
+  font: 11px/1.7 monospace;
+  letter-spacing: 0.15em;
+}
+.scene button {
+  font: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.scene button:focus-visible,
+.scene input:focus-visible {
+  outline: 3px solid #a77c26;
+  outline-offset: 5px;
+}
+.scene svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.heading {
+  position: relative;
+  z-index: 2;
+}
+.handwritten {
+  font-family: var(--font-fraunces), sans-serif;
+  font-style: italic;
+  font-size: 26px;
+  display: block;
+  transform: rotate(-4deg);
+}
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin: 25px 0;
+}
+.tabs button {
+  padding: 10px 15px;
+  border: 1px solid #264a3030;
+  background: transparent;
+  border-radius: 30px;
+  color: inherit;
+  text-transform: capitalize;
+}
+.tabs button[aria-pressed="true"] {
+  background: #294f37;
+  color: #fff;
+}
+.garden {
+  background: #e5e8d7;
+  padding-bottom: 50px;
+}
+.garden .heading {
+  max-width: 750px;
+}
+.gardenSpread {
+  display: grid;
+  grid-template-columns: 1.5fr 0.7fr;
+  align-items: end;
+  gap: 45px;
+}
+.gardenSpread svg {
+  margin-top: -35px;
+}
+.note {
+  padding: 30px;
+  background: #faf4df;
+  box-shadow: 12px 16px 0 #c2c8aa60;
+  transform: rotate(3deg);
+  margin-bottom: 45px;
+  position: relative;
+}
+.note::before {
+  content: "";
+  position: absolute;
+  width: 75px;
+  height: 25px;
+  background: #b6bb9d77;
+  left: 40%;
+  top: -12px;
+  transform: rotate(-8deg);
+}
+.note .handwritten {
+  font-size: 21px;
+  margin-top: 32px;
+}
+.note p {
+  min-height: 100px;
+}
+.story {
+  background: #e8ddc7;
+}
+.story .heading {
+  text-align: center;
+}
+.openBook {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-width: 1080px;
+  margin: 55px auto 0;
+  filter: drop-shadow(0 30px 25px #3b392519);
+  perspective: 1200px;
+}
+.bookIllustration {
+  background: linear-gradient(90deg, #fcf8ed 90%, #e0d8c3);
+  border-radius: 12px 0 0 12px;
+  padding: 35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-bottom: 8px solid #c6b794;
+}
+.bookIllustration span {
+  text-align: center;
+  font: 12px monospace;
+  letter-spacing: 0.04em;
+}
+.bookPage {
+  background: linear-gradient(90deg, #e3dccb, #fffaf0 8%);
+  padding: 50px;
+  border-bottom: 8px solid #c6b794;
+  border-radius: 0 12px 12px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  animation: pageTurn 0.65s ease both;
+  transform-origin: left center;
+  min-height: 450px;
+}
+.bookPage h3 {
+  font-size: 42px;
+  letter-spacing: -0.03em;
+}
+.pageWord {
+  font-size: clamp(35px, 5vw, 66px);
+  color: #ccd3bb;
+  letter-spacing: -0.05em;
+  margin-top: 40px;
+}
+.bookControls {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 35px;
+  align-items: center;
+}
+.bookControls > span {
+  font: 11px monospace;
+  margin-right: 15px;
+}
+.bookControls button {
+  width: 45px;
+  height: 45px;
+  border: 1px solid #24483040;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+}
+.bookControls button[aria-pressed="true"] {
+  background: #244830;
+  color: #fff;
+}
+.balance {
+  background-color: #e1e9e4;
+  background-image:
+    linear-gradient(#345c3f0b 1px, transparent 1px),
+    linear-gradient(90deg, #345c3f0b 1px, transparent 1px);
+  background-size: 25px 25px;
+}
+.labHeader {
+  display: grid;
+  grid-template-columns: 1fr 0.7fr;
+  gap: 70px;
+  align-items: center;
+}
+.labHeader > p {
+  max-width: 420px;
+}
+.experiment {
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr;
+  gap: 45px;
+  align-items: center;
+  margin-top: 45px;
+}
+.balanceArt {
+  border-bottom: 2px solid #b1bca5;
+}
+.beam {
+  transform-origin: 330px 150px;
+  transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+.labControls {
+  border-left: 1px solid #809988;
+  padding: 30px 0 30px 40px;
+}
+.labControls label {
+  font-size: 22px;
+  display: block;
+  margin: 25px 0;
+}
+.labControls input {
+  width: 100%;
+  accent-color: #38694e;
+  min-height: 44px;
+  cursor: pointer;
+}
+.labControls p {
+  min-height: 100px;
+  margin-top: 20px;
+}
+.labControls small:last-child {
+  font-size: 9px;
+  margin-top: 20px;
+}
+.projects {
+  background: #173d34;
+  color: #f3eddd;
+  overflow: hidden;
+  padding-bottom: 65px;
+}
+.projects .heading {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 15px;
+}
+.projects .heading > small {
+  flex-basis: 100%;
+  color: #e0c27b;
+}
+.projects h2 {
+  font-size: clamp(35px, 4vw, 60px);
+  margin-bottom: 15px;
+}
+.scrollHint {
+  font: 11px monospace !important;
+  margin-bottom: 20px !important;
+}
+.projectTrack {
+  display: flex;
+  gap: 28px;
+  width: max-content;
+  margin-top: 25px;
+}
+.projectCard {
+  width: min(46vw, 600px);
+  padding: 30px 40px;
+  border: 1px solid #b7cbb84d;
+  border-radius: 20px;
+  background: #244a40;
+  flex-shrink: 0;
+}
+.projectCard:nth-child(2) {
+  background: #e2d9bc;
+  color: #284635;
+}
+.projectCard:nth-child(3) {
+  background: #c0cbb4;
+  color: #284635;
+}
+.projectCard svg {
+  height: 190px;
+  margin-top: 15px;
+}
+.projectCard h3 {
+  font-size: 38px;
+  margin: 15px 0;
+}
+.projectCard strong {
+  font-size: 16px;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 10px;
+}
+.projectCard p {
+  font-size: 14px;
+}
+.belonging {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 6vw;
+  align-items: center;
+  background: #eee5d9;
+}
+.communityArt .handwritten {
+  text-align: center;
+  color: #956847;
+}
+.communityCopy p {
+  min-height: 110px;
+}
+.petals {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 30px 0;
+}
+.petals button {
+  background: #ded9c5;
+  border: 1px solid transparent;
+  border-radius: 40px 40px 40px 5px;
+  color: #294a38;
+  min-height: 85px;
+  padding: 18px 22px;
+  transition:
+    transform 0.3s,
+    background 0.3s;
+}
+.petals button span {
+  display: block;
+  font: 10px monospace;
+  margin-bottom: 8px;
+}
+.petals button[aria-pressed="true"] {
+  background: #375e46;
+  color: #fff;
+  transform: translateY(-6px);
+}
+.performance {
+  background: #243d33;
+  color: #f5ecd6;
+  padding-bottom: 65px;
+}
+.performance .heading {
+  text-align: center;
+}
+.performance .heading small {
+  color: #e7c47e;
+}
+.theatre {
+  position: relative;
+  overflow: hidden;
+  background: #172d25;
+  max-width: 1120px;
+  margin: 40px auto 0;
+  border-radius: 160px 160px 0 0;
+  border: 1px solid #d6b97850;
+  border-bottom: 15px solid #b18e58;
+  isolation: isolate;
+}
+.theatre svg {
+  position: relative;
+  z-index: 2;
+  max-height: 500px;
+}
+.spotlight {
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(
+    from 150deg at 50% 0%,
+    #e9ce8422 0deg 60deg,
+    transparent 60deg
+  );
+  transition: transform 0.8s;
+  transform-origin: top center;
+}
+.theatre[data-mode="1"] .spotlight {
+  transform: rotate(-20deg);
+}
+.theatre[data-mode="2"] .spotlight {
+  transform: rotate(20deg);
+}
+.curtain {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  z-index: 3;
+  background: repeating-linear-gradient(
+    90deg,
+    #81603c 0,
+    #b18d56 18px,
+    #82603b 38px
+  );
+  border-bottom: 8px solid #d1b273;
+  pointer-events: none;
+}
+.curtainLeft {
+  left: 0;
+  border-radius: 0 0 80px 0;
+}
+.curtainRight {
+  right: 0;
+  border-radius: 0 0 0 80px;
+}
+.stageControls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin-top: 30px;
+}
+.stageControls > span {
+  font: 11px monospace;
+  margin-right: 20px;
+}
+.stageControls button {
+  background: transparent;
+  border: 1px solid #e8ce8750;
+  border-radius: 30px;
+  color: #f5ecd6;
+  padding: 12px 22px;
+}
+.stageControls button[aria-pressed="true"] {
+  background: #e8ce87;
+  color: #243d33;
+}
+.stageCaption {
+  text-align: center;
+  margin-top: 24px !important;
+  min-height: 30px;
+}
+.flight {
+  background: #183a32;
+  color: #f5ecd6;
+  overflow: hidden;
+}
+.flight .heading {
+  max-width: 750px;
+}
+.flightMap > svg {
+  max-height: 330px;
+  margin-top: -50px;
+}
+.flightNotes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 30px;
+}
+.flightNotes article {
+  padding: 30px;
+  border-top: 1px solid #c8b270;
+  background: #25483e;
+}
+.flightNotes article:nth-child(2) {
+  background: #e7ddc1;
+  color: #244636;
+}
+.flightNotes h3 {
+  font-size: 29px;
+}
+.flightNotes p {
+  font-size: 15px;
+}
+.educator {
+  background: #e7decb;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+.chalkboard {
+  background: #2e5040;
+  color: #f4efd8;
+  border: 12px solid #a78a62;
+  box-shadow: 8px 12px 0 #34453012;
+  position: relative;
+  padding: 40px;
+  transform: rotate(-2deg);
+}
+.chalkboard h2 {
+  font-size: clamp(35px, 4vw, 60px);
+  line-height: 1.2;
+}
+.chalkboard em {
+  color: #e5c67b;
+  font-weight: 400;
+  animation: chalk 0.6s both;
+  display: inline-block;
+}
+.chalkboard small {
+  color: #e8dfc6;
+  font-size: 9px;
+}
+.chalkboard svg {
+  max-height: 100px;
+}
+.chalkTray {
+  position: absolute;
+  bottom: -22px;
+  left: -25px;
+  right: -25px;
+  height: 17px;
+  background: #95764e;
+  border-bottom: 6px solid #705c40;
+}
+.chalkTray i {
+  position: absolute;
+  width: 45px;
+  height: 8px;
+  border-radius: 3px;
+  background: #f1e7ca;
+  bottom: 11px;
+  right: 30px;
+}
+.chalkTray i:nth-child(2) {
+  right: 95px;
+  width: 30px;
+  background: #e9bc74;
+  transform: rotate(-7deg);
+}
+.chalkTray i:nth-child(3) {
+  right: 150px;
+  background: #a9c2ad;
+  transform: rotate(9deg);
+}
+.educatorDesk > svg {
+  max-height: 330px;
+}
+.educatorDesk > div {
+  padding: 25px 0;
+}
+.educatorDesk p {
+  font-size: 15px;
+}
+.journey {
+  position: sticky;
+  top: 100px;
+  z-index: 4;
+  background: #e8eddf;
+  border: 1px solid #b8c5b0;
+  border-radius: 20px;
+  margin: 28px 0 20px;
+  padding: 20px;
+  box-shadow: 0 12px 30px #25382015;
+}
+.journey svg {
+  width: 100%;
+  height: 160px;
+  display: block;
+}
+.journeyHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: center;
+}
+.journeyHeader small {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: #61785b;
+}
+.journeyHeader strong {
+  font-size: 18px;
+  font-weight: 400;
+  display: block;
+  margin-top: 5px;
+}
+.journeyControls {
+  display: flex;
+  gap: 8px;
+}
+.journeyControls button {
+  width: 38px;
+  height: 38px;
+  border: 1px solid #32593740;
+  background: #f7f3ea;
+  border-radius: 50%;
+  color: #254530;
+  cursor: pointer;
+}
+.journeyControls button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.journeyControls button:focus-visible {
+  outline: 3px solid #99752d;
+  outline-offset: 3px;
+}
+.journeyNote {
+  font: 10px/1.5 monospace !important;
+  color: #5c7058;
+  margin: 0 !important;
+}
+.bus {
+  transition: transform 0.6s cubic-bezier(0.2, 0.75, 0.3, 1);
+}
+@keyframes pageTurn {
+  from {
+    transform: rotateY(-18deg);
+    opacity: 0.5;
+  }
+  to {
+    transform: rotateY(0);
+    opacity: 1;
+  }
+}
+@keyframes chalk {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+@media (min-width: 1600px) {
+  .scene {
+    padding-left: max(6vw, calc((100vw - 1450px) / 2));
+    padding-right: max(6vw, calc((100vw - 1450px) / 2));
+  }
+}
+@media (max-width: 999px) {
+  .scene {
+    padding: 65px 6vw;
+  }
+  .gardenSpread {
+    grid-template-columns: 1fr;
+  }
+  .gardenSpread svg {
+    margin-top: 0;
+  }
+  .note {
+    max-width: 600px;
+    margin: 0 auto;
+    transform: rotate(1deg);
+  }
+  .note p {
+    min-height: 0;
+  }
+  .labHeader {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .labHeader > p {
+    max-width: 650px;
+  }
+  .experiment {
+    gap: 25px;
+    grid-template-columns: 1fr;
+  }
+  .labControls {
+    border-left: 0;
+    border-top: 1px solid #809988;
+    padding: 30px 0 0;
+  }
+  .labControls p {
+    min-height: 60px;
+  }
+  .projectTrack {
+    width: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    transform: none !important;
+  }
+  .projectCard {
+    width: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 30px;
+  }
+  .projectCard svg {
+    grid-column: 2;
+    grid-row: 1/5;
+    height: 220px;
+    align-self: center;
+  }
+  .projectCard h3 {
+    margin: 0;
+  }
+  .scrollHint {
+    display: none;
+  }
+  .belonging {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+  .communityArt {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .communityCopy p {
+    min-height: 70px;
+  }
+  .flightNotes {
+    gap: 20px;
+  }
+  .flightNotes article {
+    padding: 22px;
+  }
+  .flightNotes h3 {
+    font-size: 24px;
+  }
+  .educator {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .chalkboard {
+    max-width: 700px;
+    width: 100%;
+    margin: auto;
+  }
+  .educatorDesk {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    align-items: center;
+  }
+  .bookPage {
+    padding: 30px;
+    min-height: 380px;
+  }
+  .bookPage h3 {
+    font-size: 32px;
+  }
+  .openBook {
+    margin-top: 35px;
+  }
+  .journey {
+    top: 90px;
+  }
+}
+@media (max-width: 600px) {
+  .scene {
+    padding: 55px 22px;
+  }
+  .scene h2 {
+    font-size: 38px;
+  }
+  .scene p {
+    font-size: 15px;
+  }
+  .scene small {
+    font-size: 9px;
+  }
+  .gardenSpread {
+    gap: 20px;
+  }
+  .note {
+    padding: 25px 20px;
+    margin: 0 5px;
+  }
+  .garden .heading h2 {
+    font-size: 35px;
+  }
+  .handwritten {
+    font-size: 23px;
+  }
+  .openBook {
+    grid-template-columns: 1fr;
+    filter: drop-shadow(0 15px 12px #3b392515);
+  }
+  .bookIllustration {
+    padding: 15px 25px;
+    border-radius: 12px 12px 0 0;
+    border-bottom: 1px solid #dfd5bc;
+    background: #f8f3e7;
+  }
+  .bookIllustration svg {
+    max-height: 230px;
+  }
+  .bookIllustration span {
+    font-size: 10px;
+  }
+  .bookPage {
+    min-height: 320px;
+    border-radius: 0 0 12px 12px;
+    padding: 30px;
+    background: #fffaf0;
+    transform-origin: top center;
+  }
+  .bookPage h3 {
+    font-size: 29px;
+    margin: 12px 0 18px;
+  }
+  .pageWord {
+    margin-top: 20px;
+    font-size: 38px;
+  }
+  .bookControls {
+    gap: 9px;
+  }
+  .bookControls > span {
+    margin-right: 3px;
+  }
+  .bookControls button {
+    width: 40px;
+    height: 40px;
+  }
+  .labControls label {
+    font-size: 20px;
+  }
+  .balanceArt svg {
+    min-height: 180px;
+  }
+  .projectCard {
+    display: block;
+    padding: 25px;
+  }
+  .projectCard svg {
+    height: 170px;
+    margin: 20px 0;
+  }
+  .projectCard h3 {
+    font-size: 32px;
+    margin-bottom: 15px;
+  }
+  .projectCard strong {
+    font-size: 15px;
+  }
+  .projectCard p {
+    font-size: 14px;
+  }
+  .petals {
+    gap: 7px;
+  }
+  .petals button {
+    padding: 15px 12px;
+    font-size: 13px;
+    min-height: 75px;
+  }
+  .communityArt .handwritten {
+    font-size: 21px;
+  }
+  .communityCopy p {
+    min-height: 110px;
+  }
+  .theatre {
+    border-radius: 70px 70px 0 0;
+    margin-top: 25px;
+  }
+  .theatre svg {
+    min-height: 240px;
+    width: 140%;
+    max-width: none;
+    margin-left: -20%;
+  }
+  .stageControls {
+    gap: 8px;
+  }
+  .stageControls > span {
+    flex-basis: 100%;
+    margin: 0 0 10px;
+    text-align: center;
+  }
+  .stageControls button {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+  .stageCaption {
+    min-height: 55px;
+  }
+  .flightMap > svg {
+    margin-top: 0;
+    min-height: 160px;
+  }
+  .flightNotes {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+  .flightNotes article {
+    transform: none !important;
+  }
+  .chalkboard {
+    padding: 25px 20px;
+    border-width: 8px;
+    transform: rotate(-1deg);
+    margin: 10px 0;
+  }
+  .chalkboard h2 {
+    font-size: 33px;
+    overflow-wrap: break-word;
+  }
+  .chalkboard small {
+    font-size: 8px;
+  }
+  .chalkTray {
+    left: -12px;
+    right: -12px;
+  }
+  .educatorDesk {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .educatorDesk > svg {
+    max-height: 260px;
+  }
+  .journey {
+    top: 88px;
+    padding: 14px 10px;
+    border-radius: 12px;
+    margin-left: -8px;
+    margin-right: -8px;
+  }
+  .journey svg {
+    height: 105px;
+  }
+  .journeyHeader strong {
+    font-size: 14px;
+    max-width: 180px;
+  }
+  .journeyHeader {
+    gap: 8px;
+  }
+  .journeyControls {
+    gap: 5px;
+  }
+  .journeyControls button {
+    width: 32px;
+    height: 32px;
+  }
+  .journeyNote {
+    font-size: 8px !important;
+  }
+  .journeyHeader small {
+    font-size: 8px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scene *,
+  .bus {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  .curtain {
+    display: none;
+  }
+  .projectTrack {
+    transform: none !important;
+  }
+  .projects {
+    overflow: visible;
+  }
+  .projectTrack {
+    width: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .projectCard {
+    width: auto;
+  }
+  .scrollHint {
+    display: none;
+  }
+}
+
+.storyArtwork{width:100%;transform-origin:50% 60%}.storyArtwork svg{display:block;width:100%}
+
+.storyArtwork{width:100%;transform-origin:50% 60%}.storyArtwork svg{display:block;width:100%}
+
+.story{padding-top:38px}.story .heading{margin-bottom:20px}.story .openBook{margin-top:22px}
+@media(max-width:999px){.story{padding-top:32px}}

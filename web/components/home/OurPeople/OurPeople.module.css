@@ -355,4 +355,24 @@
   .portrait:nth-child(4) {
     height: 280px;
   }
+
+  /* Desktop-sized decorative layers (especially the globe, deliberately
+     above everything so it can fly off-screen on scroll) are big enough
+     at this width to sit on top of — and hide — the last portrait's
+     caption. Shrink and tuck them into the corners instead. */
+  .decoPenbox {
+    width: 50px;
+    height: 73px;
+  }
+  .decoBooks {
+    left: 56px;
+    width: 160px;
+    height: 86px;
+  }
+  .decoGlobe {
+    right: -26px;
+    bottom: 18px;
+    width: 70px;
+    height: 203px;
+  }
 }

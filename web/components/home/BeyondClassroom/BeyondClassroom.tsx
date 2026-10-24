@@ -10,7 +10,7 @@ export default function BeyondClassroom({ content }: { content: BeyondClassroomC
     <section className={styles.section} id="beyond-classroom">
       <div className={styles.bgPhoto}>
         <Image
-          src="/co-curricular-section/backgroundimg.png"
+          src="/Home Page/05-beyond-the-classroom/backgroundimg.png"
           alt=""
           fill
           style={{ objectFit: "cover", objectPosition: "center bottom" }}
@@ -20,13 +20,13 @@ export default function BeyondClassroom({ content }: { content: BeyondClassroomC
       </div>
 
       <div className={`${styles.deco} ${styles.decoDesk}`} id="beyond-desk" aria-hidden="true">
-        <Image src="/co-curricular-section/cc-node.webp" alt="" width={640} height={93} />
+        <Image src="/Home Page/05-beyond-the-classroom/cc-node.webp" alt="" width={640} height={93} />
       </div>
       <div className={`${styles.deco} ${styles.decoRocket}`} data-depth="0.6" aria-hidden="true">
-        <Image src="/co-curricular-section/cc-rocket.webp" alt="" width={180} height={114} />
+        <Image src="/Home Page/05-beyond-the-classroom/cc-rocket.webp" alt="" width={180} height={114} />
       </div>
       <div className={`${styles.deco} ${styles.decoBooks}`} id="beyond-books" aria-hidden="true">
-        <Image src="/co-curricular-section/cc-books.webp" alt="" width={480} height={253} />
+        <Image src="/Home Page/05-beyond-the-classroom/cc-books.webp" alt="" width={480} height={253} />
       </div>
 
       <div className={styles.navRow} data-fx="blur">{content.navRight}</div>

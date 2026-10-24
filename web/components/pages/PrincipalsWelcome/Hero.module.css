@@ -1,0 +1,197 @@
+.stage {
+  position: relative;
+  min-height: 100svh;
+  background: var(--paper);
+  z-index: 0;
+}
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  overflow: hidden;
+  background: var(--paper);
+  padding: 82px 6vw 0;
+  text-align: center;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+}
+
+.campusArt {
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  aspect-ratio: 2216 / 709;
+  flex: 0 0 auto;
+  margin-top: clamp(22px, 4vh, 48px);
+  filter: grayscale(0%);
+  background: url("/Principals-welcome/main-section-bg.png") center / 100% 100% no-repeat;
+  pointer-events: none;
+}
+
+.glow {
+  position: absolute;
+  top: -220px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 720px;
+  height: 720px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201, 162, 39, 0.14) 0%, rgba(201, 162, 39, 0) 70%);
+  pointer-events: none;
+}
+
+.breadcrumb {
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.copyGroup {
+  position: relative;
+  z-index: 1;
+}
+
+.layout {
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.quoteMark {
+  position: absolute;
+  top: -58px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 0;
+  font-family: var(--font-fraunces), serif;
+  font-size: clamp(140px, 22vw, 240px);
+  line-height: 1;
+  color: var(--green-mid);
+  opacity: 0.12;
+  pointer-events: none;
+  user-select: none;
+}
+
+.eyebrow {
+  position: relative;
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--green-mid);
+  margin-bottom: 8px;
+}
+
+.headline {
+  position: relative;
+  font-family: var(--font-fraunces), serif;
+  font-weight: 500;
+  font-size: clamp(34px, 6vw, 60px);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.tagline {
+  position: relative;
+  margin: 10px auto 0;
+  font-family: var(--font-fraunces), serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(15px, 1.8vw, 18px);
+  line-height: 1.4;
+  color: var(--green-mid);
+  max-width: 44ch;
+}
+
+@media (min-width: 900px) {
+  .hero {
+    padding: 82px 6vw 90px;
+  }
+}
+
+@media (min-width: 901px) {
+  .stage {
+    height: 140svh;
+    min-height: 680px;
+  }
+
+  .hero {
+    height: 100svh;
+    min-height: 680px;
+  }
+
+  .campusArt {
+    position: absolute;
+    z-index: -1;
+    left: 50%;
+    bottom: 0;
+    width: 100%;
+    height: min(64svh, 32vw, 680px);
+    aspect-ratio: auto;
+    transform: translateX(-50%);
+    margin-top: 0;
+    background: url("/Principals-welcome/main-section-bg.png") center bottom / auto 100% no-repeat;
+  }
+}
+
+@media (max-width: 900px) {
+  .stage {
+    height: auto;
+    min-height: 0;
+  }
+
+  .hero {
+    height: auto;
+    min-height: 0;
+    padding: 100px 5vw 56px;
+  }
+
+  .campusArt {
+    order: -1;
+    margin-top: 0;
+    margin-bottom: clamp(24px, 5vw, 44px);
+  }
+
+  .copyGroup {
+    order: 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero {
+    padding: 100px 5vw 48px;
+  }
+  .quoteMark {
+    top: -34px;
+    font-size: clamp(100px, 32vw, 160px);
+  }
+  .glow {
+    width: 420px;
+    height: 420px;
+    top: -160px;
+  }
+  .breadcrumb {
+    margin-bottom: 16px;
+  }
+  .tagline {
+    margin-top: 12px;
+  }
+  .campusArt {
+    aspect-ratio: 1.65 / 1;
+    background-size: cover;
+    background-position: center 58%;
+  }
+}
+
+.hero{padding-top:130px}.headline{font-size:clamp(46px,7.3vw,104px);letter-spacing:-.05em;max-width:1000px;margin-inline:auto}.layout{max-width:1000px}.eyebrow{font-size:10px;margin-bottom:25px}.tagline{margin-top:25px;font-size:clamp(17px,2vw,24px);max-width:39ch}.breadcrumb{margin-bottom:45px}.quoteMark{font-size:240px;top:-50px;left:5%;opacity:.07}.campusArt{filter:none}@media(min-width:901px){.stage{height:115svh}.campusArt{height:min(43svh,26vw,480px)}.hero{min-height:820px}}@media(max-width:900px){.campusArt{order:2;margin-top:40px;margin-bottom:0;background-size:contain;aspect-ratio:2.5}.copyGroup{order:1}.hero{padding:115px 24px 35px}.headline{font-size:clamp(43px,8vw,72px)}.breadcrumb{margin-bottom:35px}}
+
+@media(max-width:900px){.campusArt{transform:none!important;left:auto!important;width:100%;background-position:center;position:relative}.quoteMark{opacity:.07!important;left:15%;top:-45px}}
+
+/* Lift the campus image within the opening so the complete photo clears the fold. */
+@media(min-width:901px){.campusArt{margin-top:clamp(8px,1.2vh,16px);height:min(39svh,23vw,420px)}}
+
+@media(min-width:901px){.campusArt{margin-top:-42px;height:min(29svh,18vw,300px);background-size:contain;background-position:center top}}
+
+/* Place the complete campus artwork above the welcome copy on desktop. */
+@media(min-width:901px){.campusArt{position:relative;left:auto;top:auto;bottom:auto;transform:none;width:100%;height:min(34svh,22vw,340px);margin:0 auto 18px;order:-1;background-size:contain;background-position:center;z-index:0}.hero{padding-top:90px}}

@@ -145,24 +145,6 @@ export default function Section2({ content }: { content: HomeContent["section2"]
               ))}
             </ul>
 
-            <div className={styles.s2ScrollCue}>
-              <span>
-                <svg width="16" height="24" viewBox="0 0 16 24" fill="none">
-                  <rect
-                    x="1"
-                    y="1"
-                    width="14"
-                    height="22"
-                    rx="7"
-                    stroke="currentColor"
-                    strokeWidth="1.2"
-                  />
-                  <circle cx="8" cy="7" r="2" fill="currentColor" />
-                </svg>
-              </span>
-              {content.scrollCueLabel}
-            </div>
-
             <div className={styles.s2TagCorner} data-fx="fade-up" data-fx-delay="0.4">
               {content.tagCornerLine1}
               <br />

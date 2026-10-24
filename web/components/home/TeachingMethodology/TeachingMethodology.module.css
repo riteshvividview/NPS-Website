@@ -12,6 +12,26 @@
   margin: 0 auto;
 }
 
+.bookDrawing {
+  position: absolute;
+  bottom: 12px;
+  left: 8vw;
+  width: 260px;
+  height: 110px;
+  pointer-events: none;
+}
+
+.readingBoy {
+  position: absolute;
+  right: -20px;
+  bottom: 0;
+  height: 225px;
+  width: auto;
+  transform: translateY(calc(35% + 3px));
+  z-index: 5;
+  pointer-events: none;
+}
+
 .intro {
   flex: 0 0 320px;
   position: sticky;
@@ -93,21 +113,29 @@
   aspect-ratio: 4 / 5;
   border-radius: 18px;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  isolation: isolate;
+  background: #d9e2d5;
 }
 
-.art {
-  width: 46%;
-  height: 46%;
-  opacity: 0.85;
+.cardImage {
+  object-fit: cover;
+  transition: transform 700ms cubic-bezier(0.2, 0.65, 0.3, 1);
 }
 
-.toneIndependence { background: linear-gradient(155deg, #eef1e4, #cfe0cf); color: var(--green-deep); }
-.toneCuriosity     { background: linear-gradient(155deg, #f5edd2, #e7cf9c); color: #8a6a1a; }
-.toneCriticalThinking { background: linear-gradient(155deg, #dceaf5, #bcd7ea); color: #2f6fa3; }
-.toneCollaboration { background: linear-gradient(155deg, #fbe6d8, #f0c9a8); color: #c9772f; }
+.artWrap:hover .cardImage {
+  transform: scale(1.045);
+}
+
+.colorOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  transition: opacity 300ms ease;
+}
+
+.artWrap:hover .colorOverlay { opacity: 0.78; }
+.colorOverlay { background: transparent; }
 
 .badge {
   position: absolute;
@@ -125,6 +153,7 @@
   font-size: 12px;
   font-weight: 500;
   box-shadow: 0 6px 18px rgba(20, 40, 30, 0.18);
+  z-index: 2;
 }
 
 .cardTitle {
@@ -159,6 +188,16 @@
 }
 
 @media (max-width: 560px) {
+  .bookDrawing {
+    left: 6vw;
+    bottom: 0;
+    width: 170px;
+    height: 90px;
+  }
+  .readingBoy {
+    right: -12px;
+    height: 122px;
+  }
   .section {
     padding: 90px 6vw 100px;
   }

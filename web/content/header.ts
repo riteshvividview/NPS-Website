@@ -1,18 +1,33 @@
-export interface HeaderMegaItem {
-  icon: "book" | "layers" | "lightbulb" | "calendar" | "child" | "grad" | "cap" | "shield" | "people" | "award" | "display" | "heart";
-  tone: "peach" | "blue" | "gold" | "green";
-  title: string;
-  subtitle: string;
+export interface HeaderSubLink {
+  label: string;
   href: string;
+  /** Key into `megaIcons` (components/layout/Header/icons.tsx). */
+  icon: string;
+  /** Shown, full-bleed (cover-fit), in the panel's feature visual while
+   *  this link is hovered. Always a real framed photo — never one of the
+   *  site's isolated parallax-layer cutouts (mostly transparent canvas,
+   *  subject off-center), which crop badly into a fixed box. */
+  image: string;
+}
+
+export interface HeaderFeature {
+  title: string;
+  description: string;
+  ctaLabel: string;
+  ctaHref: string;
+}
+
+export interface HeaderNavLink {
+  label: string;
+  href: string;
+  children?: HeaderSubLink[];
+  feature?: HeaderFeature;
 }
 
 export interface HeaderContent {
   brandName: string;
   brandTagline: string;
-  navLinks: { label: string; href: string }[];
-  academicsLabel: string;
-  megaColumns: { label: string; items: HeaderMegaItem[] }[];
-  megaPromo: { image: string; captionLines: string[]; href: string };
+  navLinks: HeaderNavLink[];
   parentLoginLabel: string;
   parentLoginHref: string;
 }
@@ -20,48 +35,157 @@ export interface HeaderContent {
 export const headerContent: HeaderContent = {
   brandName: "Niraj Public School",
   brandTagline: "LEARN  ·  GROW  ·  BELONG",
+  // Placeholder hrefs until each page is built — see project notes.
   navLinks: [
-    { label: "About", href: "#" },
-    { label: "Student Life", href: "#" },
-    { label: "Admissions", href: "#" },
-    { label: "Beyond Classroom", href: "#" },
-    { label: "Contact", href: "#" },
+    {
+      label: "The Place",
+      href: "#",
+      feature: {
+        title: "A Campus Built to Inspire",
+        description:
+          "Step inside the classrooms, labs and grounds where every NPS day happens.",
+        ctaLabel: "Take the tour",
+        ctaHref: "/the-place/introduction-of-nps",
+      },
+      children: [
+        {
+          label: "Introduction of NPS",
+          href: "/the-place/introduction-of-nps",
+          icon: "layers",
+          image: "/header-images/the-place-introduction.jpg",
+        },
+        {
+          label: "Principal's Welcome",
+          href: "/the-place/principals-welcome",
+          icon: "heart",
+          image: "/header-images/classroom.jpg",
+        },
+        {
+          label: "NPS Vision",
+          href: "/the-place/nps-vision",
+          icon: "lightbulb",
+          image: "/header-images/the-place-vision.jpg",
+        },
+        {
+          label: "NPS Campus Facilities",
+          href: "/the-place/nps-campus-facilities",
+          icon: "building",
+          image: "/header-images/the-place-campus.jpg",
+        },
+        {
+          label: "NPS Achievements",
+          href: "/the-place/nps-achievements",
+          icon: "award",
+          image: "/header-images/the-place-achievements.jpg",
+        },
+        {
+          label: "Young Achievers",
+          href: "/the-place/young-achievers",
+          icon: "shield",
+          image: "/header-images/the-place-young-achievers.jpg",
+        },
+        {
+          label: "Young Authors",
+          href: "/the-place/young-authors",
+          icon: "book",
+          image: "/header-images/the-place-young-authors.jpg",
+        },
+      ],
+    },
+    {
+      label: "The People",
+      href: "#",
+      feature: {
+        title: "The People Behind Niraj",
+        description:
+          "Meet the leadership, the students, and everyone who has walked through our gates.",
+        ctaLabel: "Meet them",
+        ctaHref: "/the-people/school-leadership",
+      },
+      children: [
+        {
+          label: "School Leadership",
+          href: "/the-people/school-leadership",
+          icon: "people",
+          image: "/header-images/the-people-leadership.png",
+        },
+        {
+          label: "Students at NPS",
+          href: "/the-people/students-at-nps",
+          icon: "grad",
+          image: "/header-images/the-people-students.jpg",
+        },
+        {
+          label: "NES Board Members",
+          href: "/the-people/nes-board-members",
+          icon: "briefcase",
+          image: "/header-images/the-people-board.png",
+        },
+        {
+          label: "NPS Visitors",
+          href: "/the-people/nps-visitors",
+          icon: "compass",
+          image: "/header-images/the-people-visitors.png",
+        },
+      ],
+    },
+    {
+      label: "NPS Programs",
+      href: "/nps-programs/pre-primary-school",
+      feature: {
+        title: "Every stage. New possibilities.",
+        description: "Find the learning journey that grows with your child.",
+        ctaLabel: "Explore our programmes",
+        ctaHref: "/nps-programs/pre-primary-school",
+      },
+      children: [
+        {
+          label: "Pre-Primary School",
+          href: "/nps-programs/pre-primary-school",
+          icon: "heart",
+          image: "/header-images/classroom.jpg",
+        },
+        {
+          label: "Primary School",
+          href: "/nps-programs/primary-school",
+          icon: "lightbulb",
+          image: "/header-images/the-place-campus.jpg",
+        },
+        {
+          label: "Middle School",
+          href: "/nps-programs/middle-school",
+          icon: "layers",
+          image: "/header-images/the-place-vision.jpg",
+        },
+        {
+          label: "High School",
+          href: "/nps-programs/high-school",
+          icon: "grad",
+          image: "/header-images/the-people-students.jpg",
+        },
+        {
+          label: "Special Section",
+          href: "/nps-programs/special-section",
+          icon: "people",
+          image: "/header-images/the-place-introduction.jpg",
+        },
+        {
+          label: "CCA Department",
+          href: "/nps-programs/cca-department",
+          icon: "award",
+          image: "/header-images/the-place-young-achievers.jpg",
+        },
+      ],
+    },
+    { label: "ISC", href: "/isc" },
+    {
+      label: "Admissions",
+      href: "https://niraj.myclassboard.com/ApplicationForm_Custom/09F71BA1-820B-4595-8D20-E0AAF4A95CAA/1/",
+    },
+    { label: "Careers", href: "/careers" },
+    { label: "Routes", href: "/routes" },
+    { label: "Gallery", href: "/gallery" },
   ],
-  academicsLabel: "Academics",
-  megaColumns: [
-    {
-      label: "Our Learning",
-      items: [
-        { icon: "book", tone: "peach", title: "Curriculum Overview", subtitle: "A strong foundation", href: "#" },
-        { icon: "layers", tone: "blue", title: "Subjects", subtitle: "Explore what we offer", href: "#" },
-        { icon: "lightbulb", tone: "gold", title: "Learning Approach", subtitle: "Beyond textbooks", href: "#" },
-        { icon: "calendar", tone: "peach", title: "Academic Calendar", subtitle: "Plan your year", href: "#" },
-      ],
-    },
-    {
-      label: "Programs",
-      items: [
-        { icon: "child", tone: "peach", title: "Primary School", subtitle: "Grades 1 – 5", href: "#" },
-        { icon: "grad", tone: "blue", title: "Middle School", subtitle: "Grades 6 – 8", href: "#" },
-        { icon: "cap", tone: "green", title: "High School", subtitle: "Grades 9 – 12", href: "#" },
-        { icon: "shield", tone: "peach", title: "Co-Scholastic Programs", subtitle: "Arts, Sports, Clubs", href: "#" },
-      ],
-    },
-    {
-      label: "At Niraj",
-      items: [
-        { icon: "people", tone: "green", title: "Our Faculty", subtitle: "Learn from the best", href: "#" },
-        { icon: "award", tone: "peach", title: "Academic Excellence", subtitle: "Milestones & Achievements", href: "#" },
-        { icon: "display", tone: "blue", title: "Learning Resources", subtitle: "Tools for success", href: "#" },
-        { icon: "heart", tone: "peach", title: "Student Support", subtitle: "Guidance at every step", href: "#" },
-      ],
-    },
-  ],
-  megaPromo: {
-    image: "/hero/children.webp",
-    captionLines: ["A Curriculum", "For A Brighter", "Tomorrow"],
-    href: "#",
-  },
   parentLoginLabel: "Parent Login",
   parentLoginHref: "#",
 };

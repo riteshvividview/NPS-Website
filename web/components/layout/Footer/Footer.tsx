@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Image from "next/image";
 import styles from "./Footer.module.css";
 import { footerContent } from "@/content/footer";
@@ -12,19 +13,19 @@ export default function Footer() {
     <footer className={styles.footer} id="site-footer">
       <div className={styles.top}>
         <div className={`${styles.brandCol} js-footer-reveal ${styles.opacityReveal}`}>
-          <a className={styles.brandRow} href="/">
+          <Link className={styles.brandRow} href="/">
             <Image className={styles.crest} src="/nps-logo-icon.png" alt="" width={46} height={46} />
             <span className={styles.brandText}>
               <span className={styles.brandName}>{c.brandName}</span>
               <span className={styles.brandTagline}>{c.brandTagline}</span>
             </span>
-          </a>
+          </Link>
           <p className={styles.description}>{c.description}</p>
           <div className={styles.socialRow}>
             {c.socials.map((s) => (
-              <a className={styles.socialBtn} href={s.href} key={s.key} aria-label={s.key}>
+              <Link className={styles.socialBtn} href={s.href} key={s.key} aria-label={s.key}>
                 {socialIcons[s.key]}
-              </a>
+              </Link>
             ))}
           </div>
         </div>
@@ -35,7 +36,7 @@ export default function Footer() {
             <ul className={styles.linkList}>
               {col.links.map((link) => (
                 <li key={link.label}>
-                  <a href={link.href}>{link.label}</a>
+                  <Link href={link.href}>{link.label}</Link>
                 </li>
               ))}
             </ul>
@@ -102,6 +103,10 @@ export default function Footer() {
           © {new Date().getFullYear()} {c.copyrightHolder}. All rights reserved.
         </span>
         <span className={styles.bottomTag}>{c.bottomTagWords.join(" · ")}</span>
+        <nav className={styles.legalLinks} aria-label="Legal">
+          <Link href="/terms-and-conditions">Terms &amp; Conditions</Link>
+          <Link href="/privacy-policy">Privacy Policy</Link>
+        </nav>
         <span className={styles.bottomRight}>
           {c.designedText}
           <LeafMark />

@@ -1,0 +1,258 @@
+.section {
+  position: relative;
+  background: var(--paper);
+  padding: 20px 6vw 100px;
+}
+
+.intro {
+  max-width: 620px;
+  margin: 0 auto 56px;
+  text-align: center;
+}
+
+.eyebrow {
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--green-mid);
+  margin-bottom: 14px;
+}
+
+.headline {
+  font-family: var(--font-fraunces), serif;
+  font-weight: 500;
+  font-size: clamp(27px, 4vw, 38px);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  background: #fff;
+  border-radius: 28px;
+  padding: 32px;
+  box-shadow: 0 24px 48px rgba(20, 40, 30, 0.08);
+}
+
+/* ---------- Photo placeholder stack ---------- */
+
+.photoStack {
+  position: relative;
+  flex-shrink: 0;
+  width: 100%;
+  height: 160px;
+  margin: 0 auto;
+}
+
+.photoFrame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #dcece0, #cfe3d6);
+  color: var(--green-mid);
+  font-size: 26px;
+  box-shadow: 0 14px 30px rgba(20, 40, 30, 0.14);
+  border: 4px solid #fff;
+  /* Fan the frames out: center one upright, others rotated/offset by
+     their index relative to the middle of the stack. */
+  --offset: calc((var(--i) - (var(--n) - 1) / 2) * 1);
+  transform: translate(calc(-50% + var(--offset) * 54px), -50%) rotate(calc(var(--offset) * 8deg));
+  z-index: calc(10 - var(--i));
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.card:hover .photoFrame {
+  transform: translate(calc(-50% + var(--offset) * 70px), -50%) rotate(calc(var(--offset) * 5deg)) translateY(-6px);
+}
+
+.trophyBadge {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 11;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--gold), #e0bb4a);
+  color: #fff;
+  font-size: 17px;
+  box-shadow: 0 10px 22px rgba(201, 162, 39, 0.35);
+}
+
+/* ---------- Body ---------- */
+
+.body {
+  text-align: center;
+}
+
+.studentRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.studentName {
+  font-family: var(--font-fraunces), serif;
+  font-weight: 500;
+  font-size: 24px;
+  color: var(--ink);
+}
+
+.studentClass {
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--green-mid);
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(47, 107, 70, 0.1);
+}
+
+.eventName {
+  font-size: 15.5px;
+  font-weight: 600;
+  color: #3a453e;
+  max-width: 54ch;
+  margin: 0 auto 8px;
+}
+
+.eventMeta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 13px;
+  color: #56604f;
+  margin-bottom: 20px;
+}
+.eventMeta i {
+  color: var(--green-mid);
+  font-size: 12px;
+}
+.metaSep {
+  margin: 0 4px;
+  opacity: 0.5;
+}
+
+.prizes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Gold pill with a light sweep across it on hover — this page's own
+   small cursor-adjacent flourish ("unlocking" the medal). */
+.prizeBadge {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #f5edd2, #efe0ad);
+  color: #8a6a14;
+  font-size: 13px;
+  font-weight: 600;
+}
+.prizeBadge i {
+  font-size: 12px;
+}
+.prizeBadge::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -60%;
+  width: 40%;
+  background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.75), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.7s ease;
+}
+.card:hover .prizeBadge::after {
+  left: 130%;
+}
+
+@media (min-width: 740px) {
+  .card {
+    flex-direction: row;
+    align-items: center;
+    gap: 40px;
+    padding: 36px 40px;
+  }
+  .photoStack {
+    width: 220px;
+    flex-shrink: 0;
+  }
+  .body {
+    text-align: left;
+  }
+  .studentRow,
+  .eventMeta,
+  .prizes {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .section {
+    padding: 8px 5vw 64px;
+  }
+  .intro {
+    margin-bottom: 40px;
+  }
+  .card {
+    padding: 26px 22px;
+    border-radius: 24px;
+  }
+  .photoFrame {
+    width: 92px;
+    height: 92px;
+    transform: translate(calc(-50% + var(--offset) * 40px), -50%) rotate(calc(var(--offset) * 8deg));
+  }
+  .card:hover .photoFrame {
+    transform: translate(calc(-50% + var(--offset) * 50px), -50%) rotate(calc(var(--offset) * 5deg)) translateY(-4px);
+  }
+  .photoStack {
+    height: 120px;
+  }
+}
+
+
+.section { padding-top:64px; scroll-margin-top:100px; }.intro { max-width:1180px; text-align:left; }.headline { font-size:clamp(32px,4vw,48px); }
+.list { max-width:1180px; gap:0; border-top:1px solid #d8d3bf; }
+.card { border-radius:0; background:transparent; box-shadow:none; border-bottom:1px solid #d8d3bf; padding:40px 0; gap:40px; }
+.photoStack { height:240px; color:#806525; background:#eee5cf; border-radius:50% 50% 4px 4px; }
+.photoStack svg { width:100%; height:100%; }.studentName { font-size:clamp(27px,3vw,38px); }.eventName { line-height:1.7; font-weight:400; }.prizeBadge { border-radius:3px; padding:12px 16px; }
+@media(min-width:740px) { .photoStack { width:270px; }.card:nth-child(even) { flex-direction:row-reverse; }.body { flex:1; } }
+@media(max-width:640px) { .section { padding-top:40px; }.photoStack { max-width:280px; }.card { padding:28px 0; } }
+
+@media(min-width:740px) { .eventName { margin-left:0; margin-right:0; } }
+
+.section{position:relative;z-index:3;border-radius:40px 40px 0 0;margin-top:-30px;padding-top:100px;background:#f2ebda}.headline{font-size:clamp(42px,6vw,76px);letter-spacing:-.04em}.card{min-height:410px}.photoStack{height:300px;width:300px;flex-shrink:0;background:#e9ddb7}.photoStack svg{transition:transform .6s}.card:hover .photoStack svg{transform:rotate(-7deg) scale(1.07)}.studentName{font-size:clamp(35px,4vw,58px)}.prizeBadge{background:#173b29;color:#f1df9b;border-radius:0;min-height:45px}.eventName{font-size:16px}.card:nth-child(even) .photoStack{border-radius:4px 4px 50% 50%}@media(max-width:740px){.section{padding-top:65px}.photoStack{width:min(100%,300px)}.card{overflow:hidden}}@media(prefers-reduced-motion:reduce){.photoStack svg{transition:none}.card:hover .photoStack svg{transform:none}}

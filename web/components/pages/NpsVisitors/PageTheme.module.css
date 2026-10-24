@@ -1,0 +1,20 @@
+/* ---------- "NPS Visitors" accent ----------
+   A deep teal/copper "guest book" palette — distinct from "The Place"
+   (green/gold), "School Leadership" (blue), "Students at NPS" (maroon)
+   and "NES Board Members" (indigo). Scoped to this page's <main> only. */
+.page {
+  --accent: #1f6f66;
+  --accent-deep: #124740;
+  --accent-soft: rgba(31, 111, 102, 0.08);
+  --accent-gold: #b5753c;
+  /* Cooler, lighter surface than the site's warm cream --paper — the warm
+     tone was muddying this page's teal accent into a dim olive. Scoped
+     here only, doesn't touch the global background.
+     --surface-alt is a second light, cool tone the whole page crossfades
+     to on scroll (see ScrollBgRunner.tsx) — applied to this <main> itself,
+     not a child section, so the color change reads as one continuous
+     page rather than a boxed-in block. */
+  --surface: #f3f8f7;
+  --surface-alt: #eef1f8;
+  background: var(--surface);
+}

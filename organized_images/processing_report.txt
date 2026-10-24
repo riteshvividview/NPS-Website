@@ -1,0 +1,17 @@
+﻿Image processing report
+Source: C:\VividView Websites\NPS Website\AllImages
+Files scanned: 14
+Archives inspected (including nested): 6
+Documents inspected: 19
+Images extracted/copied (unique): 278
+Standalone images organized: 4
+Unique output images verified by SHA-256 deduplication: 278
+Activity/category folders created: 18
+Manifest records including duplicate references: 305
+Unclassified manifest records: 0
+Auxiliary transparency masks omitted: 1
+HEIC/HEIF images preserved without pixel decoding: 6 (the available Windows image decoder does not support HEIC)
+Original source was read only; no source files were changed.
+
+Processing errors and skipped files:
+None.

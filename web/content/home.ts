@@ -14,7 +14,6 @@ export interface HomeContent {
     stats: { value: string; label: string }[];
     scriptAccentLine1: string;
     scriptAccentLine2: string;
-    scrollCueLabel: string;
     images: {
       sky: string;
       trees: string;
@@ -31,7 +30,6 @@ export interface HomeContent {
     headlineLine1: string;
     headlineAccent: string;
     values: { key: string; icon: string; label: string }[];
-    scrollCueLabel: string;
     tagCornerLine1: string;
     tagCornerLine2: string;
     images: {
@@ -48,7 +46,6 @@ export interface HomeContent {
     headlineLine1: string;
     headlineAccent: string;
     subcopy: string;
-    scrollCueLabel: string;
     images: {
       bg: string;
       bottomLeftFar: string;
@@ -78,14 +75,13 @@ export const homeContent: HomeContent = {
     ],
     scriptAccentLine1: "A Brighter",
     scriptAccentLine2: "Tomorrow",
-    scrollCueLabel: "Scroll to Explore",
     images: {
-      sky: "/hero/sky.png",
-      trees: "/hero/trees.webp",
-      school: "/hero/school.webp",
-      children: "/hero/children.webp",
-      book: "/hero/book.webp",
-      cloudFallback: "/hero/cloud-fallback.png",
+      sky: "/Home Page/01-hero/sky.png",
+      trees: "/Home Page/01-hero/trees.webp",
+      school: "/Home Page/01-hero/school.webp",
+      children: "/Home Page/01-hero/children.webp",
+      book: "/Home Page/01-hero/book.webp",
+      cloudFallback: "/Home Page/01-hero/cloud-fallback.png",
     },
   },
   section2: {
@@ -100,21 +96,20 @@ export const homeContent: HomeContent = {
       { key: "creativity", icon: "palette", label: "Creativity" },
       { key: "collaboration", icon: "people", label: "Collaboration" },
     ],
-    scrollCueLabel: "Scroll to Explore",
     tagCornerLine1: "Same Values",
     tagCornerLine2: "A Brighter Tomorrow",
     images: {
-      bg: "/section2/bg.png",
-      globe: "/section2/globe.webp",
-      boy: "/section2/boy.webp",
+      bg: "/Home Page/02-a-world-of-possibilities/bg.png",
+      globe: "/Home Page/02-a-world-of-possibilities/globe.webp",
+      boy: "/Home Page/02-a-world-of-possibilities/boy.webp",
       fly: [
-        "/section2/fly-1.webp",
-        "/section2/fly-2.webp",
-        "/section2/fly-3.webp",
-        "/section2/fly-4.webp",
-        "/section2/fly-5.webp",
-        "/section2/fly-6.webp",
-        "/section2/fly-7.webp",
+        "/Home Page/02-a-world-of-possibilities/fly-1.webp",
+        "/Home Page/02-a-world-of-possibilities/fly-2.webp",
+        "/Home Page/02-a-world-of-possibilities/fly-3.webp",
+        "/Home Page/02-a-world-of-possibilities/fly-4.webp",
+        "/Home Page/02-a-world-of-possibilities/fly-5.webp",
+        "/Home Page/02-a-world-of-possibilities/fly-6.webp",
+        "/Home Page/02-a-world-of-possibilities/fly-7.webp",
       ],
     },
   },
@@ -125,15 +120,14 @@ export const homeContent: HomeContent = {
     headlineLine1: "Roots for a",
     headlineAccent: "Brighter Tomorrow",
     subcopy: "Values that shape curious minds and compassionate futures.",
-    scrollCueLabel: "Scroll to Explore",
     images: {
-      bg: "/section3/bg.png",
-      bottomLeftFar: "/section3/bottom-left-far.webp",
-      bottomRight: "/section3/bottom-right.webp",
-      bottomLeftNear: "/section3/bottom-left-near.webp",
-      birds: "/section3/birds.webp",
-      plane: "/section3/plane.webp",
-      topLeft: "/section3/top-left.webp",
+      bg: "/Home Page/03-roots-for-a-brighter-tomorrow/bg.png",
+      bottomLeftFar: "/Home Page/03-roots-for-a-brighter-tomorrow/bottom-left-far.webp",
+      bottomRight: "/Home Page/03-roots-for-a-brighter-tomorrow/bottom-right.webp",
+      bottomLeftNear: "/Home Page/03-roots-for-a-brighter-tomorrow/bottom-left-near.webp",
+      birds: "/Home Page/03-roots-for-a-brighter-tomorrow/birds.webp",
+      plane: "/Home Page/03-roots-for-a-brighter-tomorrow/plane.webp",
+      topLeft: "/Home Page/03-roots-for-a-brighter-tomorrow/top-left.webp",
     },
   },
 };

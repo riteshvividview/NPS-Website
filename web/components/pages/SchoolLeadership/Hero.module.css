@@ -1,0 +1,179 @@
+.hero {
+  position: relative;
+  min-height: 850px;
+  background: #f2eddf;
+  color: #203e2b;
+  padding: 125px 7vw 90px;
+  overflow: clip;
+}
+.breadcrumb {
+  margin-bottom: 65px;
+}
+.layout {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+.label {
+  font: 10px var(--font-ibm-plex-mono);
+  letter-spacing: 0.18em;
+  color: #6c7e5f;
+}
+.hero h1 {
+  font: 16px var(--font-public-sans);
+  font-weight: 400;
+  margin: 25px 0 35px;
+  color: #536d4c;
+}
+.statement {
+  font: 400 clamp(60px, 6.5vw, 100px) / 1.04 var(--font-fraunces);
+  letter-spacing: -0.05em;
+}
+.statement > span {
+  color: #7c8e61;
+}
+.intro {
+  font-size: 16px;
+  line-height: 1.8;
+  max-width: 430px;
+  margin-top: 30px;
+}
+.meet {
+  display: inline-flex;
+  align-items: center;
+  gap: 25px;
+  color: inherit;
+  text-decoration: none;
+  font-size: 13px;
+  margin-top: 30px;
+}
+.meet span {
+  display: grid;
+  place-items: center;
+  border: 1px solid #95a57d;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+.guidance {
+  position: relative;
+  padding: 0 25px 75px;
+}
+.arch {
+  background: #e1e4d1;
+  border-radius: 220px 220px 5px 5px;
+  padding: 25px 25px 40px;
+  border: 1px solid #c6ceb2;
+}
+.arch svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.arch > span {
+  display: block;
+  text-align: center;
+  font: 8px monospace;
+  letter-spacing: 0.1em;
+  color: #65744e;
+}
+.paperNote {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: #faf5e5;
+  box-shadow: 10px 15px 0 #d9cfaf77;
+  padding: 25px 32px;
+  transform: rotate(-6deg);
+  border: 1px solid #d7ccaa;
+}
+.paperNote small {
+  font: 9px monospace;
+  letter-spacing: 0.13em;
+  color: #8e773f;
+}
+.paperNote p {
+  font: 29px/1.15 var(--font-fraunces);
+  margin: 20px 0;
+}
+.paperNote i {
+  font: 11px var(--font-public-sans);
+  font-style: normal;
+  color: #748266;
+}
+.reading {
+  position: relative;
+  background: #294b36;
+  color: #f3edda;
+  padding: 100px 13vw 130px;
+}
+.reading > span {
+  font: 10px var(--font-ibm-plex-mono);
+  letter-spacing: 0.18em;
+  color: #d0c493;
+}
+.reading p {
+  font: 400 clamp(38px, 5.8vw, 80px) / 1.15 var(--font-fraunces);
+  letter-spacing: -0.035em;
+  max-width: 22ch;
+  margin: 40px 0;
+}
+.reading p span {
+  display: inline;
+}
+.meet:focus-visible {
+  outline: 3px solid #997a37;
+  outline-offset: 5px;
+}
+@media (max-width: 899px) {
+  .hero {
+    padding: 115px 6vw 65px;
+    min-height: 0;
+  }
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+  .breadcrumb {
+    margin-bottom: 45px;
+  }
+  .statement {
+    font-size: clamp(54px, 9vw, 78px);
+  }
+  .guidance {
+    max-width: 500px;
+    width: 100%;
+    margin: auto;
+  }
+  .reading {
+    padding: 65px 7vw 90px;
+  }
+  .reading p {
+    font-size: clamp(37px, 6vw, 60px);
+  }
+}
+@media (max-width: 480px) {
+  .hero {
+    padding-inline: 22px;
+  }
+  .statement {
+    font-size: clamp(45px, 12vw, 57px);
+  }
+  .guidance {
+    padding: 0 10px 70px;
+  }
+  .paperNote {
+    padding: 20px 24px;
+    right: 5px;
+  }
+  .paperNote p {
+    font-size: 25px;
+  }
+  .intro {
+    font-size: 15px;
+  }
+  .reading p {
+    font-size: 36px;
+  }
+}

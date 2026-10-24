@@ -11,10 +11,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 // registerPlugin is idempotent, so calling it in both places is safe.
 gsap.registerPlugin(ScrollTrigger);
 
-const FRAME_COUNT = 150;
-const FRAME_PATH = (n: number) =>
-  `/hero/sky-frames/ezgif-frame-${String(n).padStart(3, "0")}.png`;
-
 /**
  * Direct port of the prototype's script.js: fixed-canvas stage scaling,
  * the cloud frame-sequence scrub, the hero pin, and the Section 2 / Section 3
@@ -61,93 +57,13 @@ export function useHomeAnimations() {
     sizeAllStages();
     window.addEventListener("resize", sizeAllStages);
 
-    /* ---------- Clouds: 150-frame sequence, scrubbed against scroll ---------- */
-    const cloudCanvas = document.getElementById(
-      "cloud-canvas"
-    ) as HTMLCanvasElement | null;
-    const cloudFallback = document.getElementById(
-      "cloud-fallback"
-    ) as HTMLImageElement | null;
-    const ctx = cloudCanvas ? cloudCanvas.getContext("2d") : null;
-
-    const frames: HTMLImageElement[] = [];
-    let framesReady = 0;
-    let lastDrawnFrame = -1;
-
-    function drawFrame(index: number) {
-      const clamped = Math.min(FRAME_COUNT - 1, Math.max(0, index));
-      if (clamped === lastDrawnFrame) return;
-      const img = frames[clamped];
-      if (!img || !img.complete || !img.naturalWidth) return;
-      ctx!.clearRect(0, 0, cloudCanvas!.width, cloudCanvas!.height);
-      ctx!.drawImage(img, 0, 0, cloudCanvas!.width, cloudCanvas!.height);
-      lastDrawnFrame = clamped;
-    }
-
-    if (ctx && cloudCanvas) {
-      for (let i = 1; i <= FRAME_COUNT; i++) {
-        const img = new Image();
-        img.onload = () => {
-          framesReady++;
-          if (i === 1) drawFrame(0);
-        };
-        img.onerror = () => {
-          if (framesReady === 0 && cloudFallback) {
-            cloudCanvas.style.display = "none";
-            cloudFallback.style.opacity = "1";
-          }
-        };
-        img.src = FRAME_PATH(i);
-        frames.push(img);
-      }
-    } else if (cloudFallback) {
-      cloudFallback.style.opacity = "1";
-    }
-
     const cleanupFns: (() => void)[] = [
       () => window.removeEventListener("resize", sizeAllStages),
     ];
-
-    /* ---------- Hero pinned scroll sequence ---------- */
-    const hero = document.getElementById("hero");
     const section2 = document.getElementById("section2");
-
-    if (reduceMotion || !hero || !section2) {
+    if (reduceMotion || !section2) {
       ScrollTrigger.refresh();
-      return () => {
-        cleanupFns.forEach((fn) => fn());
-        ScrollTrigger.getAll().forEach((st) => st.kill());
-      };
-    }
-
-    const PIN_END = "+=220%";
-
-    const heroTimeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: hero,
-        start: "top top",
-        end: PIN_END,
-        scrub: true,
-        pin: true,
-        pinSpacing: true,
-        anticipatePin: 1,
-        onUpdate: (self) => {
-          if (ctx) drawFrame(Math.round(self.progress * (FRAME_COUNT - 1)));
-        },
-      },
-    });
-
-    ScrollTrigger.refresh();
-
-    const pinEndPx = heroTimeline.scrollTrigger!.end;
-    const section2NaturalDocY =
-      section2.getBoundingClientRect().top + window.scrollY;
-    const DEAD_ZONE = Math.max(0, section2NaturalDocY - pinEndPx);
-    const OVERLAP_PX = 150;
-
-    if (DEAD_ZONE + OVERLAP_PX > 0) {
-      const pinSpacer = hero.parentNode as HTMLElement;
-      gsap.set(pinSpacer, { marginBottom: -(DEAD_ZONE + OVERLAP_PX) });
+      return () => cleanupFns.forEach((fn) => fn());
     }
 
     /* ---------- Section 2: smooth differential parallax ---------- */

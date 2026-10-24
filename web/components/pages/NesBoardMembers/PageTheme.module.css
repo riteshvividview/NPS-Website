@@ -1,0 +1,10 @@
+/* ---------- "NES Board Members" accent ----------
+   A regal indigo/gold governance palette — distinct from "The Place"
+   (green/gold), "School Leadership" (blue) and "Students at NPS"
+   (maroon archive). Scoped to this page's <main> only. */
+.page {
+  --accent: #4a3b78;
+  --accent-deep: #302552;
+  --accent-soft: rgba(74, 59, 120, 0.1);
+  --accent-gold: #c9a227;
+}

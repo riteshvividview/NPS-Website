@@ -75,6 +75,24 @@ export const megaIcons: Record<string, React.ReactNode> = {
       <path d="M12 20s-7-4.4-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 5c-2.5 4.6-9.5 9-9.5 9Z" {...stroke} />
     </svg>
   ),
+  building: (
+    <svg {...common}>
+      <rect x="4" y="3" width="16" height="18" rx="1.5" {...stroke} />
+      <path d="M8 7h.01M12 7h.01M16 7h.01M8 11h.01M12 11h.01M16 11h.01M8 15h.01M16 15h.01M10 21v-4h4v4" {...stroke} />
+    </svg>
+  ),
+  briefcase: (
+    <svg {...common}>
+      <rect x="3" y="7.5" width="18" height="12" rx="1.5" {...stroke} />
+      <path d="M8 7.5V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1.5M3 12h18" {...stroke} />
+    </svg>
+  ),
+  compass: (
+    <svg {...common}>
+      <circle cx="12" cy="12" r="9" {...stroke} />
+      <path d="m14.5 9.5-2 5-5 2 2-5 5-2Z" {...stroke} />
+    </svg>
+  ),
 };
 
 export function ChevronDown() {
@@ -120,6 +138,22 @@ export function ArrowRightSmall() {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
+    </svg>
+  );
+}
+
+export function MenuIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+      <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function CloseIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+      <path d="M6 6l12 12M18 6 6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 }

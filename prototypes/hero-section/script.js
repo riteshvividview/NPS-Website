@@ -30,14 +30,39 @@ document.addEventListener('DOMContentLoaded', () => {
   const heroStageState = { scale: 1 };
   const sizeHeroStage = makeStageSizer(document.getElementById('hero-stage'), 1672, 941, heroStageState);
   const sizeSection2Stage = makeStageSizer(document.getElementById('section2-stage'), 1920, 1080, { scale: 1 });
+  const section3StageState = { scale: 1 };
+  const sizeSection3Stage = makeStageSizer(document.getElementById('section3-stage'), 1672, 941, section3StageState);
 
   function sizeAllStages() {
     sizeHeroStage();
     sizeSection2Stage();
+    sizeSection3Stage();
   }
 
   sizeAllStages();
   window.addEventListener('resize', sizeAllStages);
+
+  /* ---------- Fixed site header: push the hero down by its height ----------
+     .site-header is position:fixed, so it doesn't occupy normal document
+     flow — without this, it would simply sit ON TOP of the hero's own top
+     content instead of the hero starting below it. Measuring the header's
+     real rendered height in JS (rather than hardcoding a px value in CSS)
+     keeps this correct even if the header's own height ever changes
+     (content wraps, font loads, responsive tweaks, etc). */
+  const siteHeader = document.getElementById('site-header');
+  const heroSection = document.getElementById('hero');
+
+  // Set (if the dropdown exists) further down, so the scroll-hide handler
+  // below can close the mega-dropdown when the header itself scrolls away.
+  let dropdownCloseOnHeaderHide = null;
+
+  function offsetHeroForHeader() {
+    if (!siteHeader || !heroSection) return;
+    heroSection.style.marginTop = `${siteHeader.offsetHeight}px`;
+  }
+
+  offsetHeroForHeader();
+  window.addEventListener('resize', offsetHeroForHeader);
 
   /* ---------- Lenis smooth scroll, synced to GSAP's ticker ---------- */
 
@@ -64,6 +89,134 @@ document.addEventListener('DOMContentLoaded', () => {
   // Hooking Lenis's resize to ScrollTrigger's global 'refresh' event
   // keeps the two in sync on load and on window resize.
   ScrollTrigger.addEventListener('refresh', () => lenis.resize());
+
+  /* ---------- Fixed header: hide on scroll down, show on scroll up ----------
+     self.direction (from ScrollTrigger, driven by Lenis via the hookup
+     above) is 1 when scrolling down and -1 when scrolling up — the
+     standard way to detect this without hand-rolling scroll-delta
+     tracking. Always shown near the very top of the page, regardless of
+     direction, so it doesn't flicker away on a tiny scroll. */
+  if (siteHeader) {
+    ScrollTrigger.create({
+      start: 0,
+      end: 'max',
+      onUpdate: (self) => {
+        if (window.scrollY < siteHeader.offsetHeight) {
+          siteHeader.classList.remove('is-hidden');
+        } else if (self.direction === 1) {
+          siteHeader.classList.add('is-hidden');
+          if (dropdownCloseOnHeaderHide) dropdownCloseOnHeaderHide();
+        } else {
+          siteHeader.classList.remove('is-hidden');
+        }
+      },
+    });
+  }
+
+  /* ---------- Academics mega-dropdown: GSAP open/close, not CSS :hover ----------
+     Plain `.nav-item-dropdown:hover .mega-dropdown { display:grid }` looked
+     right but broke in practice: :hover only holds while the cursor is
+     directly over the trigger element or one of its DOM descendants at
+     every instant. The mega-dropdown is positioned way outside the
+     trigger's own visual box (absolute, relative to the whole header), so
+     the gap between the "Academics" text and where the panel actually
+     starts is real screen space that ISN'T covered by any part of
+     .nav-item-dropdown — moving the cursor through it made the dropdown
+     vanish before you ever reached it.
+
+     Fixed with the standard pattern for exactly this: track open/close in
+     JS instead of relying on continuous CSS hover coverage, with a short
+     delay before closing so crossing that gap doesn't kill it, animated
+     with GSAP (fade + rise for the panel, a quick stagger for the columns/
+     promo card inside it) instead of an instant display toggle. Also
+     click-toggleable and closes on an outside click / Escape, for anyone
+     without a mouse hovering it.  */
+  const dropdownWrap = document.querySelector('.nav-item-dropdown');
+  const dropdownTrigger = document.querySelector('.nav-dropdown-trigger');
+  const dropdownPanel = document.querySelector('.mega-dropdown');
+
+  if (dropdownWrap && dropdownTrigger && dropdownPanel) {
+    const dropdownGroups = dropdownPanel.querySelectorAll('.mega-col, .mega-promo');
+    let closeTimer = null;
+    let isOpen = false;
+
+    gsap.set(dropdownPanel, { autoAlpha: 0, y: -14 });
+    gsap.set(dropdownGroups, { autoAlpha: 0, y: -10 });
+
+    function openDropdown() {
+      clearTimeout(closeTimer);
+      if (isOpen) return;
+      isOpen = true;
+      dropdownWrap.classList.add('is-open');
+      dropdownTrigger.setAttribute('aria-expanded', 'true');
+      gsap.killTweensOf([dropdownPanel, ...dropdownGroups]);
+      gsap.to(dropdownPanel, { autoAlpha: 1, y: 0, duration: 0.32, ease: 'power3.out' });
+      gsap.to(dropdownGroups, {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.32,
+        ease: 'power3.out',
+        stagger: 0.045,
+        delay: 0.04,
+      });
+    }
+
+    function closeDropdown() {
+      clearTimeout(closeTimer);
+      if (!isOpen) return;
+      isOpen = false;
+      dropdownWrap.classList.remove('is-open');
+      dropdownTrigger.setAttribute('aria-expanded', 'false');
+      gsap.killTweensOf([dropdownPanel, ...dropdownGroups]);
+      gsap.to(dropdownGroups, { autoAlpha: 0, y: -8, duration: 0.18, ease: 'power2.in' });
+      gsap.to(dropdownPanel, { autoAlpha: 0, y: -14, duration: 0.22, ease: 'power2.in' });
+    }
+
+    function scheduleClose() {
+      clearTimeout(closeTimer);
+      closeTimer = setTimeout(closeDropdown, 260);
+    }
+
+    // Hovering EITHER the trigger's wrapper or the panel itself keeps it
+    // open — this is what actually fixes the gap problem, since both are
+    // listened to independently rather than relying on one continuous
+    // hover region.
+    [dropdownWrap, dropdownPanel].forEach((el) => {
+      el.addEventListener('mouseenter', openDropdown);
+      el.addEventListener('mouseleave', scheduleClose);
+    });
+
+    dropdownTrigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (isOpen) closeDropdown();
+      else openDropdown();
+    });
+
+    document.addEventListener('click', (e) => {
+      if (isOpen && !dropdownWrap.contains(e.target)) closeDropdown();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) closeDropdown();
+    });
+
+    // GSAP hover micro-interaction for the icon chips inside the dropdown
+    // (a small pop + gentle rotation) — on top of the CSS hover already on
+    // .mega-item, per feedback asking for GSAP specifically on the items
+    // inside the dropdown, not just plain CSS transitions.
+    dropdownPanel.querySelectorAll('.mega-item-icon').forEach((icon) => {
+      const item = icon.closest('.mega-item');
+      item.addEventListener('mouseenter', () => {
+        gsap.to(icon, { scale: 1.15, rotate: -8, duration: 0.25, ease: 'back.out(2)' });
+      });
+      item.addEventListener('mouseleave', () => {
+        gsap.to(icon, { scale: 1, rotate: 0, duration: 0.25, ease: 'power2.out' });
+      });
+    });
+
+    // Don't leave it open while the header itself is scrolling away.
+    dropdownCloseOnHeaderHide = closeDropdown;
+  }
 
   /* ---------- Clouds: 150-frame sequence, drawn to canvas, scrubbed
      directly against scroll progress — not an autoplaying/looping video. ---------- */
@@ -110,45 +263,9 @@ document.addEventListener('DOMContentLoaded', () => {
     cloudFallback.style.opacity = '1';
   }
 
-  /* ---------- Page-level scroll-progress indicator ----------
-     Lives outside every section (see index.html). Active state is set
-     directly from the triggers that own each transition, further down.
-
-     Shows only the CURRENT section's number (not a full list) per
-     feedback — a single value that fades/shifts when it changes. */
-
-  const SECTION_NUMBERS = { hero: '01', section2: '02', section3: '03' };
-  const progressCurrent = document.getElementById('page-progress-current');
-  const progressFill = document.getElementById('page-progress-fill');
-
-  function setActiveSection(name) {
-    if (!progressCurrent || progressCurrent.textContent === SECTION_NUMBERS[name]) return;
-    progressCurrent.classList.add('is-changing');
-    progressCurrent.textContent = SECTION_NUMBERS[name];
-    // Double rAF: let the browser actually paint the "faded out" state
-    // before removing the class, so it transitions back in instead of
-    // the add/remove collapsing into a single, invisible frame.
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => progressCurrent.classList.remove('is-changing'));
-    });
-  }
-
-  // Continuous fill, independent of the discrete per-section active state
-  // above — tracks the whole document's scroll fraction (0–1) against the
-  // gold track line for a smoother, more premium read of overall progress.
-  ScrollTrigger.create({
-    trigger: document.documentElement,
-    start: 'top top',
-    end: 'bottom bottom',
-    onUpdate: (self) => {
-      if (progressFill) progressFill.style.height = `${self.progress * 100}%`;
-    },
-  });
-
   /* ---------- Hero pinned scroll sequence ---------- */
 
   const hero = document.getElementById('hero');
-  const book = document.getElementById('layer-book'); // now book + foreground foliage combined (01.webp)
   const section2 = document.getElementById('section2');
 
   if (reduceMotion) {
@@ -165,12 +282,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // reflow during scroll.
   const PIN_END = '+=220%';
 
-  // CLOUD_END is computed further down, once we can measure the pin's
-  // real distance — declared here (not assigned yet) so the onUpdate
-  // closure below can reference it; by the time onUpdate actually runs
-  // (on scroll), it will already hold its final value.
-  let CLOUD_END;
-
   const heroTimeline = gsap.timeline({
     scrollTrigger: {
       trigger: hero,
@@ -185,14 +296,10 @@ document.addEventListener('DOMContentLoaded', () => {
       anticipatePin: 1,
       onUpdate: (self) => {
         // Clouds play through their full 150-frame sequence across the
-        // first CLOUD_END fraction of the pin only — remapped so they
-        // actually finish partway through, instead of being scrubbed
-        // across the whole pinned distance.
-        const cloudProgress = Math.min(1, self.progress / CLOUD_END);
-        if (ctx) drawFrame(Math.round(cloudProgress * (FRAME_COUNT - 1)));
+        // entire pin — the book/foliage layer no longer moves, so there's
+        // no second phase left to share this scroll distance with.
+        if (ctx) drawFrame(Math.round(self.progress * (FRAME_COUNT - 1)));
       },
-      onLeave: () => setActiveSection('section2'),
-      onEnterBack: () => setActiveSection('hero'),
     },
   });
 
@@ -237,32 +344,10 @@ document.addEventListener('DOMContentLoaded', () => {
     gsap.set(pinSpacer, { marginBottom: -(DEAD_ZONE + OVERLAP_PX) });
   }
 
-  // With the dead zone gone, Section 2's natural entrance now lines up
-  // exactly with the pin's own end — so CLOUD_END is set purely so the
-  // reveal phase (CLOUD_END → 1) spans exactly one viewport-height of
-  // real scroll, matching the book's own exit distance below.
-  const pinDuration = pinEndPx - pinStartPx;
-  CLOUD_END = 1 - window.innerHeight / pinDuration;
-
-  // Book's exit: translate up and off the top of the frame, no scale.
-  // #layer-book is a CHILD of #hero-stage, which itself carries
-  // `transform: scale(heroStageState.scale)` (the cover-scale that fills
-  // the viewport) — CSS transforms compose, so translating a child by N
-  // local px actually moves it N × scale SCREEN px. Dividing by the
-  // stage's current scale here cancels that out, matching Section 2's
-  // natural one-viewport-height entrance exactly.
-  const BOOK_EXIT_LOCAL = window.innerHeight / heroStageState.scale;
-
-  heroTimeline.fromTo(
-    book,
-    { y: 0 },
-    { y: -BOOK_EXIT_LOCAL, ease: 'none', duration: 1 - CLOUD_END },
-    CLOUD_END
-  );
-
-  // Section 2 gets no transform at all — with the dead zone removed at
-  // setup, its ordinary, un-transformed scroll position is already
-  // exactly what's needed to arrive in step with the book.
+  // The book/foliage layer stays completely static now — no exit tween,
+  // no scroll-driven movement of any kind. It just sits there while the
+  // clouds play behind it and, separately, Section 2 rises to cover
+  // everything via the spacer-margin overlap above.
 
   /* ---------- Section 2: smooth differential parallax ----------
      Not pinned, never repositioned — a normal scroll-through section
@@ -274,7 +359,9 @@ document.addEventListener('DOMContentLoaded', () => {
      real from the very first frame, so these triggers measure it
      correctly with no manual refresh() needed. */
 
-  const parallaxLayers = section2.querySelectorAll('[data-depth]');
+  // Boy and globe get their own separate, gentler treatment below — excluded
+  // here so they aren't animated twice.
+  const parallaxLayers = section2.querySelectorAll('[data-depth]:not(.s2-boy):not(.s2-globe)');
   const PARALLAX_AMPLITUDE = 30; // yPercent swing per unit of depth — raised from 8 per feedback, was barely visible
 
   parallaxLayers.forEach((el) => {
@@ -295,17 +382,133 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   });
 
-  /* ---------- Section 2 → Section 3 (fake placeholder): active-state handoff ---------- */
+  // Boy & globe: a slow, gentle drift that SETTLES early instead of
+  // tracking scroll the whole way through Section 2. Two things make this
+  // read as "slow motion, settles into place" rather than the constant
+  // scrub the other layers use:
+  //  1. A much shorter trigger window (top bottom → center center, not
+  //     the full top bottom → bottom top) — the motion is done well
+  //     before Section 2 finishes scrolling past, so they just sit still
+  //     for the rest of it instead of continuing to drift.
+  //  2. A small numeric scrub (1.4s of lag) instead of scrub:true. This is
+  //     a deliberate exception to the "no numeric scrub" rule used
+  //     elsewhere in this file — that rule exists because stacking GSAP's
+  //     own lag on top of Lenis's caused a real desync bug, but that was
+  //     specifically about two SEPARATE layers needing to land in exact
+  //     sync with each other. There's no such pairing here — it's a
+  //     one-off decorative settle — so the lag is safe and is exactly
+  //     what gives it a heavier, slower-feeling motion.
+  const settleLayers = section2.querySelectorAll('.s2-boy, .s2-globe');
+  const SETTLE_AMPLITUDE = 10; // smaller swing than PARALLAX_AMPLITUDE — a slight drift, not a big traverse
 
+  settleLayers.forEach((el) => {
+    const depth = parseFloat(el.dataset.depth) || 0;
+    gsap.fromTo(
+      el,
+      { yPercent: SETTLE_AMPLITUDE * depth },
+      {
+        yPercent: 0, // settles at its natural, un-offset position
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: section2,
+          start: 'top bottom',
+          end: 'center center',
+          scrub: 1.4,
+        },
+      }
+    );
+  });
+
+  /* ---------- Section 3: differential parallax + two special tweens ----------
+     Same shared depth-based parallax as Section 2 for the ordinary
+     background layers, plus two layers with their own dedicated tweens
+     since their motion isn't just "yPercent by depth":
+       - the top-left branch moves left AND zooms in (xPercent + scale)
+       - the birds move right only, explicitly with no zoom at all */
   const section3 = document.getElementById('section3');
+
   if (section3) {
-    ScrollTrigger.create({
-      trigger: section3,
-      start: 'top center',
-      end: 'bottom top',
-      onEnter: () => setActiveSection('section3'),
-      onEnterBack: () => setActiveSection('section2'),
+    const s3ParallaxLayers = section3.querySelectorAll('[data-depth]');
+
+    s3ParallaxLayers.forEach((el) => {
+      const depth = parseFloat(el.dataset.depth) || 0;
+      gsap.fromTo(
+        el,
+        { yPercent: PARALLAX_AMPLITUDE * depth },
+        {
+          yPercent: -PARALLAX_AMPLITUDE * depth,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section3,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          },
+        }
+      );
     });
+
+    const s3TopLeft = document.getElementById('s3-top-left');
+    if (s3TopLeft) {
+      gsap.fromTo(
+        s3TopLeft,
+        { xPercent: 0, scale: 1 },
+        {
+          xPercent: -6,
+          scale: 1.18,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section3,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          },
+        }
+      );
+    }
+
+    const s3Birds = document.getElementById('s3-birds');
+    if (s3Birds) {
+      gsap.fromTo(
+        s3Birds,
+        { xPercent: -3 },
+        {
+          xPercent: 6, // no scale set at all, at either end — explicitly no zoom
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section3,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          },
+        }
+      );
+    }
+
+    // Paper plane: moves toward the top-right AND zooms in a little.
+    // Originally sent it toward the top-left, but that read as flying
+    // backward into the throwing hand instead of away from it — flipped
+    // xPercent to positive (right) per feedback; yPercent stays negative
+    // (continuing upward, same as the original throw arc).
+    const s3Plane = document.getElementById('s3-plane');
+    if (s3Plane) {
+      gsap.fromTo(
+        s3Plane,
+        { xPercent: 0, yPercent: 0, scale: 1 },
+        {
+          xPercent: 8,
+          yPercent: -6,
+          scale: 1.12,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section3,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          },
+        }
+      );
+    }
   }
 
   ScrollTrigger.refresh();

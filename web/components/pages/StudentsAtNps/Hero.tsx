@@ -1,0 +1,5 @@
+import Breadcrumb from '../shared/Breadcrumb';
+import SceneMotion from '../shared/SceneMotion';
+import type {EditorialHeroProps} from '../shared/EditorialHero';
+import styles from './Hero.module.css';
+export default function Hero({breadcrumb,headline,tagline,stats=[]}:Omit<EditorialHeroProps,'kind'>){return <><section className={styles.hero} data-stage><Breadcrumb items={breadcrumb} className={styles.breadcrumb}/><div className={styles.heading}><h1>{headline}</h1><span>THE ICSE RESULTS ARCHIVE</span></div><div className={styles.score} data-result-number aria-hidden="true">100<span>%</span></div><p className={styles.caption}>A standard worth carrying forward.</p><article className={styles.note} data-result-note><span>MORE THAN A NUMBER</span><h2>Every result.<br/>A student&apos;s story.</h2><p>{tagline}</p><a href="#page-collection">Open the results ledger &rarr;</a></article><div className={styles.bottom}>{stats.map(s=><div key={s.label}><strong>{s.value}{s.suffix}</strong><span>{s.label}</span></div>)}</div><div className={styles.lines} aria-hidden="true"/></section><SceneMotion scene="students"/></>}

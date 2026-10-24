@@ -1,0 +1,11 @@
+﻿Reversible homepage enhancement log
+
+Changed files:
+- web/components/home/Hero/Hero.tsx: client side four slide carousel, video background for original first slide, controls.
+- web/components/home/Hero/Hero.module.css: slide transition styles and natural hero sizing.
+- web/components/home/useHomeAnimations.ts: removed the 150-frame scroll canvas and hero pin; kept lower section parallax.
+- web/public/home-sky.mp4: H.264 video encoded from the existing 150 sky frame images. Source frames remain untouched.
+
+Revert: restore these three source files to their pre-request versions, remove public/home-sky.mp4. Display font uses the existing --font-fraunces token already used by interior page titles.
+
+2026-10-24 repair: Exact pre-repair source snapshots are in revert/homepage-2026-10-24/. Restore their matching paths under web/ to undo this pass; remove added HomeDrawing.tsx and HomePolish.module.css. Video and original sky frames were retained. Added drawn book/leaf art in existing sections and scoped CodecPro heading styling.

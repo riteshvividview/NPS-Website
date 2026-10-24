@@ -404,18 +404,102 @@
 }
 
 @media (max-width: 640px) {
+  .section {
+    padding: 56px 5vw 0;
+  }
+
+  .eyebrow {
+    font-size: 10px;
+  }
+
+  .headline {
+    font-size: clamp(27px, 9vw, 36px);
+  }
+
+  .subcopy {
+    font-size: 14px;
+    max-width: 36ch;
+  }
+
+  .ctaRow {
+    margin-top: 24px;
+  }
+  .ctaCircle {
+    width: 50px;
+    height: 50px;
+  }
+  .noteLeft {
+    font-size: 19px;
+  }
+
+  /* The 3-up bleeding carousel (tiny flanking cards + full-size badges)
+     doesn't have room to work on a narrow phone — the badges alone were
+     wider than the cards. Show one full-size card at a time instead; the
+     existing prev/next controls still step through it. */
   .carouselWrap {
-    gap: 14px;
+    padding: 28px 0 20px;
+  }
+  .cardLeft,
+  .cardRight {
+    display: none;
   }
   .card {
-    width: 100px;
-    height: 200px;
+    width: min(72vw, 260px);
+    height: 340px;
   }
   .cardCenter {
-    width: 120px;
-    height: 220px;
+    width: min(76vw, 280px);
+    height: 380px;
   }
-  .headline {
-    font-size: 36px;
+
+  .rightCol {
+    margin-top: 4px;
+  }
+
+  /* Stat bar: a 2x2 grid instead of a squeezed single row, so labels get
+     room to wrap instead of being clipped. */
+  .statBar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 16px;
+    border-radius: 24px;
+    padding: 22px 20px;
+    margin-top: 28px;
+  }
+  .statItem {
+    gap: 10px;
+  }
+  .statIcon svg {
+    width: 20px;
+    height: 20px;
+  }
+  .statLabel {
+    font-size: 10px;
+    max-width: none;
+  }
+
+  /* Decorative layers sized for a 1560px-wide desktop layout need a much
+     smaller footprint here, and the books graphic (intentionally above
+     everything on desktop) is cropped down so it stops covering the stat
+     grid's text. */
+  .decoDesk {
+    width: 100%;
+    height: 56px;
+  }
+  .decoRocket {
+    left: 12px;
+    bottom: 54px;
+    width: 86px;
+    height: 54px;
+  }
+  .decoBooks {
+    right: -10px;
+    bottom: -4px;
+    width: 160px;
+    height: 84px;
+  }
+
+  .spacer {
+    height: 48px;
   }
 }

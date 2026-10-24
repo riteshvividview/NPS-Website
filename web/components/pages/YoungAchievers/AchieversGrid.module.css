@@ -1,0 +1,73 @@
+.section {
+  position: relative;
+  background: var(--paper);
+  padding: 20px 6vw 100px;
+}
+
+.filterRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  max-width: 820px;
+  margin: 0 auto 44px;
+}
+
+.filterBtn {
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(47, 107, 70, 0.18);
+  background: #fff;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+.filterBtn:hover {
+  transform: translateY(-2px);
+}
+.filterBtn.isActive {
+  background: var(--green-deep);
+  border-color: var(--green-deep);
+  color: #fff;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .section {
+    padding: 8px 5vw 64px;
+  }
+  .filterRow {
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+  .filterBtn {
+    padding: 8px 16px;
+    font-size: 12.5px;
+  }
+}
+
+
+.section { padding-top:48px; scroll-margin-top:100px; }.filterRow { justify-content:flex-start; max-width:1180px; margin-left:auto; margin-right:auto; padding-bottom:24px; border-bottom:1px solid #d7dbcf; }.filterBtn { min-height:44px; }.grid { gap:24px; }
+
+.section{position:relative;background:#f7f3ea;padding-top:70px;z-index:2}.resultCount{max-width:1180px;margin:0 auto 24px;font:11px var(--font-ibm-plex-mono);letter-spacing:.08em;color:#65705b}.filterRow{position:sticky;top:85px;z-index:5;padding:14px;background:#f7f3eaf0;backdrop-filter:blur(12px);border:1px solid #d9d9c9;border-radius:4px}.grid{gap:26px}.filterBtn{border-radius:3px}@media(min-width:1100px){.grid>button:nth-child(3n+2){margin-top:35px}}@media(max-width:640px){.filterRow{top:74px;gap:6px;padding:8px}.filterBtn{font-size:11px;padding:8px 12px}.section{padding-top:35px}}

@@ -1,6 +1,8 @@
+import HomeDrawing from "../HomeDrawing";
 import styles from "./TeachingMethodology.module.css";
+import Image from "next/image";
 import type { TeachingMethodologyContent } from "@/content/teachingMethodology";
-import { pillarIcons, ArrowRight } from "./icons";
+import { ArrowRight } from "./icons";
 import RevealOnScroll from "./RevealOnScroll";
 
 const toneClass: Record<string, string> = {
@@ -37,7 +39,14 @@ export default function TeachingMethodology({
             {content.pillars.map((pillar) => (
               <div className={`${styles.card} js-reveal-card`} key={pillar.key}>
                 <div className={`${styles.artWrap} ${toneClass[pillar.key]}`} data-tilt="7">
-                  <span className={styles.art}>{pillarIcons[pillar.key]}</span>
+                  <Image
+                    src={pillar.image}
+                    alt={`${pillar.title} at Niraj Public School`}
+                    fill
+                    sizes="(max-width: 560px) 88vw, (max-width: 1100px) 44vw, 18vw"
+                    className={styles.cardImage}
+                  />
+                  <span className={styles.colorOverlay} aria-hidden="true" />
                   <span className={styles.badge}>{pillar.index}</span>
                 </div>
                 <h3 className={styles.cardTitle}>{pillar.title}</h3>
@@ -47,6 +56,18 @@ export default function TeachingMethodology({
           </div>
         </RevealOnScroll>
       </div>
+      <div className={styles.bookDrawing} aria-hidden="true">
+        <HomeDrawing kind="book" />
+      </div>
+      <Image
+        className={styles.readingBoy}
+        src="/Home Page/01-hero/boy-sitting-and-reading-book-sticker.png"
+        alt=""
+        width={1120}
+        height={1400}
+        sizes="(max-width: 560px) 112px, 208px"
+        draggable={false}
+      />
     </section>
   );
 }

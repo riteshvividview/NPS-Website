@@ -1,0 +1,345 @@
+{
+  "schemaVersion": 1,
+  "source": "instagram",
+  "origin": {
+    "kind": "profile",
+    "id": "17841400000000001",
+    "name": "blaze.coffee",
+    "displayName": "Blaze Coffee Roasters",
+    "url": "https://electricblaze.com/demo/instagram",
+    "avatarUrl": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/avatar.jpg"
+  },
+  "posts": [
+    {
+      "id": "demo-ig-01",
+      "source": "instagram",
+      "status": "published",
+      "url": "https://electricblaze.com/demo/instagram#post-01",
+      "media": [
+        {
+          "url": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/post-01.jpg",
+          "mime": "image/jpeg",
+          "width": 1080,
+          "height": 1080,
+          "alt": "First light on the roastery floor. Ethiopian natural, 12 days off roast."
+        }
+      ],
+      "stats": {
+        "likes": 412,
+        "comments": 23
+      },
+      "type": "image",
+      "format": "post",
+      "text": "First light on the roastery floor. Ethiopian natural, 12 days off roast.",
+      "thumbnailUrl": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/post-01.jpg",
+      "aspectRatio": 1,
+      "publishedAt": "2026-09-12T07:41:00Z"
+    },
+    {
+      "id": "demo-ig-02",
+      "source": "instagram",
+      "status": "published",
+      "url": "https://electricblaze.com/demo/instagram#post-02",
+      "media": [
+        {
+          "url": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/reel-01.mp4",
+          "mime": "video/mp4",
+          "width": 540,
+          "height": 960,
+          "durationSec": 10
+        }
+      ],
+      "stats": {
+        "likes": 1287,
+        "comments": 64,
+        "views": 18450
+      },
+      "type": "video",
+      "format": "reel",
+      "text": "How we cup a new lot in under 60 seconds.",
+      "thumbnailUrl": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/reel-01.jpg",
+      "aspectRatio": 0.5625,
+      "durationSec": 10,
+      "publishedAt": "2026-09-10T16:05:00Z"
+    },
+    {
+      "id": "demo-ig-03",
+      "source": "instagram",
+      "status": "published",
+      "url": "https://electricblaze.com/demo/instagram#post-03",
+      "media": [
+        {
+          "url": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/post-03.jpg",
+          "mime": "image/jpeg",
+          "width": 1080,
+          "height": 1350,
+          "alt": "New bags, same beans. Compostable liner from this batch on."
+        }
+      ],
+      "stats": {
+        "likes": 356,
+        "comments": 17
+      },
+      "type": "image",
+      "format": "post",
+      "text": "New bags, same beans. Compostable liner from this batch on.",
+      "thumbnailUrl": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/post-03.jpg",
+      "aspectRatio": 0.8,
+      "publishedAt": "2026-09-08T09:12:00Z"
+    },
+    {
+      "id": "demo-ig-04",
+      "source": "instagram",
+      "status": "published",
+      "url": "https://electricblaze.com/demo/instagram#post-04",
+      "media": [
+        {
+          "url": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/post-04-1.jpg",
+          "mime": "image/jpeg",
+          "width": 1080,
+          "height": 1080,
+          "alt": "Saturday market setup, from empty tent to first pour. (1/3)"
+        },
+        {
+          "url": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/post-04-2.jpg",
+          "mime": "image/jpeg",
+          "width": 1080,
+          "height": 1080,
+          "alt": "Saturday market setup, from empty tent to first pour. (2/3)"
+        },
+        {
+          "url": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/post-04-3.jpg",
+          "mime": "image/jpeg",
+          "width": 1080,
+          "height": 1080,
+          "alt": "Saturday market setup, from empty tent to first pour. (3/3)"
+        }
+      ],
+      "stats": {
+        "likes": 528,
+        "comments": 31
+      },
+      "type": "carousel",
+      "format": "post",
+      "text": "Saturday market setup, from empty tent to first pour.",
+      "thumbnailUrl": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/post-04-1.jpg",
+      "aspectRatio": 1,
+      "publishedAt": "2026-09-06T11:30:00Z"
+    },
+    {
+      "id": "demo-ig-05",
+      "source": "instagram",
+      "status": "published",
+      "url": "https://electricblaze.com/demo/instagram#post-05",
+      "media": [
+        {
+          "url": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/post-05.jpg",
+          "mime": "image/jpeg",
+          "width": 1080,
+          "height": 1080,
+          "alt": "Cortado hour. The 3pm kind."
+        }
+      ],
+      "stats": {
+        "likes": 297,
+        "comments": 9
+      },
+      "type": "image",
+      "format": "post",
+      "text": "Cortado hour. The 3pm kind.",
+      "thumbnailUrl": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/post-05.jpg",
+      "aspectRatio": 1,
+      "publishedAt": "2026-09-04T15:02:00Z"
+    },
+    {
+      "id": "demo-ig-06",
+      "source": "instagram",
+      "status": "published",
+      "url": "https://electricblaze.com/demo/instagram#post-06",
+      "media": [
+        {
+          "url": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/video-01.mp4",
+          "mime": "video/mp4",
+          "width": 1280,
+          "height": 720,
+          "durationSec": 10
+        }
+      ],
+      "stats": {
+        "likes": 640,
+        "comments": 42,
+        "views": 7210
+      },
+      "type": "video",
+      "format": "post",
+      "text": "Roast profile walkthrough: why we drop this one early.",
+      "thumbnailUrl": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/video-01.jpg",
+      "aspectRatio": 1.7778,
+      "durationSec": 10,
+      "publishedAt": "2026-09-01T13:20:00Z"
+    },
+    {
+      "id": "demo-ig-07",
+      "source": "instagram",
+      "status": "published",
+      "url": "https://electricblaze.com/demo/instagram#post-07",
+      "media": [
+        {
+          "url": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/post-07.jpg",
+          "mime": "image/jpeg",
+          "width": 1080,
+          "height": 1350,
+          "alt": "Guest roaster week starts Monday. Three lots, one week."
+        }
+      ],
+      "stats": {
+        "likes": 388,
+        "comments": 14
+      },
+      "type": "image",
+      "format": "post",
+      "text": "Guest roaster week starts Monday. Three lots, one week.",
+      "thumbnailUrl": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/post-07.jpg",
+      "aspectRatio": 0.8,
+      "publishedAt": "2026-08-28T08:00:00Z"
+    },
+    {
+      "id": "demo-ig-08",
+      "source": "instagram",
+      "status": "published",
+      "url": "https://electricblaze.com/demo/instagram#post-08",
+      "media": [
+        {
+          "url": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/reel-02.mp4",
+          "mime": "video/mp4",
+          "width": 540,
+          "height": 960,
+          "durationSec": 12
+        }
+      ],
+      "stats": {
+        "likes": 2104,
+        "comments": 98,
+        "views": 31900
+      },
+      "type": "video",
+      "format": "reel",
+      "text": "Latte art, 4 attempts, 1 keeper.",
+      "thumbnailUrl": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/reel-02.jpg",
+      "aspectRatio": 0.5625,
+      "durationSec": 12,
+      "publishedAt": "2026-08-24T17:45:00Z"
+    },
+    {
+      "id": "demo-ig-09",
+      "source": "instagram",
+      "status": "published",
+      "url": "https://electricblaze.com/demo/instagram#post-09",
+      "media": [
+        {
+          "url": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/post-09.jpg",
+          "mime": "image/jpeg",
+          "width": 1080,
+          "height": 1080,
+          "alt": "Rainy Tuesday, full room."
+        }
+      ],
+      "stats": {
+        "likes": 275,
+        "comments": 6
+      },
+      "type": "image",
+      "format": "post",
+      "text": "Rainy Tuesday, full room.",
+      "thumbnailUrl": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/post-09.jpg",
+      "aspectRatio": 1,
+      "publishedAt": "2026-08-19T10:15:00Z"
+    },
+    {
+      "id": "demo-ig-10",
+      "source": "instagram",
+      "status": "published",
+      "url": "https://electricblaze.com/demo/instagram#post-10",
+      "media": [
+        {
+          "url": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/post-10-1.jpg",
+          "mime": "image/jpeg",
+          "width": 1080,
+          "height": 1350,
+          "alt": "Behind the counter: the espresso recipe card, annotated. (1/2)"
+        },
+        {
+          "url": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/post-10-2.jpg",
+          "mime": "image/jpeg",
+          "width": 1080,
+          "height": 1350,
+          "alt": "Behind the counter: the espresso recipe card, annotated. (2/2)"
+        }
+      ],
+      "stats": {
+        "likes": 461,
+        "comments": 27
+      },
+      "type": "carousel",
+      "format": "post",
+      "text": "Behind the counter: the espresso recipe card, annotated.",
+      "thumbnailUrl": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/post-10-1.jpg",
+      "aspectRatio": 0.8,
+      "publishedAt": "2026-08-14T12:00:00Z"
+    },
+    {
+      "id": "demo-ig-11",
+      "source": "instagram",
+      "status": "published",
+      "url": "https://electricblaze.com/demo/instagram#post-11",
+      "media": [
+        {
+          "url": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/post-11.jpg",
+          "mime": "image/jpeg",
+          "width": 1080,
+          "height": 1080,
+          "alt": "Cold brew is back on tap."
+        }
+      ],
+      "stats": {
+        "likes": 333,
+        "comments": 11
+      },
+      "type": "image",
+      "format": "post",
+      "text": "Cold brew is back on tap.",
+      "thumbnailUrl": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/post-11.jpg",
+      "aspectRatio": 1,
+      "publishedAt": "2026-08-07T14:30:00Z"
+    },
+    {
+      "id": "demo-ig-12",
+      "source": "instagram",
+      "status": "published",
+      "url": "https://electricblaze.com/demo/instagram#post-12",
+      "media": [
+        {
+          "url": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/video-02.mp4",
+          "mime": "video/mp4",
+          "width": 1280,
+          "height": 720,
+          "durationSec": 10
+        }
+      ],
+      "stats": {
+        "likes": 512,
+        "comments": 19,
+        "views": 5980
+      },
+      "type": "video",
+      "format": "post",
+      "text": "Delivery day. 480 kg of green coffee, one pallet jack.",
+      "thumbnailUrl": "https://cdn.jsdelivr.net/gh/ElectricBlaze/electricblaze@89e2819/demo/media/video-02.jpg",
+      "aspectRatio": 1.7778,
+      "durationSec": 10,
+      "publishedAt": "2026-07-30T09:50:00Z"
+    }
+  ],
+  "fetchedAt": "2026-09-15T12:00:00Z",
+  "demo": true
+}

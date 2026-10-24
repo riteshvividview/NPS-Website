@@ -1,36 +1,95 @@
+/* ---------- Floating shell ----------
+   .siteHeader is an unstyled positioned "stage" — fixed with a margin on
+   all sides, which is what makes the header read as a detached floating
+   bar rather than an edge-to-edge static strip. All visible chrome
+   (background, blur, shadow, rounding) lives on .siteHeaderInner, so the
+   hide/show transform and the mobile panel (a sibling of the inner bar,
+   positioned against this same stage) both stay simple. */
 .siteHeader {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
+  top: 16px;
+  left: 16px;
+  right: 16px;
   z-index: 50;
+  margin: 0 auto;
+  max-width: 1320px;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.siteHeader:global(.is-hidden) {
+  transform: translateY(-140%);
+}
+
+.siteHeaderInner {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  padding: 18px 48px;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 1px 0 rgba(28, 43, 34, 0.08);
-  transition: transform 0.35s ease;
-}
-.siteHeader:global(.is-hidden) {
-  transform: translateY(-100%);
+  padding: 13px 26px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.58);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  box-shadow: 0 10px 30px rgba(20, 40, 30, 0.07);
+  transition: background 0.45s ease, box-shadow 0.45s ease, border-color 0.45s ease, padding 0.3s ease;
 }
 
+/* Scrolled past the top of the page: the glass goes from a light see-
+   through tint (so it blends over a hero image) to a denser, more opaque
+   surface with a firmer shadow — the "header colors change on scroll"
+   the user asked for. */
+.siteHeader:global(.is-scrolled) .siteHeaderInner {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(28, 43, 34, 0.08);
+  box-shadow: 0 18px 44px rgba(20, 40, 30, 0.16);
+}
+
+/* ---------- Brand / logo ---------- */
+
 .brand {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 12px;
   text-decoration: none;
   color: var(--ink);
+  flex-shrink: 0;
 }
+
+.brandRing {
+  position: absolute;
+  inset: -7px 4px auto -7px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 1.5px dashed var(--green-mid);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.brand:hover .brandRing {
+  opacity: 0.55;
+  animation: brandRingSpin 5s linear infinite;
+}
+@keyframes brandRingSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .brandRing {
+    animation: none !important;
+  }
+}
+
 .brandMark {
   width: 40px;
   height: 40px;
   flex-shrink: 0;
   object-fit: contain;
+  transform: perspective(400px) rotateX(var(--by, 0deg)) rotateY(var(--bx, 0deg));
+  transition: transform 0.35s ease;
 }
 .brandText {
   display: flex;
@@ -51,18 +110,23 @@
   margin-top: 2px;
 }
 
+/* ---------- Primary nav + magnetic links ---------- */
+
 .siteNav {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 24px;
   font-size: 14.5px;
   font-weight: 500;
 }
 .siteNav > a {
+  display: inline-block;
   color: var(--ink);
   text-decoration: none;
   opacity: 0.92;
   transition: opacity 0.2s;
+  white-space: nowrap;
+  will-change: transform;
 }
 .siteNav > a:hover {
   opacity: 1;
@@ -72,10 +136,13 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-shrink: 0;
 }
 
+/* ---------- Desktop mega-dropdown (e.g. "The Place") ---------- */
+
 .navItemDropdown {
-  position: static;
+  position: relative;
 }
 
 .navDropdownTrigger {
@@ -90,6 +157,7 @@
   cursor: pointer;
   opacity: 0.92;
   transition: opacity 0.2s;
+  will-change: transform;
 }
 .navItemDropdown:global(.is-open) .navDropdownTrigger,
 .navDropdownTrigger:hover,
@@ -97,145 +165,243 @@
   opacity: 1;
 }
 .navDropdownTrigger svg {
-  font-size: 11px;
+  width: 10px;
+  height: 10px;
   transition: transform 0.25s ease;
 }
 .navItemDropdown:global(.is-open) .navDropdownTrigger svg {
   transform: rotate(180deg);
 }
 
-.megaDropdown {
+.navDropdownPanel {
   position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  margin: 0 24px;
+  top: calc(100% + 18px);
+  left: 50%;
+  transform: translate(-50%, -10px);
   display: grid;
-  grid-template-columns: repeat(3, 1fr) 260px;
-  gap: 8px;
+  grid-template-columns: 1fr 220px;
+  gap: 6px;
+  width: 580px;
   background: #fff;
-  border-radius: 20px;
-  padding: 28px;
-  box-shadow: 0 24px 60px rgba(20, 40, 30, 0.18), 0 4px 16px rgba(20, 40, 30, 0.08);
+  border-radius: 26px;
+  padding: 14px;
+  box-shadow: 0 30px 60px rgba(20, 40, 30, 0.18), 0 6px 20px rgba(20, 40, 30, 0.08);
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-14px);
+  overflow: hidden;
+  isolation: isolate;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
+/* Invisible bridge so the cursor can travel from the trigger down to the
+   panel (which sits 18px below it) without a gap that would read as
+   "left the dropdown" to the hover-intent JS. */
+.navDropdownPanel::before {
+  content: "";
+  position: absolute;
+  top: -18px;
+  left: 0;
+  right: 0;
+  height: 18px;
+}
+.navItemDropdown:global(.is-open) .navDropdownPanel {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
 }
 
-.megaColLabel {
-  font-family: var(--font-ibm-plex-mono), monospace;
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--green-mid);
-  margin-bottom: 14px;
-}
+/* ---------- A little pair of eyes, tucked in the panel's top-right
+   corner, that actually watch the cursor — see useHeaderInteractions.ts,
+   which tracks each pupil toward the mouse independently (so they
+   converge the way real eyes would) and recenters them on mouse-leave.
+   Blink on their own, on a plain CSS loop, whether or not the panel is
+   being watched back. ---------- */
 
-.megaItem {
+.megaEyes {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 8px;
-  border-radius: 12px;
-  text-decoration: none;
-  color: var(--ink);
-  cursor: pointer;
-  transition: background 0.15s ease, transform 0.15s ease;
-}
-.megaItem:hover {
-  background: rgba(28, 43, 34, 0.05);
-  transform: translateX(3px);
+  gap: 7px;
+  pointer-events: none;
 }
 
-.megaItemIcon {
-  width: 38px;
-  height: 38px;
-  border-radius: 999px;
+.megaEye {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1.5px solid rgba(28, 43, 34, 0.16);
+  box-shadow: 0 2px 6px rgba(20, 40, 30, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  font-size: 15px;
+  animation: megaEyeBlink 6.4s ease-in-out infinite;
 }
-.tonePeach { background: #fbe6d8; color: #c9772f; }
-.toneBlue { background: #dceaf5; color: #2f6fa3; }
-.toneGold { background: #f5edd2; color: #b8901f; }
-.toneGreen { background: #dcece0; color: var(--green-mid); }
+.megaEye:nth-child(2) {
+  animation-delay: -0.12s;
+}
 
-.megaItemText {
+.megaEyePupil {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--green-deep);
+}
+
+@keyframes megaEyeBlink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .megaEye {
+    animation: none;
+  }
+  .megaEyePupil {
+    transform: none !important;
+  }
+}
+
+.megaLinks {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: 2px;
-  flex: 1;
-}
-.megaItemText strong {
-  font-size: 14px;
-  font-weight: 500;
-}
-.megaItemText small {
-  font-size: 12.5px;
-  color: #6b756e;
+  padding-right: 10px;
+  border-right: 1px solid rgba(28, 43, 34, 0.08);
 }
 
-.megaItemChev {
-  font-size: 11px;
-  color: #b7beb8;
+/* The glowing highlight that glides to whichever link is hovered — see
+   useHeaderInteractions.ts, which animates its y-offset/height to match
+   the hovered .megaLink's own position within this (positioned) parent. */
+.megaLinkGlow {
+  position: absolute;
+  top: 0;
+  left: 4px;
+  right: 4px;
+  height: 0;
+  border-radius: 13px;
+  background: linear-gradient(120deg, rgba(20, 55, 31, 0.1), rgba(201, 162, 39, 0.18));
   opacity: 0;
-  transition: opacity 0.15s ease;
-}
-.megaItem:hover .megaItemChev {
-  opacity: 1;
+  pointer-events: none;
+  z-index: 0;
 }
 
-.megaPromo {
+.megaLink {
   position: relative;
-  height: 100%;
-  min-height: 300px;
-  border-radius: 14px;
-  overflow: hidden;
-  text-decoration: none;
-  display: block;
-  cursor: pointer;
-}
-.megaPromo :global(img) {
-  object-fit: cover;
-  transition: transform 0.4s ease;
-}
-.megaPromo:hover :global(img) {
-  transform: scale(1.06);
-}
-.megaPromoCaption {
-  position: relative;
+  z-index: 1;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  margin-top: auto;
-  padding: 16px;
-  background: rgba(220, 236, 224, 0.92);
-  font-family: var(--font-ibm-plex-mono), monospace;
-  font-size: 10.5px;
+  align-items: center;
+  gap: 11px;
+  padding: 9px 10px;
+  border-radius: 13px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 13.5px;
   font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--green-deep);
-  line-height: 1.6;
-  min-height: 100%;
+  white-space: nowrap;
+  transition: transform 0.15s ease;
 }
-.megaPromoArrow {
-  transition: transform 0.25s ease;
-  width: 40px;
-  height: 40px;
-  border-radius: 999px;
-  background: var(--green-deep);
-  color: #fff;
+.megaLink:hover {
+  transform: translateX(2px);
+}
+.megaLinkIcon {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 12px;
-  font-size: 13px;
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  background: rgba(28, 43, 34, 0.06);
+  color: var(--green-deep);
+  flex-shrink: 0;
+  transition: background 0.15s ease, color 0.15s ease;
 }
-.megaPromo:hover .megaPromoArrow {
-  transform: translateX(4px);
+.megaLinkIcon svg {
+  width: 15px;
+  height: 15px;
+}
+.megaLink:hover .megaLinkIcon {
+  background: var(--green-deep);
+  color: #fff;
+}
+
+/* ---------- Mega "feature" — an image that changes with whichever link
+   is hovered (see useHeaderInteractions.ts), plus a fixed text teaser
+   and CTA below it. ---------- */
+
+.megaFeature {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 8px;
+  padding: 12px 14px 16px;
+  border-radius: 19px;
+  background: rgba(28, 43, 34, 0.035);
+  text-decoration: none;
+  color: var(--ink);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.megaFeature:hover {
+  background: rgba(28, 43, 34, 0.06);
+  transform: translateY(-2px);
+}
+
+.megaFeatureVisual {
+  position: relative;
+  width: 100%;
+  height: 112px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: linear-gradient(160deg, rgba(201, 162, 39, 0.16), rgba(26, 74, 56, 0.12));
+  flex-shrink: 0;
+  margin-bottom: 2px;
+}
+.megaFeatureImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.4s ease;
+}
+
+.megaFeatureTitle {
+  font-family: var(--font-fraunces), serif;
+  font-weight: 600;
+  font-size: 15.5px;
+  line-height: 1.3;
+}
+.megaFeatureText {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #56604f;
+}
+.megaFeatureCta {
+  margin-top: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--green-deep);
+}
+.megaFeatureCta svg {
+  width: 11px;
+  height: 11px;
 }
 
 .iconBtn {
@@ -279,8 +445,291 @@
   transform: translateY(-1px);
 }
 
+/* ---------- Hamburger / mobile nav panel (≤640px only) ---------- */
+
+.menuBtn {
+  display: none;
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--ink);
+  cursor: pointer;
+  flex-shrink: 0;
+  backdrop-filter: blur(4px);
+}
+
+.menuBtnIcon,
+.menuBtnIconClose {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.menuBtnIconClose {
+  opacity: 0;
+  transform: scale(0.7) rotate(-45deg);
+}
+.siteHeader:global(.is-menu-open) .menuBtnIcon {
+  opacity: 0;
+  transform: scale(0.7) rotate(45deg);
+}
+.siteHeader:global(.is-menu-open) .menuBtnIconClose {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+.mobileNav {
+  display: none;
+}
+
+.mobileNavScrim {
+  display: none;
+}
+
 @media (max-width: 640px) {
+  .siteHeader {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+  }
+
+  .siteHeaderInner {
+    border-radius: 26px;
+    padding: 12px clamp(14px, 4vw, 20px);
+    gap: 10px;
+  }
+
   .siteNav {
     display: none;
+  }
+
+  .menuBtn {
+    display: block;
+  }
+
+  /* Positioned below the floating inner bar via top:100% of the outer
+     .siteHeader (the nearest positioned ancestor, whose own box matches
+     the inner bar's rendered height) rather than a guessed pixel offset. */
+  .mobileNav {
+    display: flex;
+    position: absolute;
+    z-index: 2;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: var(--paper);
+    border-radius: 24px;
+    padding: 12px 20px 24px;
+    max-height: calc(100vh - 100px);
+    max-height: calc(100dvh - 100px);
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(20, 40, 30, 0.18);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+  }
+  .siteHeader:global(.is-menu-open) .mobileNav {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  .mobileNav > a {
+    padding: 14px 2px;
+    border-bottom: 1px solid rgba(28, 43, 34, 0.1);
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .mobileNav > a:last-of-type {
+    border-bottom: none;
+  }
+
+  /* ---------- Mobile nav accordion (e.g. "The Place") ---------- */
+
+  .mobileNavGroup {
+    border-bottom: 1px solid rgba(28, 43, 34, 0.1);
+  }
+
+  .mobileNavGroupTrigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    border: none;
+    background: none;
+    padding: 14px 2px;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .mobileNavGroupTrigger svg {
+    width: 11px;
+    height: 11px;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+  }
+  .mobileNavGroup:global(.is-open) .mobileNavGroupTrigger svg {
+    transform: rotate(180deg);
+  }
+
+  .mobileNavSubPanel {
+    display: flex;
+    flex-direction: column;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  .mobileNavGroup:global(.is-open) .mobileNavSubPanel {
+    max-height: 420px;
+  }
+
+  .mobileSubLink {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 2px;
+    color: var(--ink);
+    opacity: 0.85;
+    text-decoration: none;
+    font-size: 14.5px;
+  }
+  .mobileSubLink:first-child {
+    padding-top: 2px;
+  }
+  .mobileSubLink:last-child {
+    padding-bottom: 14px;
+  }
+  .mobileSubLinkIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 9px;
+    background: rgba(28, 43, 34, 0.06);
+    color: var(--green-deep);
+    flex-shrink: 0;
+  }
+  .mobileSubLinkIcon svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  /* ".mobileNav > a" above also matches this (it's an <a> directly under
+     .mobileNav) and is more specific by one type selector, so it would
+     otherwise win and paint this text in --ink on the dark green pill —
+     the extra ".mobileNavPill" here is what makes this rule specific
+     enough to actually override it. */
+  .mobileNav > a.mobileNavPill {
+    margin-top: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--green-deep);
+    color: #fff;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 13px 20px;
+    border-radius: 999px;
+    border-bottom: none;
+  }
+
+  /* position:absolute (not fixed) so it resolves against .siteHeader —
+     the nearest positioned ancestor — the same way .mobileNav does;
+     position:fixed here would instead resolve top:100% against the
+     viewport and push it a full screen-height down. Starting right at
+     the header's bottom edge keeps it from ever covering the header's
+     own brand/menu-button content, so it doesn't need to out-stack them. */
+  .mobileNavScrim {
+    display: block;
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    height: 100dvh;
+    background: rgba(15, 30, 20, 0.35);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s;
+  }
+  .siteHeader:global(.is-menu-open) .mobileNavScrim {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .brand {
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .brandMark {
+    width: clamp(28px, 9vw, 36px);
+    height: clamp(28px, 9vw, 36px);
+  }
+
+  .brandText {
+    min-width: 0;
+  }
+
+  .brandName {
+    font-size: clamp(13px, 4vw, 17px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .brandTagline {
+    font-size: 7.5px;
+    letter-spacing: 0.1em;
+  }
+
+  .siteHeaderActions {
+    gap: 8px;
+  }
+
+  /* The hamburger now gives full nav access, so the standalone search
+     button is redundant weight competing with the brand name for the
+     little width a phone header has. */
+  .iconBtn {
+    display: none;
+  }
+
+  .pillBtn {
+    padding: 8px clamp(10px, 3.2vw, 16px);
+    font-size: clamp(11px, 3.2vw, 13px);
+    gap: 6px;
+  }
+}
+
+@media (max-width: 370px) {
+  .brandTagline {
+    display: none;
+  }
+}
+
+/* Mega-dropdown panel doesn't fit a narrow viewport — collapses into the
+   hamburger panel below 640px already, nothing further needed here, but
+   guard tablet widths where the full pill may still be slightly tight. */
+@media (max-width: 900px) and (min-width: 641px) {
+  .siteNav {
+    gap: 16px;
+  }
+  .navDropdownPanel {
+    width: 480px;
+    grid-template-columns: 1fr 180px;
   }
 }

@@ -158,20 +158,6 @@
 .valueCreativity { left: 55.5%; top: 50%; }
 .valueCollaboration { left: 80%; top: 50%; }
 
-.s2ScrollCue {
-  position: absolute;
-  left: 44px;
-  bottom: 40px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--font-ibm-plex-mono), monospace;
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.85);
-}
-
 .s2TagCorner {
   position: absolute;
   right: 44px;
@@ -183,4 +169,102 @@
   text-transform: uppercase;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.6);
+}
+
+@media (max-width: 640px) {
+  /* Same cover-scale crop problem as Hero: the 1920x1080 stage, scaled to
+     cover a portrait screen, pushes most of its pixel-positioned content
+     off to the sides. Here the value badges are already positioned in %
+     of the stage, so they stay put once the stage matches the viewport —
+     but everything else (nav/headline offsets, the badges' own absolute
+     scatter) still needs a mobile layout. */
+  .section2 {
+    min-height: auto;
+    overflow: visible;
+    margin-top: 0;
+  }
+
+  .section2Canvas {
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+
+  .section2Stage {
+    position: relative;
+    inset: auto;
+    top: auto;
+    left: auto;
+    width: 100%;
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+    transform: none !important;
+  }
+
+  .s2Content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 84px 20px 76px;
+  }
+
+  .s2Nav {
+    top: 18px;
+    left: 18px;
+    right: 18px;
+  }
+  .s2Brand {
+    font-size: 15px;
+  }
+  .s2BrandMark {
+    width: 22px;
+    height: 22px;
+  }
+  .s2TagRight {
+    font-size: 9px;
+  }
+
+  .s2Headline {
+    position: static;
+    transform: none;
+    margin-bottom: 36px;
+  }
+  .s2Headline h2 {
+    font-size: clamp(32px, 10vw, 44px);
+  }
+  .s2Headline .eyebrow {
+    font-size: 10px;
+  }
+
+  .s2Values {
+    position: relative;
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px 16px;
+    align-content: center;
+  }
+  .s2Value {
+    position: static;
+    left: auto;
+    top: auto;
+  }
+  .s2ValueIcon {
+    width: 44px;
+    height: 44px;
+  }
+  .s2Value span:last-child {
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+  }
+
+  .s2TagCorner {
+    right: 20px;
+    bottom: 20px;
+    font-size: 9px;
+  }
 }

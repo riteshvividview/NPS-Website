@@ -1,0 +1,145 @@
+.section {
+  position: relative;
+  z-index: 2;
+  isolation: isolate;
+  margin-top: -40px;
+  background: var(--paper);
+  padding: 156px 6vw 100px;
+  border-radius: 50% 50% 0 0 / 120px 120px 0 0;
+  box-shadow: 0 -24px 60px rgba(31, 43, 34, 0.08);
+}
+
+.stamp {
+  position: absolute;
+  z-index: 1;
+  top: 116px;
+  right: max(6vw, calc((100vw - 1320px) / 2));
+  width: clamp(104px, 12vw, 164px);
+  height: auto;
+  filter: drop-shadow(0 14px 18px rgba(13, 55, 37, 0.18));
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+.section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: url("/Principals-welcome/Content-section-bg.png") center / cover no-repeat;
+  opacity: 0.34;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.layout {
+  max-width: 68ch;
+  margin: 0 auto;
+}
+
+.paragraph {
+  font-size: 17px;
+  line-height: 1.85;
+  color: #3a453e;
+  margin-bottom: 24px;
+}
+
+.dropCap::first-letter {
+  float: left;
+  font-family: var(--font-fraunces), serif;
+  font-weight: 600;
+  font-size: 76px;
+  line-height: 0.8;
+  padding: 6px 10px 0 0;
+  color: var(--green-deep);
+}
+
+.quote {
+  position: relative;
+  margin: 44px 0;
+  padding: 4px 0 4px 28px;
+  border-left: 3px solid var(--gold);
+}
+.quote p {
+  font-family: var(--font-fraunces), serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(20px, 2.6vw, 27px);
+  line-height: 1.5;
+  color: var(--ink);
+}
+.quote cite {
+  display: block;
+  margin-top: 14px;
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-style: normal;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--green-mid);
+}
+
+.signature {
+  margin-top: 56px;
+  text-align: right;
+}
+.signoff {
+  font-size: 17px;
+  color: #3a453e;
+  margin-bottom: 20px;
+}
+.signatureName {
+  font-family: var(--font-script), var(--font-fraunces), serif;
+  font-size: clamp(32px, 5vw, 44px);
+  color: var(--green-deep);
+  line-height: 1.2;
+}
+.signatureTitle {
+  margin-top: 4px;
+  font-family: var(--font-ibm-plex-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--green-mid);
+  opacity: 0.85;
+}
+
+@media (max-width: 900px) {
+  .section {
+    padding-top: 200px;
+  }
+  .stamp {
+    top: 88px;
+    width: 104px;
+  }
+}
+
+@media (max-width: 640px) {
+  .section {
+    margin-top: 20px;
+    padding: 150px 5vw 64px;
+    border-radius: 50% 50% 0 0 / 76px 76px 0 0;
+  }
+  .stamp {
+    top: 72px;
+    right: 6vw;
+    width: 68px;
+  }
+  .paragraph {
+    font-size: 15.5px;
+    line-height: 1.8;
+  }
+  .dropCap::first-letter {
+    font-size: 56px;
+    padding: 4px 8px 0 0;
+  }
+  .quote {
+    margin: 32px 0;
+    padding-left: 18px;
+  }
+  .signature {
+    margin-top: 40px;
+  }
+}
+
+.layout{max-width:780px;background:#fffcf1b5;padding:65px 70px;border:1px solid #c8b98b50;box-shadow:18px 22px 0 #cabd9430;position:relative}.layout::before{content:'A LETTER TO OUR SCHOOL COMMUNITY';display:block;font:9px monospace;letter-spacing:.18em;color:#8c7849;margin-bottom:40px}.quote{padding:30px;background:#e8e6d5;border:0;border-radius:2px 35px 2px 2px}.stamp{z-index:4}.section{padding-bottom:130px}@media(max-width:900px){.layout{padding:40px 30px}}@media(max-width:640px){.layout{padding:30px 20px;box-shadow:7px 10px 0 #cabd9430}.paragraph{font-size:15px}.quote{padding:22px}.quote p{font-size:23px}.section{padding-bottom:70px}}

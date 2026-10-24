@@ -8,25 +8,134 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<link rel="stylesheet" href="styles.css?v=20">
+<link rel="stylesheet" href="styles.css?v=30">
 </head>
 <body>
 
 <main>
 
-  <!-- Persistent, page-level scroll-progress indicator — fixed on the right
-       edge, vertically centered, independent of both sections below (does
-       not live inside either .hero or .section2, so it never pins/scrolls
-       away with them). One entry per section; script.js toggles is-active
-       via ScrollTrigger as each section enters/leaves the viewport. -->
-  <nav class="page-progress" aria-label="Page sections">
-    <span class="page-progress-chev page-progress-chev--up">︿</span>
-    <span class="page-progress-current" id="page-progress-current">01</span>
-    <div class="page-progress-track">
-      <span class="page-progress-fill" id="page-progress-fill"></span>
+  <!-- Real, page-level fixed header — independent of the hero-stage's own
+       scale transform (unlike the nav that used to live inside it), sized
+       in normal viewport units. script.js measures its rendered height and
+       pushes .hero down by exactly that much (see the comment there), and
+       toggles .site-header--hidden on scroll direction (hidden scrolling
+       down, shown scrolling up — always shown near the very top). -->
+  <header class="site-header" id="site-header">
+    <a class="brand" href="#">
+      <img class="brand-mark" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><circle cx='24' cy='24' r='23' fill='none' stroke='%231e4d3a' stroke-width='1.5'/><path d='M24 12 L32 18 L32 30 L24 36 L16 30 L16 18 Z' fill='none' stroke='%23c9a227' stroke-width='1.3'/></svg>" alt="">
+      <span class="brand-text">
+        <span class="brand-name">Niraj Public School</span>
+        <span class="brand-tagline">LEARN &nbsp;·&nbsp; GROW &nbsp;·&nbsp; BELONG</span>
+      </span>
+    </a>
+
+    <nav class="site-nav">
+      <a href="#">About</a>
+
+      <div class="nav-item-dropdown">
+        <button class="nav-dropdown-trigger" aria-expanded="false">
+          Academics
+          <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+        </button>
+
+        <div class="mega-dropdown">
+          <div class="mega-col">
+            <p class="mega-col-label">Our Learning</p>
+            <a class="mega-item" href="#">
+              <span class="mega-item-icon mega-item-icon--peach"><i class="fa-solid fa-book-open"></i></span>
+              <span class="mega-item-text"><strong>Curriculum Overview</strong><small>A strong foundation</small></span>
+              <i class="fa-solid fa-chevron-right mega-item-chev" aria-hidden="true"></i>
+            </a>
+            <a class="mega-item" href="#">
+              <span class="mega-item-icon mega-item-icon--blue"><i class="fa-solid fa-layer-group"></i></span>
+              <span class="mega-item-text"><strong>Subjects</strong><small>Explore what we offer</small></span>
+              <i class="fa-solid fa-chevron-right mega-item-chev" aria-hidden="true"></i>
+            </a>
+            <a class="mega-item" href="#">
+              <span class="mega-item-icon mega-item-icon--gold"><i class="fa-regular fa-lightbulb"></i></span>
+              <span class="mega-item-text"><strong>Learning Approach</strong><small>Beyond textbooks</small></span>
+              <i class="fa-solid fa-chevron-right mega-item-chev" aria-hidden="true"></i>
+            </a>
+            <a class="mega-item" href="#">
+              <span class="mega-item-icon mega-item-icon--peach"><i class="fa-regular fa-calendar"></i></span>
+              <span class="mega-item-text"><strong>Academic Calendar</strong><small>Plan your year</small></span>
+              <i class="fa-solid fa-chevron-right mega-item-chev" aria-hidden="true"></i>
+            </a>
+          </div>
+
+          <div class="mega-col">
+            <p class="mega-col-label">Programs</p>
+            <a class="mega-item" href="#">
+              <span class="mega-item-icon mega-item-icon--peach"><i class="fa-solid fa-child-reaching"></i></span>
+              <span class="mega-item-text"><strong>Primary School</strong><small>Grades 1 – 5</small></span>
+              <i class="fa-solid fa-chevron-right mega-item-chev" aria-hidden="true"></i>
+            </a>
+            <a class="mega-item" href="#">
+              <span class="mega-item-icon mega-item-icon--blue"><i class="fa-solid fa-user-graduate"></i></span>
+              <span class="mega-item-text"><strong>Middle School</strong><small>Grades 6 – 8</small></span>
+              <i class="fa-solid fa-chevron-right mega-item-chev" aria-hidden="true"></i>
+            </a>
+            <a class="mega-item" href="#">
+              <span class="mega-item-icon mega-item-icon--green"><i class="fa-solid fa-graduation-cap"></i></span>
+              <span class="mega-item-text"><strong>High School</strong><small>Grades 9 – 12</small></span>
+              <i class="fa-solid fa-chevron-right mega-item-chev" aria-hidden="true"></i>
+            </a>
+            <a class="mega-item" href="#">
+              <span class="mega-item-icon mega-item-icon--peach"><i class="fa-solid fa-shield-halved"></i></span>
+              <span class="mega-item-text"><strong>Co-Scholastic Programs</strong><small>Arts, Sports, Clubs</small></span>
+              <i class="fa-solid fa-chevron-right mega-item-chev" aria-hidden="true"></i>
+            </a>
+          </div>
+
+          <div class="mega-col">
+            <p class="mega-col-label">At Niraj</p>
+            <a class="mega-item" href="#">
+              <span class="mega-item-icon mega-item-icon--green"><i class="fa-solid fa-people-group"></i></span>
+              <span class="mega-item-text"><strong>Our Faculty</strong><small>Learn from the best</small></span>
+              <i class="fa-solid fa-chevron-right mega-item-chev" aria-hidden="true"></i>
+            </a>
+            <a class="mega-item" href="#">
+              <span class="mega-item-icon mega-item-icon--peach"><i class="fa-solid fa-award"></i></span>
+              <span class="mega-item-text"><strong>Academic Excellence</strong><small>Milestones &amp; Achievements</small></span>
+              <i class="fa-solid fa-chevron-right mega-item-chev" aria-hidden="true"></i>
+            </a>
+            <a class="mega-item" href="#">
+              <span class="mega-item-icon mega-item-icon--blue"><i class="fa-solid fa-display"></i></span>
+              <span class="mega-item-text"><strong>Learning Resources</strong><small>Tools for success</small></span>
+              <i class="fa-solid fa-chevron-right mega-item-chev" aria-hidden="true"></i>
+            </a>
+            <a class="mega-item" href="#">
+              <span class="mega-item-icon mega-item-icon--peach"><i class="fa-regular fa-heart"></i></span>
+              <span class="mega-item-text"><strong>Student Support</strong><small>Guidance at every step</small></span>
+              <i class="fa-solid fa-chevron-right mega-item-chev" aria-hidden="true"></i>
+            </a>
+          </div>
+
+          <a class="mega-promo" href="#">
+            <img src="../../assets/Home%20Page/hero%20section/02.webp" alt="">
+            <span class="mega-promo-caption">
+              A Curriculum<br>For A Brighter<br>Tomorrow
+              <span class="mega-promo-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+            </span>
+          </a>
+        </div>
+      </div>
+
+      <a href="#">Student Life</a>
+      <a href="#">Admissions</a>
+      <a href="#">Beyond Classroom</a>
+      <a href="#">Contact</a>
+    </nav>
+
+    <div class="site-header-actions">
+      <button class="icon-btn" aria-label="Search">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <a class="pill-btn" href="#">Parent Login
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
     </div>
-    <span class="page-progress-chev page-progress-chev--down">﹀</span>
-  </nav>
+  </header>
 
   <section class="hero" id="hero">
     <div class="hero-canvas" id="hero-canvas">
@@ -60,34 +169,11 @@
         <img class="scene-img" src="../../assets/Home%20Page/hero%20section/02.webp" alt="Students looking up, full of hope">
       </div>
 
-      <!-- Layer 5: Decorative hero content (real HTML — nav, headline, stats, script accent) -->
+      <!-- Layer 5: Decorative hero content (real HTML — headline, stats, script accent).
+           Nav has moved out to the real, page-level .site-header below — it
+           needs to stay fixed/scroll-aware independent of the hero-stage's
+           own scale transform, which a nav living inside the stage can't do. -->
       <div class="layer layer-content">
-
-        <header class="hero-nav">
-          <a class="brand" href="#">
-            <img class="brand-mark" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><circle cx='24' cy='24' r='23' fill='none' stroke='%231e4d3a' stroke-width='1.5'/><path d='M24 12 L32 18 L32 30 L24 36 L16 30 L16 18 Z' fill='none' stroke='%23c9a227' stroke-width='1.3'/></svg>" alt="">
-            <span class="brand-text">
-              <span class="brand-name">Niraj Public School</span>
-              <span class="brand-tagline">LEARN &nbsp;·&nbsp; GROW &nbsp;·&nbsp; BELONG</span>
-            </span>
-          </a>
-          <nav class="hero-nav-links">
-            <a href="#">About</a>
-            <a href="#">Academics</a>
-            <a href="#">Student Life</a>
-            <a href="#">Admissions</a>
-            <a href="#">Beyond Classroom</a>
-            <a href="#">Contact</a>
-          </nav>
-          <div class="hero-nav-actions">
-            <button class="icon-btn" aria-label="Search">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            </button>
-            <a class="pill-btn" href="#">Parent Login
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
-          </div>
-        </header>
 
         <div class="hero-copy">
           <p class="eyebrow">Empowering Young Minds</p>
@@ -149,13 +235,18 @@
         <img class="scene-img" src="../../assets/Home%20Page/second-section/main-image.png" alt="Students exploring, learning and building together on an open book in a green landscape">
       </div>
 
-      <!-- Globe — floating discovery element -->
-      <div class="layer s2-globe" data-depth="0.22">
+      <!-- Globe — floating discovery element. Negative depth (vs. every
+           other layer's positive depth) is deliberate — script.js's shared
+           parallax tween uses the depth's SIGN to pick direction, so this
+           is what makes the globe drift down on scroll while everything
+           else drifts up, without needing separate JS logic. -->
+      <div class="layer s2-globe" data-depth="-0.22">
         <img class="scene-img" src="../../assets/Home%20Page/second-section/globe-ele.webp" alt="">
       </div>
 
-      <!-- Sitting boy reading, left side -->
-      <div class="layer s2-boy" data-depth="0.16">
+      <!-- Sitting boy reading, left side — negative depth for the same
+           reason as the globe above: drifts down instead of up. -->
+      <div class="layer s2-boy" data-depth="-0.16">
         <img class="scene-img" src="../../assets/Home%20Page/second-section/sitting-boy-left-side.webp" alt="">
       </div>
 
@@ -236,12 +327,80 @@
     </div>
   </section>
 
-  <!-- Fake Section 3 — placeholder only, so there's real scroll room after
-       Section 2 for its full differential-parallax range (top bottom →
-       bottom top) to actually play out and be visible, instead of the
-       page just ending right under it. Not part of the design spec. -->
-  <section class="fake-section3" id="section3">
-    <p class="fake-section3-label">Section 3 — placeholder<br><span>(to preview Section 2's parallax as it scrolls away)</span></p>
+  <section class="section3" id="section3">
+    <div class="section3-canvas" id="section3-canvas">
+     <div class="section3-stage" id="section3-stage">
+
+      <!-- Background: the treehouse scene with the value signs (Curiosity,
+           Knowledge, Creativity, Collaboration, Kindness) already baked in
+           — 1672×941, same canvas size as the hero's own assets. -->
+      <div class="layer s3-bg" data-depth="0.04">
+        <img class="scene-img" src="../../assets/Home%20Page/third-section/third%20section%20main.png" alt="Children in a treehouse surrounded by signs for Curiosity, Knowledge, Creativity, Collaboration and Kindness">
+      </div>
+
+      <!-- Distant landscape layers — normal differential parallax, same
+           registration principle as every other section's layers. -->
+      <div class="layer s3-bottom-left-far" data-depth="0.1">
+        <img class="scene-img" src="../../assets/Home%20Page/third-section/third-section-page-bottom-left-top3.webp" alt="">
+      </div>
+      <div class="layer s3-bottom-right" data-depth="0.12">
+        <img class="scene-img" src="../../assets/Home%20Page/third-section/third-section-page-bottom-right.webp" alt="">
+      </div>
+      <div class="layer s3-bottom-left-near" data-depth="0.08">
+        <img class="scene-img" src="../../assets/Home%20Page/third-section/third-section-page-bottom-left-bottom.webp" alt="">
+      </div>
+
+      <!-- Birds — moves RIGHT on scroll, no zoom (its own dedicated tween
+           in script.js, not the shared differential-parallax loop). -->
+      <div class="layer s3-birds" id="s3-birds">
+        <img class="scene-img" src="../../assets/Home%20Page/third-section/third-section-page-birds.webp" alt="">
+      </div>
+
+      <!-- Paper plane (the one the Creativity girl is throwing) — moves
+           toward the TOP LEFT on scroll and zooms in a little, its own
+           dedicated tween like the top-left branch below. -->
+      <div class="layer s3-plane" id="s3-plane">
+        <img class="scene-img" src="../../assets/Home%20Page/third-section/third-section-plane.webp" alt="">
+      </div>
+
+      <!-- Top-left foreground branch — moves LEFT and zooms in on scroll
+           (also its own dedicated tween, not the shared loop). -->
+      <div class="layer s3-top-left" id="s3-top-left">
+        <img class="scene-img" src="../../assets/Home%20Page/third-section/third-section-page-top-left.webp" alt="">
+      </div>
+
+      <!-- Real HTML content. Deliberately NOT including the decorative
+           script-text captions near each tree branch ("A Curious Mind",
+           "A Wider World", etc.) from the reference — dropped per
+           feedback. -->
+      <div class="layer s3-content">
+
+        <header class="s3-nav">
+          <span class="s3-brand">
+            <svg class="s3-brand-mark" width="18" height="18" viewBox="0 0 48 48" fill="none" aria-hidden="true"><circle cx="24" cy="24" r="23" stroke="currentColor" stroke-width="1.5"/><path d="M24 12 L32 18 L32 30 L24 36 L16 30 L16 18 Z" stroke="currentColor" stroke-width="1.3"/></svg>
+            Niraj Public School
+          </span>
+          <span class="s3-tag-right">Nurturing Tomorrow —</span>
+        </header>
+
+        <div class="s3-copy">
+          <p class="eyebrow">Our Core Principles</p>
+          <h2 class="s3-heading">Roots for a<br><em>Brighter Tomorrow</em></h2>
+          <span class="s3-rule"></span>
+          <p class="s3-subcopy">Values that shape curious minds and compassionate futures.</p>
+        </div>
+
+        <div class="s3-scroll-cue">
+          <span class="scroll-cue-icon">
+            <svg width="16" height="24" viewBox="0 0 16 24" fill="none"><rect x="1" y="1" width="14" height="22" rx="7" stroke="currentColor" stroke-width="1.2"/><circle class="scroll-dot" cx="8" cy="7" r="2" fill="currentColor"/></svg>
+          </span>
+          Scroll to Explore
+        </div>
+
+      </div>
+
+     </div>
+    </div>
   </section>
 
 </main>
@@ -249,6 +408,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
-<script src="script.js?v=20"></script>
+<script src="script.js?v=30"></script>
 </body>
 </html>

@@ -31,6 +31,17 @@
   height: 100%;
 }
 
+/* Desktop: identical box to .heroStage itself (z-index:auto means its
+   children's z-index values still compare directly against layerContent/
+   layerBook, so stacking is unaffected) — see Hero.tsx for why this
+   wrapper exists. Mobile overrides it into a fixed-height band. */
+.imageZone {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .layer :global(img) {
   object-fit: cover;
   object-position: center;
@@ -69,7 +80,7 @@
 .heroCopy {
   position: absolute;
   left: 100px;
-  top: 178px;
+  top: 240px;
   width: 460px;
 }
 
@@ -122,11 +133,17 @@
   font-size: 15px;
   padding: 14px 24px;
   border-radius: 999px;
-  transition: transform 0.25s ease, background 0.25s ease;
+  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
 }
 .btnPrimary:hover {
   background: var(--green-mid);
-  transform: translateY(-1px);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(20, 55, 35, 0.2);
+}
+.btnPrimary:focus-visible,
+.btnWatch:focus-visible {
+  outline: 3px solid var(--green-mid);
+  outline-offset: 4px;
 }
 
 .btnWatch {
@@ -138,10 +155,11 @@
   font-weight: 500;
   font-size: 15px;
   cursor: pointer;
-  transition: opacity 0.2s ease;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 .btnWatch:hover {
-  opacity: 0.75;
+  color: var(--green-mid);
+  transform: translateY(-2px);
 }
 
 .playDot {
@@ -213,50 +231,177 @@
   opacity: 0.7;
 }
 
-.scrollCue {
-  position: absolute;
-  left: 100px;
-  bottom: 40px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--font-ibm-plex-mono), monospace;
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink);
-  opacity: 0.85;
-}
-
-.scrollCueIcon {
-  display: flex;
-}
-
-.scrollDot {
-  animation: scrollDot 1.8s ease-in-out infinite;
-}
-
-@keyframes scrollDot {
-  0% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-  60% {
-    transform: translateY(9px);
-    opacity: 0;
-  }
-  61% {
-    transform: translateY(0);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
 @media (max-width: 640px) {
   .scriptAccent {
     display: none;
   }
+
+  /* Desktop overlays the copy straight on top of the photo. On a phone
+     that put the headline/eyebrow right across the children's faces, so
+     below 640px the section instead splits into two stacked bands: a
+     fixed-height photo band up top (--hero-img-h), and the copy block
+     flowing in the normal page background underneath it. The section's
+     total height is no longer pinned to one viewport — it grows to fit
+     both. */
+  .hero {
+    height: auto;
+    overflow: visible;
+  }
+
+  .heroCanvas {
+    height: auto;
+    overflow: visible;
+  }
+
+  /* The desktop stage is a fixed 1672x941 canvas that JS cover-scales to
+     fill the viewport — neutralize that (transform: none !important beats
+     the JS-set inline transform) and let it flow normally instead.
+     --hero-img-h lives here (not :root) so it's scoped to this section;
+     .imageZone and .layerBook below both read it. */
+  .heroStage {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    height: auto;
+    transform: none !important;
+    --hero-img-h: 62vh;
+  }
+
+  /* Only the photo layers live in here (see Hero.tsx) — giving this its
+     own fixed-height band, instead of the old inset:0-over-everything
+     stage, is what lets the copy flow below it rather than over it. */
+  .imageZone {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: var(--hero-img-h);
+    overflow: hidden;
+  }
+
+  .layerContent {
+    position: relative;
+    inset: auto;
+    display: block;
+    background: var(--paper);
+    padding: 28px 20px 56px;
+  }
+
+  .heroCopy {
+    position: static;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    margin-bottom: 10px;
+  }
+
+  .headline {
+    font-size: clamp(28px, 9vw, 40px);
+    line-height: 1.08;
+  }
+
+  .subcopy {
+    margin-top: 14px;
+    font-size: clamp(13px, 3.6vw, 15px);
+    max-width: 34ch;
+  }
+
+  /* Both rows below need to hold their full line at 333-350px without
+     wrapping — a wrap here means one item drops to its own line, reading
+     as a stray gap between it and the line above rather than a clean
+     stacked pair. Tightened padding/gaps so the content fits the ~293px
+     available width at the narrowest supported size instead. */
+  .ctaRow {
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: nowrap;
+  }
+
+  .btnPrimary,
+  .btnWatch {
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .btnPrimary {
+    padding: 9px 13px;
+    gap: 6px;
+  }
+
+  .btnWatch {
+    gap: 6px;
+  }
+
+  .playDot {
+    width: 22px;
+    height: 22px;
+  }
+
+  .statsRow {
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: nowrap;
+  }
+
+  .stat:not(:last-child) {
+    padding-right: 10px;
+  }
+
+  .statValue {
+    font-size: clamp(16px, 4.6vw, 21px);
+  }
+
+  .statLabel {
+    font-size: 9px;
+    white-space: nowrap;
+  }
 }
+
+/* Homepage hero slides */
+.slideImage{position:absolute;inset:0;z-index:5;opacity:0;transform:scale(1.045);background-position:center;background-size:cover;transition:opacity 1s ease,transform 6.5s cubic-bezier(.2,.65,.3,1);pointer-events:none}.slideActive{opacity:1;transform:scale(1)}.slideControls{position:absolute;z-index:9;right:42px;bottom:36px;display:flex;gap:9px}.slideControls button{width:8px;height:8px;padding:0;border:0;border-radius:50%;background:#ffffff80;cursor:pointer}.slideControls button[aria-current=true]{width:26px;border-radius:10px;background:#fff}.cloudCanvas{object-fit:cover}.hero{height:auto;min-height:100svh}.heroCanvas{height:100svh}.heroStage{position:relative;top:auto;left:auto;transform:none;width:100%;height:100svh}.imageZone{overflow:hidden}
+@media(max-width:640px){.slideControls{right:20px;bottom:20px}.heroStage{height:auto;min-height:100svh}.heroCanvas{height:auto;min-height:100svh}}
+@media(prefers-reduced-motion:reduce){.slideImage{transition:none;transform:none}}
+
+/* Restore the fixed design canvas expected by the stage sizing hook. */
+@media(min-width:641px){.hero{height:100svh;min-height:0}.heroCanvas{height:100%}.heroStage{position:absolute;top:50%;left:50%;width:1672px;height:941px;transform:translate(-50%,-50%)}.slideImage{z-index:8}}
+.slideControls button{min-height:24px;min-width:24px;border:6px solid transparent;background-clip:padding-box}.slideControls button:focus-visible{outline:2px solid #173c28;outline-offset:3px}
+@media(max-width:640px){.heroStage{transform:none!important;min-height:0}.hero,.heroCanvas{min-height:0}.slideImage{height:var(--hero-img-h);bottom:auto;z-index:8}.slideControls{top:calc(var(--hero-img-h) - 40px);bottom:auto}}
+
+.carousel{position:relative;overflow:hidden;background:#f5f1e6;touch-action:pan-y;cursor:grab}.carousel:active{cursor:grabbing}.carouselTrack{display:flex;transition:transform .85s cubic-bezier(.22,.7,.2,1)}.carouselSlide{position:relative;flex:0 0 100%;min-width:0;min-height: min(850px,100svh);display:grid;grid-template-columns:38% 62%;align-items:center;padding:140px 5vw 100px;gap:0}.carouselVisual{position:relative;grid-column:2;grid-row:1;height: min(550px,65vh);width:100%;pointer-events:none}.composite{position:absolute;inset:0}.composite .imageZone{inset:0;position:absolute;height:100%;width:100%}.composite .layer img,.composite video{object-fit:contain!important}.carouselCopy{grid-column:1;grid-row:1;padding-right:25px;color:#203c2b}.carouselCopy>p{font:10px monospace;letter-spacing:.17em;margin-bottom:22px}.carouselCopy h1,.carouselCopy h2{font:400 clamp(36px,4.4vw,70px)/1.05 var(--font-fraunces);letter-spacing:-.045em;margin:0 0 24px}.carouselCopy>div{font-size:15px;line-height:1.8;max-width:38ch}.carouselCopy a{display:inline-flex;gap:22px;margin-top:28px;padding:14px 22px;border-radius:30px;background:#173c28;color:white;text-decoration:none;font-size:14px}.carouselCopy[data-active=true]> *{animation:slideCopyIn .8s both}.carouselCopy[data-active=true]>div{animation-delay:.12s}.carouselCopy[data-active=true]>a{animation-delay:.22s}@keyframes slideCopyIn{from{transform:translateY(22px)}to{transform:translateY(0)}}.carouselNav{position:absolute;bottom:24px;right:5vw;display:flex;gap:8px}.carouselNav button{height:40px;min-width:40px;padding:0 10px;background:#fff9;border:1px solid #203c2b30;color:#203c2b;border-radius:24px;cursor:pointer}.carouselNav button[aria-current=true]{background:#203c2b;color:white}@media(max-width:760px){.carouselSlide{grid-template-columns:1fr;align-content:start;padding:115px 24px 95px;min-height:0}.carouselVisual{grid-column:1;grid-row:1;height:auto;aspect-ratio:1.77}.carouselCopy{grid-column:1;grid-row:2;padding:24px 0 0}.carouselCopy h1,.carouselCopy h2{font-size:38px}.carouselNav{right:24px;bottom:22px}.carouselCopy>p{margin-bottom:14px}}@media(prefers-reduced-motion:reduce){.carouselTrack{transition:none}.carouselCopy[data-active=true]>*{animation:none}}
+
+/* Text overlays the full-width slide artwork. */
+.carouselSlide{display:flex;align-items:flex-end;min-height:100svh;padding:140px 7vw 100px;isolation:isolate;background:#172f28}
+.carouselVisual{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto;z-index:-2;background:#172f28}
+.carouselVisual>img{object-fit:contain!important}
+.carouselSlide::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(0deg,#10251fe6,transparent 75%)}
+.carouselCopy{position:relative;width:min(720px,85%);padding:0;color:#fff8e8}
+.carouselCopy h1,.carouselCopy h2{font-size:clamp(36px,4.2vw,66px)}
+.carouselCopy>div{max-width:48ch}
+.carouselSlide[data-slide="0"]{align-items:center;background:#f5f1e6}
+.carouselSlide[data-slide="0"]::after{background:linear-gradient(90deg,#f5f1e6f2, #f5f1e699 29%,transparent 57%)}
+.carouselSlide[data-slide="0"] .carouselCopy{color:#203c2b;width:min(460px,43%)}
+.composite .layer img,.composite video{object-fit:cover!important}
+.carouselNav{z-index:3}
+@media(max-width:760px){.carouselSlide{min-height: max(720px,100svh);padding:115px 24px 100px;align-items:flex-end}.carouselCopy{width:100%}.carouselCopy h1,.carouselCopy h2{font-size:38px}.carouselVisual{height:100%;aspect-ratio:auto}.carouselVisual>img{object-position:center 22%!important}.carouselSlide[data-slide="0"]{align-items:flex-end}.carouselSlide[data-slide="0"] .carouselCopy{width:100%}.carouselSlide[data-slide="0"]::after{background:linear-gradient(0deg,#f5f1e6 5%,#f5f1e6ed 35%,transparent 80%)}.composite .imageZone{height:65%;}.carouselNav{right:24px;bottom:24px}}
+
+/* Slide-specific copy placement. */
+.carouselSlide[data-slide="0"]::after,.carouselSlide[data-slide="1"]::after{background:none}
+.carouselSlide[data-slide="2"]{padding:140px 5vw 35px}
+.carouselSlide[data-slide="2"] .carouselCopy{width:100%;display:flex;align-items:center;gap:24px;padding:20px 24px;background:#10251fcc;border-radius:16px;backdrop-filter:blur(8px)}
+.carouselSlide[data-slide="2"] .carouselCopy>p,.carouselSlide[data-slide="2"] .carouselCopy>div{display:none}
+.carouselSlide[data-slide="2"] .carouselCopy h2{margin:0;font-size:clamp(24px,3vw,42px);line-height:1.15;flex:1}
+.carouselSlide[data-slide="2"] .carouselCopy a{margin:0;white-space:nowrap;flex-shrink:0}
+.carouselSlide[data-slide="2"]::after{background:linear-gradient(0deg,#10251f70,transparent 40%)}
+@media(max-width:760px){.carouselSlide[data-slide="2"]{padding:115px 16px 24px}.carouselSlide[data-slide="2"] .carouselCopy{gap:10px;padding:14px;flex-wrap:wrap}.carouselSlide[data-slide="2"] .carouselCopy h2{font-size:26px;flex-basis:100%}.carouselSlide[data-slide="2"] .carouselCopy a{padding:10px 16px;font-size:12px}}
+
+/* Dragging slides must not select their text or artwork. */
+.carousel,.carousel *{-webkit-user-select:none;user-select:none}.carousel img,.carousel video{-webkit-user-drag:none}
+
+/* Computer slide: copy aligned to the right. */
+.carouselSlide[data-slide="3"] .carouselCopy{margin-left:auto;text-align:right}.carouselSlide[data-slide="3"] .carouselCopy>div{margin-left:auto}
+
+.carouselSlide[data-slide="3"]::after{background:none}

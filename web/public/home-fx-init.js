@@ -1,0 +1,1 @@
+(function(){try{var d=document.documentElement;if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('fx');setTimeout(function(){d.classList.remove('fx')},6000)}}catch(e){}})();

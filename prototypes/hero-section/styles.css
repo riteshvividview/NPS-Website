@@ -36,6 +36,238 @@ html, body {
 
 img { display: block; max-width: none; }
 
+/* ============================================================
+   Site header — a real, page-level fixed header, deliberately living
+   outside .hero-stage's scaled coordinate system (unlike the old nav that
+   used to live inside it). Sized in normal viewport units so it behaves
+   like an ordinary fixed header regardless of viewport size, instead of
+   scaling with the hero's cover-fit transform.
+   ============================================================ */
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 18px 48px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 1px 0 rgba(28, 43, 34, 0.08);
+  transition: transform 0.35s ease;
+}
+
+/* Toggled by script.js based on scroll direction — hidden scrolling
+   down, shown scrolling up (always shown near the very top of the page,
+   see the threshold in script.js). */
+.site-header.is-hidden {
+  transform: translateY(-100%);
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  font-size: 14.5px;
+  font-weight: 500;
+}
+
+.site-nav > a {
+  color: var(--ink);
+  text-decoration: none;
+  opacity: 0.92;
+  transition: opacity 0.2s;
+}
+.site-nav > a:hover { opacity: 1; }
+
+.site-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ---------- Academics dropdown ---------- */
+
+.nav-item-dropdown {
+  position: static; /* the mega-dropdown spans the header's own width, not just this item's */
+}
+
+.nav-dropdown-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: var(--ink);
+  cursor: pointer;
+  opacity: 0.92;
+  transition: opacity 0.2s;
+}
+.nav-item-dropdown.is-open .nav-dropdown-trigger,
+.nav-dropdown-trigger:hover,
+.nav-dropdown-trigger:focus-visible { opacity: 1; }
+
+.nav-dropdown-trigger i {
+  font-size: 11px;
+  transition: transform 0.25s ease;
+}
+.nav-item-dropdown.is-open .nav-dropdown-trigger i {
+  transform: rotate(180deg);
+}
+
+/* Open/close is driven by script.js with GSAP (a hover-delay + real
+   animation, not instant display toggling) — see the comment there for
+   why: plain CSS :hover closed this the instant the cursor crossed the
+   gap between the trigger and the panel (a region that isn't part of
+   .nav-item-dropdown's hover-triggering box at all), before you could
+   ever reach it. display stays 'grid' permanently now; visibility is
+   opacity/pointer-events, which GSAP can animate and which don't suffer
+   that gap problem. */
+.mega-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin: 0 24px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr) 260px;
+  gap: 8px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 24px 60px rgba(20, 40, 30, 0.18), 0 4px 16px rgba(20, 40, 30, 0.08);
+  opacity: 0;
+  visibility: hidden; /* blocks interaction on its own while closed — no
+    separate pointer-events rule needed, and one here would be a trap:
+    GSAP's autoAlpha (used to animate this) only ever touches
+    opacity/visibility, so a static pointer-events:none would never get
+    un-set again once the panel opens, making it permanently unclickable. */
+  transform: translateY(-14px);
+}
+
+.mega-col-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--green-mid);
+  margin-bottom: 14px;
+}
+
+.mega-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 8px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.mega-item:hover {
+  background: rgba(28, 43, 34, 0.05);
+  transform: translateX(3px);
+}
+
+.mega-item-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 15px;
+}
+.mega-item-icon--peach { background: #fbe6d8; color: #c9772f; }
+.mega-item-icon--blue  { background: #dceaf5; color: #2f6fa3; }
+.mega-item-icon--gold  { background: #f5edd2; color: #b8901f; }
+.mega-item-icon--green { background: #dcece0; color: var(--green-mid); }
+
+.mega-item-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+.mega-item-text strong { font-size: 14px; font-weight: 500; }
+.mega-item-text small { font-size: 12.5px; color: #6b756e; }
+
+.mega-item-chev {
+  font-size: 11px;
+  color: #b7beb8;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.mega-item:hover .mega-item-chev { opacity: 1; }
+
+.mega-promo {
+  position: relative;
+  height: 100%;
+  min-height: 300px;
+  border-radius: 14px;
+  overflow: hidden;
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+}
+
+.mega-promo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+  transition: transform 0.4s ease;
+}
+.mega-promo:hover img {
+  transform: scale(1.06);
+}
+
+.mega-promo-caption {
+  position: relative;
+  display: block;
+  margin-top: auto;
+  padding: 16px;
+  background: rgba(220, 236, 224, 0.92);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--green-deep);
+  line-height: 1.6;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.mega-promo-arrow {
+  transition: transform 0.25s ease;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: var(--green-deep);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 12px;
+  font-size: 13px;
+}
+.mega-promo:hover .mega-promo-arrow {
+  transform: translateX(4px);
+}
+
 /* ---------- Hero ---------- */
 
 .hero {
@@ -125,17 +357,6 @@ img { display: block; max-width: none; }
   pointer-events: auto;
 }
 
-.hero-nav {
-  position: absolute;
-  top: 32px;
-  left: 48px;
-  right: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-}
-
 .brand {
   display: flex;
   align-items: center;
@@ -163,28 +384,6 @@ img { display: block; max-width: none; }
   margin-top: 2px;
 }
 
-.hero-nav-links {
-  display: flex;
-  align-items: center;
-  gap: 30px;
-  font-size: 14.5px;
-  font-weight: 500;
-}
-
-.hero-nav-links a {
-  color: var(--ink);
-  text-decoration: none;
-  opacity: 0.92;
-  transition: opacity 0.2s;
-}
-.hero-nav-links a:hover { opacity: 1; }
-
-.hero-nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
 .icon-btn {
   width: 38px; height: 38px;
   border-radius: 999px;
@@ -195,6 +394,11 @@ img { display: block; max-width: none; }
   cursor: pointer;
   backdrop-filter: blur(4px);
   flex-shrink: 0;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.icon-btn:hover {
+  background: #fff;
+  transform: translateY(-1px);
 }
 
 .pill-btn {
@@ -210,6 +414,12 @@ img { display: block; max-width: none; }
   border-radius: 999px;
   white-space: nowrap;
   flex-shrink: 0;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.pill-btn:hover {
+  background: var(--green-mid);
+  transform: translateY(-1px);
 }
 
 /* Headline / copy block */
@@ -283,7 +493,10 @@ img { display: block; max-width: none; }
   color: var(--ink);
   font-weight: 500;
   font-size: 15px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
 }
+.btn-watch:hover { opacity: 0.75; }
 
 .play-dot {
   width: 32px; height: 32px;
@@ -382,13 +595,6 @@ img { display: block; max-width: none; }
   60%  { transform: translateY(9px); opacity: 0; }
   61%  { transform: translateY(0);   opacity: 0; }
   100% { transform: translateY(0);   opacity: 1; }
-}
-
-/* ---------- Layer 6+7: book + foreground foliage (combined asset) ---------- */
-
-.layer-book {
-  transform-origin: 50% 100%;
-  will-change: transform;
 }
 
 /* ---------- Section 2 placeholder ---------- */
@@ -600,131 +806,135 @@ img { display: block; max-width: none; }
 }
 
 /* ============================================================
-   Fake Section 3 — placeholder only (see index.html comment). Exists
-   purely to give real scroll room below Section 2 so its differential
-   parallax has somewhere to finish playing out and can be watched.
+   Section 3 — "Roots for a Brighter Tomorrow"
+   Same registration principle as every other section: every layer here
+   shares the hero's own 1672×941 canvas (third section main.png matches
+   it exactly), so stacking them at full width/height keeps everything
+   correctly positioned automatically. Own rigid stage + JS cover-scale,
+   same technique as the hero and Section 2.
    ============================================================ */
 
-.fake-section3 {
+.section3 {
   position: relative;
-  min-height: 140vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: repeating-linear-gradient(
-    45deg,
-    #ff2e63, #ff2e63 24px,
-    #14371f 24px, #14371f 48px
-  );
-  padding: 10vh 8vw;
+  z-index: 3; /* above Section 2, consistent with each section outranking the one before it */
+  width: 100vw;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #cfe3f2; /* sky safety-net matching the scene while assets load */
 }
 
-.fake-section3-label {
-  font-family: 'Fraunces', serif;
-  font-size: 40px;
-  font-weight: 700;
-  text-align: center;
-  color: #fff;
-  line-height: 1.5;
-  background: rgba(0, 0, 0, 0.55);
-  padding: 40px 56px;
-  border-radius: 12px;
-  border: 3px solid #fff;
-}
-
-.fake-section3-label span {
-  display: block;
-  margin-top: 10px;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 15px;
-  font-weight: 400;
-  letter-spacing: 0.02em;
-  opacity: 0.9;
-}
-
-/* ============================================================
-   Page-level scroll-progress indicator — lives outside every
-   section (see index.html, directly under <main>), so it stays fixed
-   on screen through the whole page rather than pinning or scrolling
-   away with any one section.
-
-   Previously relied on mix-blend-mode:difference to stay legible
-   against both the light hero and the dark Section 2 — but that broke
-   in practice: several ancestors/siblings on this page (.hero-stage,
-   .section2-stage, the pinned/fixed #section2) carry their own CSS
-   transforms, each of which creates its own compositing layer, and
-   mix-blend-mode only blends within a shared layer. The browser was
-   often compositing this fixed nav in isolation, so the "difference"
-   effect silently did nothing — it wasn't that the active state failed
-   to update, it's that the visual change was frequently invisible.
-
-   Fixed by dropping the blend-mode trick entirely in favour of a real
-   frosted-glass capsule that supplies its own contrast (dark translucent
-   fill + light text/border) — legible over any background underneath,
-   reliably, with no compositing dependency. */
-
-.page-progress {
-  position: fixed;
-  top: 50%;
-  right: 36px;
-  transform: translateY(-50%);
-  z-index: 100;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  padding: 22px 16px;
-  border-radius: 999px;
-  background: rgba(16, 38, 28, 0.42);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  backdrop-filter: blur(20px) saturate(150%);
-  -webkit-backdrop-filter: blur(20px) saturate(150%);
-  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.14);
-  color: rgba(255, 255, 255, 0.55);
-  font-family: 'IBM Plex Mono', monospace;
-}
-
-.page-progress-chev {
-  font-size: 12px;
-  line-height: 1;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-/* Only the active section's number is shown — no full list of every
-   section, per feedback. A brief fade+shift plays whenever script.js
-   changes the number, so switching sections still reads as motion. */
-.page-progress-current {
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  color: var(--gold);
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.page-progress-current.is-changing {
-  opacity: 0;
-  transform: translateY(-4px);
-}
-
-.page-progress-track {
+.section3-canvas {
   position: relative;
-  width: 2px;
-  height: 64px;
-  border-radius: 2px;
-  background: rgba(255, 255, 255, 0.18);
+  width: 100%;
+  height: 100vh;
   overflow: hidden;
 }
 
-/* Gold fill, height driven by script.js from overall page scroll
-   progress (0–100%) — the continuous progress read. */
-.page-progress-fill {
+.section3-stage {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 0%;
-  background: linear-gradient(var(--gold), #e8d28a);
-  transition: height 0.08s linear;
+  top: 50%;
+  left: 50%;
+  width: 1672px;
+  height: 941px;
+  transform: translate(-50%, -50%); /* scale() appended by JS */
+  transform-origin: center center;
+}
+
+.s3-bg                { z-index: 1; }
+.s3-bottom-left-far    { z-index: 2; }
+.s3-bottom-right       { z-index: 2; }
+.s3-bottom-left-near   { z-index: 3; }
+.s3-birds              { z-index: 4; }
+.s3-plane              { z-index: 4; transform-origin: 0 100%; } /* anchors the zoom to its bottom-left (near the throwing hand), growing outward as it moves up-right */
+.s3-top-left           { z-index: 5; transform-origin: 0 0; } /* transform-origin matches which corner it zooms from */
+.s3-content            { z-index: 6; position: absolute; inset: 0; pointer-events: none; }
+.s3-content a          { pointer-events: auto; }
+
+/* ---------- Real HTML content, positioned in px against the 1672×941 stage ---------- */
+
+.s3-nav {
+  position: absolute;
+  top: 32px;
+  left: 48px;
+  right: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+}
+
+.s3-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.s3-brand-mark { flex-shrink: 0; }
+
+.s3-tag-right {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.s3-copy {
+  position: absolute;
+  left: 100px;
+  top: 230px;
+  width: 440px;
+  color: var(--ink);
+}
+
+.s3-heading {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 54px;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  margin-top: 16px;
+}
+
+.s3-heading em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--green-mid);
+}
+
+.s3-rule {
+  display: block;
+  width: 56px;
+  height: 1px;
+  background: rgba(28, 43, 34, 0.3);
+  margin: 22px 0;
+}
+
+.s3-subcopy {
+  font-size: 16px;
+  line-height: 1.55;
+  color: #3a453e;
+  max-width: 36ch;
+}
+
+.s3-scroll-cue {
+  position: absolute;
+  left: 100px;
+  bottom: 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: 0.85;
 }
 
 /* ---------- Responsive ----------
@@ -735,7 +945,6 @@ img { display: block; max-width: none; }
    at real phone widths, it does not resize anything itself. */
 
 @media (max-width: 640px) {
-  .hero-nav-links { display: none; }
+  .site-nav { display: none; }
   .script-accent { display: none; }
-  .page-progress { right: 16px; }
 }

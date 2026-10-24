@@ -1,0 +1,6 @@
+import Breadcrumb from '../shared/Breadcrumb';
+import SceneMotion from '../shared/SceneMotion';
+import {npsVisitorsContent} from '@/content/pages/npsVisitors';
+import type {EditorialHeroProps} from '../shared/EditorialHero';
+import styles from './Hero.module.css';
+export default function Hero({breadcrumb,headline,tagline,stats=[]}:Omit<EditorialHeroProps,'kind'>){return <><section className={styles.hero} data-stage><Breadcrumb items={breadcrumb} className={styles.breadcrumb}/><div className={styles.title} data-guest-title><h1>{headline}</h1><p>Some visits<br/>stay with us.</p><span>THE NIRAJ GUEST BOOK / SINCE 1995</span></div><div className={styles.tickets}>{npsVisitorsContent.eras.map((era,i)=><a className={styles.ticket} data-ticket data-position={i} href={'#era-'+era.key} key={era.key}><span>FROM THE GUEST BOOK</span><strong>{era.visitors[0].name}</strong><small>{era.visitors[0].date}</small><i aria-hidden="true">NPS</i></a>)}</div><p className={styles.tagline}>{tagline}</p><div className={styles.bottom}><a href="#page-collection">Follow the timeline <span>&darr;</span></a><div>{stats.map(s=><p key={s.label}><strong>{s.value}{s.suffix}</strong><span>{s.label}</span></p>)}</div></div><div className={styles.postmark} aria-hidden="true">NIRAJ<br/><span>EST. 1986</span></div></section><SceneMotion scene="visitors"/></>}
