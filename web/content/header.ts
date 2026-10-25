@@ -30,6 +30,7 @@ export interface HeaderContent {
   navLinks: HeaderNavLink[];
   parentLoginLabel: string;
   parentLoginHref: string;
+  digitalLibraryHref: string;
 }
 
 export const headerContent: HeaderContent = {
@@ -187,5 +188,6 @@ export const headerContent: HeaderContent = {
     { label: "Gallery", href: "/gallery" },
   ],
   parentLoginLabel: "Parent Login",
-  parentLoginHref: "#",
+  parentLoginHref: "https://niraj.myclassboard.com/",
+  digitalLibraryHref: "https://crewgame4.wixsite.com/digitallibrary",
 };

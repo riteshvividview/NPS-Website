@@ -8,3 +8,10 @@
 @media(max-width:800px){.hero{padding:115px 6vw 35px}.layout{grid-template-columns:1fr;gap:42px}.bookStage{width:min(65vw,280px)}.copy h2{font-size:clamp(48px,10vw,75px)}.pages h3{font-size:34px}.ink{width:130px;bottom:125px;right:0;opacity:.35}.bottom{margin-top:34px}.bottom>div{gap:15px}.bottom p{flex-direction:column;align-items:start;gap:4px;font-size:8px}.bottom strong{font-size:32px}}
 @media(max-width:380px){.pages h3{font-size:29px}.pages h3{margin-top:18px}.pages p{font-size:10px}.pageNumber{margin-top:12px}}
 @media(prefers-reduced-motion:reduce){.book,.cover{transition:none}}
+
+/* Story atlas: the interactive book remains on its original plane. */
+.hero{background:radial-gradient(ellipse at 78% 32%,#d7e1e2 0,transparent 57%),linear-gradient(120deg,#f5f0e3 20%,#e9ece3 65%,#dbe5e5);isolation:isolate}
+.breadcrumb,.layout,.bottom{position:relative;z-index:1}
+.bookStage::before{content:"";position:absolute;inset:-22px -30px 50px;border:1px solid #718c8c25;border-radius:50% 50% 10px 10px;transform:rotate(-8deg);pointer-events:none}
+.ink{z-index:1}
+@media(max-width:800px){.hero{background:radial-gradient(ellipse at 75% 65%,#d0e0e3,transparent 52%),#f5f0e3}.bookStage::before{inset:-18px -26px 45px}.bottom{background:#f3efdf88;border-radius:0 0 12px 12px}.ink{opacity:.35}}

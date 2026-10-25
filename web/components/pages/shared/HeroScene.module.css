@@ -1,0 +1,9 @@
+.scene{position:absolute;inset:0;pointer-events:none;overflow:clip;z-index:0;--travel:0px;--draw:.72}
+.grain{position:absolute;inset:0;background-image:radial-gradient(currentColor .6px,transparent .6px);background-size:7px 7px;opacity:.045}
+.art{position:absolute;right:-1%;top:95px;width:58%;height:calc(100% - 120px);overflow:visible;transform:translateY(var(--travel));will-change:transform}
+.draw{stroke-dasharray:1;stroke-dashoffset:var(--draw)}
+.drift{transform:translateY(calc(var(--travel) * -.35))}
+.authors{color:#526d72}
+.careers{color:#e6d8ac}
+@media(max-width:800px){.art{top:auto;bottom:85px;right:-12%;width:125%;height:490px}.careers .art{bottom:10px;height:520px}.grain{opacity:.035}}
+@media(prefers-reduced-motion:reduce){.art,.drift{transform:none;will-change:auto}.draw{stroke-dashoffset:0}}

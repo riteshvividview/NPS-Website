@@ -7,6 +7,8 @@ import IscExplorer from "./IscExplorer";
 import TransportExplorer from "./TransportExplorer";
 import { NextProgram } from "./LearningTools";
 import s from "./Programs.module.css";
+import HeroScene from "../shared/HeroScene";
+import career from "./CareerHero.module.css";
 
 export function IscPage() {
   return (
@@ -212,10 +214,11 @@ export function CareersPage() {
     <main className={s.page}>
       <ProgramMotion kind="careers" />
       <section
-        className={`${s.hero} ${s.careerHero}`}
+        className={`${s.hero} ${s.careerHero} ${career.hero}`}
         data-program-stage
         data-light
       >
+        <HeroScene kind="careers" />
         <div className={s.heroCopy} data-hero-copy>
           <span className={s.eyebrow}>CAREERS / TEACH AT NIRAJ</span>
           <h1>
@@ -228,7 +231,7 @@ export function CareersPage() {
             teaching opportunities at Niraj Public School, Hyderabad.
           </p>
           <div className={s.heroFoot}>
-            <a className={`${s.button} ${s.solid}`} href="#opportunities">
+            <a className={s.button} href="#opportunities">
               Find your place &darr;
             </a>
           </div>

@@ -1,965 +1,109 @@
-/* ---------- Floating shell ----------
-   .siteHeader is an unstyled positioned "stage" — fixed with a margin on
-   all sides, which is what makes the header read as a detached floating
-   bar rather than an edge-to-edge static strip. All visible chrome
-   (background, blur, shadow, rounding) lives on .siteHeaderInner, so the
-   hide/show transform and the mobile panel (a sibling of the inner bar,
-   positioned against this same stage) both stay simple. */
-.siteHeader {
-  position: fixed;
-  top: 16px;
-  left: 16px;
-  right: 16px;
-  z-index: 50;
-  margin: 0 auto;
-  max-width: 1320px;
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.siteHeader:global(.is-hidden) {
-  transform: translateY(-140%);
-}
-
-.siteHeaderInner {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 13px 26px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.58);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(18px) saturate(1.4);
-  -webkit-backdrop-filter: blur(18px) saturate(1.4);
-  box-shadow: 0 10px 30px rgba(20, 40, 30, 0.07);
-  transition: background 0.45s ease, box-shadow 0.45s ease, border-color 0.45s ease, padding 0.3s ease;
-}
-
-/* Scrolled past the top of the page: the glass goes from a light see-
-   through tint (so it blends over a hero image) to a denser, more opaque
-   surface with a firmer shadow — the "header colors change on scroll"
-   the user asked for. */
-.siteHeader:global(.is-scrolled) .siteHeaderInner {
-  background: rgba(255, 255, 255, 0.92);
-  border-color: rgba(28, 43, 34, 0.08);
-  box-shadow: 0 18px 44px rgba(20, 40, 30, 0.16);
-}
-
-/* ---------- Brand / logo ---------- */
-
-.brand {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  text-decoration: none;
-  color: var(--ink);
-  flex-shrink: 0;
-}
-
-.brandRing {
-  position: absolute;
-  inset: -7px 4px auto -7px;
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  border: 1.5px dashed var(--green-mid);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-.brand:hover .brandRing {
-  opacity: 0.55;
-  animation: brandRingSpin 5s linear infinite;
-}
-@keyframes brandRingSpin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .brandRing {
-    animation: none !important;
-  }
-}
-
-.brandMark {
-  width: 40px;
-  height: 40px;
-  flex-shrink: 0;
-  object-fit: contain;
-  transform: perspective(400px) rotateX(var(--by, 0deg)) rotateY(var(--bx, 0deg));
-  transition: transform 0.35s ease;
-}
-.brandText {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.15;
-}
-.brandName {
-  font-family: var(--font-fraunces), serif;
-  font-weight: 600;
-  font-size: 19px;
-  white-space: nowrap;
-}
-.brandTagline {
-  font-family: var(--font-ibm-plex-mono), monospace;
-  font-size: 9px;
-  letter-spacing: 0.14em;
-  color: var(--green-mid);
-  margin-top: 2px;
-}
-
-/* ---------- Primary nav + magnetic links ---------- */
-
-.siteNav {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  font-size: 14.5px;
-  font-weight: 500;
-}
-.siteNav > a {
-  display: inline-block;
-  color: var(--ink);
-  text-decoration: none;
-  opacity: 0.92;
-  transition: opacity 0.2s;
-  white-space: nowrap;
-  will-change: transform;
-}
-.siteNav > a:hover {
-  opacity: 1;
-}
-
-.siteHeaderActions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-shrink: 0;
-}
-
-/* ---------- Desktop mega-dropdown (e.g. "The Place") ---------- */
-
-.navItemDropdown {
-  position: relative;
-}
-
-.navDropdownTrigger {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  border: none;
-  background: none;
-  padding: 0;
-  font: inherit;
-  color: var(--ink);
-  cursor: pointer;
-  opacity: 0.92;
-  transition: opacity 0.2s;
-  will-change: transform;
-}
-.navItemDropdown:global(.is-open) .navDropdownTrigger,
-.navDropdownTrigger:hover,
-.navDropdownTrigger:focus-visible {
-  opacity: 1;
-}
-.navDropdownTrigger svg {
-  width: 10px;
-  height: 10px;
-  transition: transform 0.25s ease;
-}
-.navItemDropdown:global(.is-open) .navDropdownTrigger svg {
-  transform: rotate(180deg);
-}
-
-.navDropdownPanel {
-  position: absolute;
-  top: calc(100% + 18px);
-  left: 50%;
-  transform: translate(-50%, -10px);
-  display: grid;
-  grid-template-columns: 1fr 220px;
-  gap: 6px;
-  width: 580px;
-  background: #fff;
-  border-radius: 26px;
-  padding: 14px;
-  box-shadow: 0 30px 60px rgba(20, 40, 30, 0.18), 0 6px 20px rgba(20, 40, 30, 0.08);
-  opacity: 0;
-  visibility: hidden;
-  overflow: hidden;
-  isolation: isolate;
-  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
-}
-/* Invisible bridge so the cursor can travel from the trigger down to the
-   panel (which sits 18px below it) without a gap that would read as
-   "left the dropdown" to the hover-intent JS. */
-.navDropdownPanel::before {
-  content: "";
-  position: absolute;
-  top: -18px;
-  left: 0;
-  right: 0;
-  height: 18px;
-}
-.navItemDropdown:global(.is-open) .navDropdownPanel {
-  opacity: 1;
-  visibility: visible;
-  transform: translate(-50%, 0);
-}
-
-/* ---------- A little pair of eyes, tucked in the panel's top-right
-   corner, that actually watch the cursor — see useHeaderInteractions.ts,
-   which tracks each pupil toward the mouse independently (so they
-   converge the way real eyes would) and recenters them on mouse-leave.
-   Blink on their own, on a plain CSS loop, whether or not the panel is
-   being watched back. ---------- */
-
-.megaEyes {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  z-index: 2;
-  display: flex;
-  gap: 7px;
-  pointer-events: none;
-}
-
-.megaEye {
-  position: relative;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: #fff;
-  border: 1.5px solid rgba(28, 43, 34, 0.16);
-  box-shadow: 0 2px 6px rgba(20, 40, 30, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: megaEyeBlink 6.4s ease-in-out infinite;
-}
-.megaEye:nth-child(2) {
-  animation-delay: -0.12s;
-}
-
-.megaEyePupil {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--green-deep);
-}
-
-@keyframes megaEyeBlink {
-  0%,
-  92%,
-  100% {
-    transform: scaleY(1);
-  }
-  95% {
-    transform: scaleY(0.12);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .megaEye {
-    animation: none;
-  }
-  .megaEyePupil {
-    transform: none !important;
-  }
-}
-
-.megaLinks {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding-right: 10px;
-  border-right: 1px solid rgba(28, 43, 34, 0.08);
-}
-
-/* The glowing highlight that glides to whichever link is hovered — see
-   useHeaderInteractions.ts, which animates its y-offset/height to match
-   the hovered .megaLink's own position within this (positioned) parent. */
-.megaLinkGlow {
-  position: absolute;
-  top: 0;
-  left: 4px;
-  right: 4px;
-  height: 0;
-  border-radius: 13px;
-  background: linear-gradient(120deg, rgba(20, 55, 31, 0.1), rgba(201, 162, 39, 0.18));
-  opacity: 0;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.megaLink {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  padding: 9px 10px;
-  border-radius: 13px;
-  color: var(--ink);
-  text-decoration: none;
-  font-size: 13.5px;
-  font-weight: 500;
-  white-space: nowrap;
-  transition: transform 0.15s ease;
-}
-.megaLink:hover {
-  transform: translateX(2px);
-}
-.megaLinkIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 10px;
-  background: rgba(28, 43, 34, 0.06);
-  color: var(--green-deep);
-  flex-shrink: 0;
-  transition: background 0.15s ease, color 0.15s ease;
-}
-.megaLinkIcon svg {
-  width: 15px;
-  height: 15px;
-}
-.megaLink:hover .megaLinkIcon {
-  background: var(--green-deep);
-  color: #fff;
-}
-
-/* ---------- Mega "feature" — an image that changes with whichever link
-   is hovered (see useHeaderInteractions.ts), plus a fixed text teaser
-   and CTA below it. ---------- */
-
-.megaFeature {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  gap: 8px;
-  padding: 12px 14px 16px;
-  border-radius: 19px;
-  background: rgba(28, 43, 34, 0.035);
-  text-decoration: none;
-  color: var(--ink);
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-.megaFeature:hover {
-  background: rgba(28, 43, 34, 0.06);
-  transform: translateY(-2px);
-}
-
-.megaFeatureVisual {
-  position: relative;
-  width: 100%;
-  height: 112px;
-  border-radius: 14px;
-  overflow: hidden;
-  background: linear-gradient(160deg, rgba(201, 162, 39, 0.16), rgba(26, 74, 56, 0.12));
-  flex-shrink: 0;
-  margin-bottom: 2px;
-}
-.megaFeatureImg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: opacity 0.4s ease;
-}
-
-.megaFeatureTitle {
-  font-family: var(--font-fraunces), serif;
-  font-weight: 600;
-  font-size: 15.5px;
-  line-height: 1.3;
-}
-.megaFeatureText {
-  font-size: 12px;
-  line-height: 1.5;
-  color: #56604f;
-}
-.megaFeatureCta {
-  margin-top: 4px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--green-deep);
-}
-.megaFeatureCta svg {
-  width: 11px;
-  height: 11px;
-}
-
-.iconBtn {
-  width: 38px;
-  height: 38px;
-  border-radius: 999px;
-  border: none;
-  background: rgba(255, 255, 255, 0.85);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--ink);
-  cursor: pointer;
-  backdrop-filter: blur(4px);
-  flex-shrink: 0;
-  transition: transform 0.2s ease, background 0.2s ease;
-}
-.iconBtn:hover {
-  background: #fff;
-  transform: translateY(-1px);
-}
-
-.pillBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--green-deep);
-  color: #fff;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
-  padding: 11px 20px;
-  border-radius: 999px;
-  white-space: nowrap;
-  flex-shrink: 0;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-.pillBtn:hover {
-  background: var(--green-mid);
-  transform: translateY(-1px);
-}
-
-/* ---------- Hamburger / mobile nav panel (≤640px only) ---------- */
-
-.menuBtn {
-  display: none;
-  position: relative;
-  width: 38px;
-  height: 38px;
-  border-radius: 999px;
-  border: none;
-  background: rgba(255, 255, 255, 0.85);
-  color: var(--ink);
-  cursor: pointer;
-  flex-shrink: 0;
-  backdrop-filter: blur(4px);
-}
-
-.menuBtnIcon,
-.menuBtnIconClose {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-.menuBtnIconClose {
-  opacity: 0;
-  transform: scale(0.7) rotate(-45deg);
-}
-.siteHeader:global(.is-menu-open) .menuBtnIcon {
-  opacity: 0;
-  transform: scale(0.7) rotate(45deg);
-}
-.siteHeader:global(.is-menu-open) .menuBtnIconClose {
-  opacity: 1;
-  transform: scale(1) rotate(0deg);
-}
-
-.mobileNav {
-  display: none;
-}
-
-.mobileNavScrim {
-  display: none;
-}
-
-@media (max-width: 640px) {
-  .siteHeader {
-    top: 10px;
-    left: 10px;
-    right: 10px;
-  }
-
-  .siteHeaderInner {
-    border-radius: 26px;
-    padding: 12px clamp(14px, 4vw, 20px);
-    gap: 10px;
-  }
-
-  .siteNav {
-    display: none;
-  }
-
-  .menuBtn {
-    display: block;
-  }
-
-  /* Positioned below the floating inner bar via top:100% of the outer
-     .siteHeader (the nearest positioned ancestor, whose own box matches
-     the inner bar's rendered height) rather than a guessed pixel offset. */
-  .mobileNav {
-    display: flex;
-    position: absolute;
-    z-index: 2;
-    top: calc(100% + 8px);
-    left: 0;
-    right: 0;
-    flex-direction: column;
-    background: var(--paper);
-    border-radius: 24px;
-    padding: 12px 20px 24px;
-    max-height: calc(100vh - 100px);
-    max-height: calc(100dvh - 100px);
-    overflow-y: auto;
-    box-shadow: 0 20px 40px rgba(20, 40, 30, 0.18);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-8px);
-    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
-  }
-  .siteHeader:global(.is-menu-open) .mobileNav {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-  }
-  .mobileNav > a {
-    padding: 14px 2px;
-    border-bottom: 1px solid rgba(28, 43, 34, 0.1);
-    color: var(--ink);
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: 500;
-  }
-  .mobileNav > a:last-of-type {
-    border-bottom: none;
-  }
-
-  /* ---------- Mobile nav accordion (e.g. "The Place") ---------- */
-
-  .mobileNavGroup {
-    border-bottom: 1px solid rgba(28, 43, 34, 0.1);
-  }
-
-  .mobileNavGroupTrigger {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    border: none;
-    background: none;
-    padding: 14px 2px;
-    font: inherit;
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--ink);
-    cursor: pointer;
-  }
-  .mobileNavGroupTrigger svg {
-    width: 11px;
-    height: 11px;
-    flex-shrink: 0;
-    transition: transform 0.25s ease;
-  }
-  .mobileNavGroup:global(.is-open) .mobileNavGroupTrigger svg {
-    transform: rotate(180deg);
-  }
-
-  .mobileNavSubPanel {
-    display: flex;
-    flex-direction: column;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-  }
-  .mobileNavGroup:global(.is-open) .mobileNavSubPanel {
-    max-height: 420px;
-  }
-
-  .mobileSubLink {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 2px;
-    color: var(--ink);
-    opacity: 0.85;
-    text-decoration: none;
-    font-size: 14.5px;
-  }
-  .mobileSubLink:first-child {
-    padding-top: 2px;
-  }
-  .mobileSubLink:last-child {
-    padding-bottom: 14px;
-  }
-  .mobileSubLinkIcon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    border-radius: 9px;
-    background: rgba(28, 43, 34, 0.06);
-    color: var(--green-deep);
-    flex-shrink: 0;
-  }
-  .mobileSubLinkIcon svg {
-    width: 13px;
-    height: 13px;
-  }
-
-  /* ".mobileNav > a" above also matches this (it's an <a> directly under
-     .mobileNav) and is more specific by one type selector, so it would
-     otherwise win and paint this text in --ink on the dark green pill —
-     the extra ".mobileNavPill" here is what makes this rule specific
-     enough to actually override it. */
-  .mobileNav > a.mobileNavPill {
-    margin-top: 16px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: var(--green-deep);
-    color: #fff;
-    text-decoration: none;
-    font-size: 15px;
-    font-weight: 500;
-    padding: 13px 20px;
-    border-radius: 999px;
-    border-bottom: none;
-  }
-
-  /* position:absolute (not fixed) so it resolves against .siteHeader —
-     the nearest positioned ancestor — the same way .mobileNav does;
-     position:fixed here would instead resolve top:100% against the
-     viewport and push it a full screen-height down. Starting right at
-     the header's bottom edge keeps it from ever covering the header's
-     own brand/menu-button content, so it doesn't need to out-stack them. */
-  .mobileNavScrim {
-    display: block;
-    position: absolute;
-    z-index: 1;
-    top: 100%;
-    left: 0;
-    right: 0;
-    height: 100vh;
-    height: 100dvh;
-    background: rgba(15, 30, 20, 0.35);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.25s ease, visibility 0.25s;
-  }
-  .siteHeader:global(.is-menu-open) .mobileNavScrim {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .brand {
-    gap: 8px;
-    min-width: 0;
-  }
-
-  .brandMark {
-    width: clamp(28px, 9vw, 36px);
-    height: clamp(28px, 9vw, 36px);
-  }
-
-  .brandText {
-    min-width: 0;
-  }
-
-  .brandName {
-    font-size: clamp(13px, 4vw, 17px);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .brandTagline {
-    font-size: 7.5px;
-    letter-spacing: 0.1em;
-  }
-
-  .siteHeaderActions {
-    gap: 8px;
-  }
-
-  /* The hamburger now gives full nav access, so the standalone search
-     button is redundant weight competing with the brand name for the
-     little width a phone header has. */
-  .iconBtn {
-    display: none;
-  }
-
-  .pillBtn {
-    padding: 8px clamp(10px, 3.2vw, 16px);
-    font-size: clamp(11px, 3.2vw, 13px);
-    gap: 6px;
-  }
-}
-
-@media (max-width: 370px) {
-  .brandTagline {
-    display: none;
-  }
-}
-
-/* Mega-dropdown panel doesn't fit a narrow viewport — collapses into the
-   hamburger panel below 640px already, nothing further needed here, but
-   guard tablet widths where the full pill may still be slightly tight. */
-@media (max-width: 900px) and (min-width: 641px) {
-  .siteNav {
-    gap: 16px;
-  }
-  .navDropdownPanel {
-    width: 480px;
-    grid-template-columns: 1fr 180px;
-  }
-}
-
-/* Homepage-only tablet navigation; other pages retain their existing breakpoints. */
+/* Floating navigation - shared across every route. */
+.siteHeader{position:fixed;top:16px;left:24px;right:24px;z-index:50;margin:auto;max-width:1360px;transition:transform .35s cubic-bezier(.22,1,.36,1);color:#203c30;-webkit-tap-highlight-color:transparent}
+.siteHeader:global(.is-hidden){transform:translateY(-150%)}
+.siteHeader:global(.is-menu-open){transform:none}
+.siteHeaderInner{position:relative;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:12px 22px;border-radius:24px;background:#faf9f0eb;border:1px solid #fff9;backdrop-filter:blur(22px);box-shadow:0 10px 38px #122e2412,inset 0 1px #fff;transition:background .3s,box-shadow .3s}
+.siteHeader:global(.is-scrolled) .siteHeaderInner{background:#fbfaf4f5;box-shadow:0 14px 40px #122e2420}
+.brand{position:relative;display:flex;align-items:center;gap:10px;text-decoration:none;color:#203c30;flex-shrink:0}
+.brandRing{position:absolute;left:-5px;top:-5px;width:50px;height:50px;border:1px dashed #ad9559;border-radius:50%;opacity:0;transition:opacity .25s}
+.brand:hover .brandRing{opacity:.6;animation:ring 12s linear infinite}
+@keyframes ring{to{transform:rotate(360deg)}}
+.brandMark{width:40px;height:40px;object-fit:contain;transform:perspective(400px) rotateX(var(--by,0deg)) rotateY(var(--bx,0deg));transition:transform .3s}
+.brandText{display:flex;flex-direction:column;line-height:1.15;min-width:0}
+.brandName{font:600 18px var(--font-fraunces);white-space:nowrap;letter-spacing:-.04em}
+.brandTagline{font:8px var(--font-ibm-plex-mono);letter-spacing:.16em;color:#637d65;margin-top:4px}
+.siteNav{display:flex;align-items:center;gap:19px;font-size:13px;font-weight:500}
+.siteNav>a,.navDropdownTrigger{position:relative;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;color:#203c30;text-decoration:none;background:none;border:0;padding:12px 0;font:inherit;cursor:pointer}
+.siteNav>a::after,.navDropdownTrigger::after{content:'';position:absolute;bottom:5px;left:0;width:100%;height:2px;background:#a98a48;transform:scaleX(0);transform-origin:left;transition:transform .25s}
+.siteNav>a:hover::after,.navItemDropdown:global(.is-open) .navDropdownTrigger::after{transform:scaleX(1)}
+.navDropdownTrigger svg{width:10px;height:10px;transition:transform .3s}
+.navItemDropdown:global(.is-open) .navDropdownTrigger svg{transform:rotate(180deg)}
+.siteHeaderActions{display:flex;align-items:center;gap:9px;flex-shrink:0}
+.iconBtn,.menuBtn{width:40px;height:40px;border:1px solid #213e3020;border-radius:50%;background:transparent;display:flex;align-items:center;justify-content:center;color:#203c30;cursor:pointer}
+.iconBtn:hover{background:#e9eddf}
+.pillBtn{display:inline-flex;align-items:center;gap:13px;border-radius:15px;background:#173d2a;color:#fff9e8;text-decoration:none;font-size:12px;font-weight:600;padding:12px 17px;white-space:nowrap;transition:background .25s,transform .25s}
+.pillBtn:hover{background:#30573a;transform:translateY(-2px)}
+.pillBtn svg{width:13px;height:13px}
+.siteHeader a:focus-visible,.siteHeader button:focus-visible{outline:2px solid #ba9651;outline-offset:4px}
+/* Editorial dropdown: a drawn chapter heading, links and photographic postcard. */
+.navDropdownPanel{position:absolute;top:calc(100% + 12px);left:50%;width:min(740px,calc(100vw - 64px));display:grid;grid-template-columns:1.15fr 1fr;gap:18px;padding:24px;background:#faf8ef;border:1px solid #dcdacb;border-radius:24px;box-shadow:0 25px 70px #132c2933;opacity:0;visibility:hidden;transform:translate(-50%,-10px) scale(.98);transform-origin:50% 0;transition:opacity .22s,transform .36s cubic-bezier(.22,1,.36,1),visibility .36s;isolation:isolate}
+.navDropdownPanel::before{content:'';position:absolute;top:-15px;left:0;right:0;height:16px}
+@media(min-width:1101px) and (max-height:700px){.navDropdownPanel{max-height:calc(100dvh - 110px);overflow-y:auto;overscroll-behavior:contain}}
+.navItemDropdown:global(.is-open) .navDropdownPanel{opacity:1;visibility:visible;transform:translate(-50%,0) scale(1)}
+.panelHeading{grid-column:1/-1;position:relative;min-height:76px;border-bottom:1px solid #203c3025;padding-bottom:17px;overflow:hidden}
+.panelHeading>span{display:block;font:9px var(--font-ibm-plex-mono);letter-spacing:.15em;color:#65755d;margin-bottom:8px}
+.panelHeading>strong{font:400 35px/1 var(--font-fraunces);letter-spacing:-.045em}
+.menuDrawing{width:190px;height:86px;color:#86976d;pointer-events:none}
+.panelHeading .menuDrawing{position:absolute;right:50px;top:-7px}
+.drawTrail{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .8s ease .1s}
+.navItemDropdown:global(.is-open) .drawTrail,.siteHeader:global(.is-menu-open) .drawTrail{stroke-dashoffset:0}
+.megaLinks{position:relative;display:flex;flex-direction:column;gap:3px;align-self:start;padding-right:4px}
+.megaLinkGlow{position:absolute;top:0;left:0;right:0;height:0;border-radius:12px;background:#e6ead9;opacity:0;pointer-events:none}
+.megaLink{position:relative;display:flex;align-items:center;gap:11px;padding:10px 8px;border-radius:12px;color:#203c30;text-decoration:none;font-size:13px;font-weight:500;min-height:44px}
+.megaLinkIcon{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid #203c301c;border-radius:50%;color:#456c4c;flex-shrink:0;transition:background .2s,color .2s}
+.megaLinkIcon svg{width:15px;height:15px}
+.megaLink:hover .megaLinkIcon{background:#234c35;color:#faf8ef}
+.linkArrow{margin-left:auto;opacity:0;transform:translateX(-5px);transition:opacity .2s,transform .2s}
+.megaLink:hover .linkArrow,.megaLink:focus-visible .linkArrow{opacity:1;transform:none}
+.megaFeature{position:relative;display:flex;flex-direction:column;gap:10px;padding:12px 12px 18px;border-radius:17px;background:#e5e9db;color:#203c30;text-decoration:none;overflow:hidden}
+.navDropdownPanel[data-menu-theme='1'] .megaFeature{background:#ece0d1}
+.navDropdownPanel[data-menu-theme='2'] .megaFeature{background:#dde7e8}
+.megaFeatureVisual{position:relative;height:146px;width:100%;overflow:hidden;border-radius:10px;flex-shrink:0;background:#d2dbcc}
+.megaFeatureImg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .3s,transform .6s}
+.megaFeature:hover .megaFeatureImg{transform:scale(1.04)}
+.megaFeatureTitle{font:500 20px/1.15 var(--font-fraunces);letter-spacing:-.035em}
+.megaFeatureText{font-size:12px;line-height:1.6;color:#53604e}
+.megaFeatureCta{display:flex;align-items:center;gap:10px;margin-top:auto;padding-top:10px;font:10px var(--font-ibm-plex-mono);letter-spacing:.04em;text-transform:uppercase}
+.megaFeatureCta svg{width:12px;height:12px}
+.megaEyes{position:absolute;right:28px;top:20px;z-index:3;display:flex;gap:6px;pointer-events:none}
+.megaEye{width:28px;height:30px;border-radius:50%;background:#fff;border:1px solid #203c3025;box-shadow:0 3px 8px #172e2915;display:flex;align-items:center;justify-content:center;animation:blink 6.4s ease-in-out infinite}
+.megaEye:nth-child(2){animation-delay:-.12s}
+.megaEyePupil{width:10px;height:10px;background:#234a35;border-radius:50%}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.12)}}
+.menuBtn{display:none;position:relative;background:#e9eddf}
+.menuBtnIcon,.menuBtnIconClose{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transition:opacity .25s,transform .35s}
+.menuBtnIconClose{opacity:0;transform:rotate(-90deg) scale(.5)}
+.siteHeader:global(.is-menu-open) .menuBtnIcon{opacity:0;transform:rotate(90deg) scale(.5)}
+.siteHeader:global(.is-menu-open) .menuBtnIconClose{opacity:1;transform:none}
+.mobileNav,.mobileNavScrim{display:none}
+.floatingShortcuts{position:fixed;right:20px;bottom:24px;z-index:45;display:flex;flex-direction:column;gap:9px;transition:opacity .2s,visibility .2s}
+.floatingShortcuts a{display:flex;align-items:center;gap:10px;padding:13px 16px;border-radius:16px;background:#173c33;color:#fff7e3;border:1px solid #e5d5ae60;box-shadow:0 5px 22px #122d2925;text-decoration:none;font-size:12px;font-weight:600;transition:transform .2s,background .2s;-webkit-tap-highlight-color:transparent}
+.floatingShortcuts a:last-child{background:#f3e7c8;color:#203c30}
+.floatingShortcuts svg{width:17px;height:17px;flex-shrink:0}.floatingShortcuts a>svg:last-child{width:12px;margin-left:auto}
+.floatingShortcuts a:hover{transform:translateY(-3px)}.floatingShortcuts a:focus-visible{outline:2px solid #ba9651;outline-offset:4px}
+.siteHeader:global(.is-menu-open)~.floatingShortcuts{opacity:0;visibility:hidden;pointer-events:none}
+@media(max-width:600px){.floatingShortcuts{right:12px;bottom:max(12px,env(safe-area-inset-bottom));flex-direction:row;gap:6px}.floatingShortcuts a{padding:10px;font-size:10px;border-radius:12px;gap:6px}.floatingShortcuts a>svg:last-child{display:none}.floatingShortcuts svg{width:15px;height:15px}}
+@media(min-width:1101px) and (max-width:1250px){.siteNav{gap:12px;font-size:12px}.siteHeaderInner{padding:12px 16px;gap:12px}.brandName{font-size:16px}.brandMark{width:34px;height:34px}.pillBtn{padding:12px}.iconBtn{display:none}}
 @media(max-width:1100px){
-  :global(body:has(#hero)) .siteHeader {
-    top: 10px;
-    left: 10px;
-    right: 10px;
-  }
-
-  :global(body:has(#hero)) .siteHeaderInner {
-    border-radius: 26px;
-    padding: 12px clamp(14px, 4vw, 20px);
-    gap: 10px;
-  }
-
-  :global(body:has(#hero)) .siteNav {
-    display: none;
-  }
-
-  :global(body:has(#hero)) .menuBtn {
-    display: block;
-  }
-
-  /* Positioned below the floating inner bar via top:100% of the outer
-     :global(body:has(#hero)) .siteHeader (the nearest positioned ancestor, whose own box matches
-     the inner bar's rendered height) rather than a guessed pixel offset. */
-  :global(body:has(#hero)) .mobileNav {
-    display: flex;
-    position: absolute;
-    z-index: 2;
-    top: calc(100% + 8px);
-    left: 0;
-    right: 0;
-    flex-direction: column;
-    background: var(--paper);
-    border-radius: 24px;
-    padding: 12px 20px 24px;
-    max-height: calc(100vh - 100px);
-    max-height: calc(100dvh - 100px);
-    overflow-y: auto;
-    box-shadow: 0 20px 40px rgba(20, 40, 30, 0.18);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-8px);
-    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
-  }
-  :global(body:has(#hero)) .siteHeader:global(.is-menu-open) .mobileNav {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-  }
-  :global(body:has(#hero)) .mobileNav > a {
-    padding: 14px 2px;
-    border-bottom: 1px solid rgba(28, 43, 34, 0.1);
-    color: var(--ink);
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: 500;
-  }
-  :global(body:has(#hero)) .mobileNav > a:last-of-type {
-    border-bottom: none;
-  }
-
-  /* ---------- Mobile nav accordion (e.g. "The Place") ---------- */
-
-  :global(body:has(#hero)) .mobileNavGroup {
-    border-bottom: 1px solid rgba(28, 43, 34, 0.1);
-  }
-
-  :global(body:has(#hero)) .mobileNavGroupTrigger {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    border: none;
-    background: none;
-    padding: 14px 2px;
-    font: inherit;
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--ink);
-    cursor: pointer;
-  }
-  :global(body:has(#hero)) .mobileNavGroupTrigger svg {
-    width: 11px;
-    height: 11px;
-    flex-shrink: 0;
-    transition: transform 0.25s ease;
-  }
-  :global(body:has(#hero)) .mobileNavGroup:global(.is-open) .mobileNavGroupTrigger svg {
-    transform: rotate(180deg);
-  }
-
-  :global(body:has(#hero)) .mobileNavSubPanel {
-    display: flex;
-    flex-direction: column;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-  }
-  :global(body:has(#hero)) .mobileNavGroup:global(.is-open) .mobileNavSubPanel {
-    max-height: 420px;
-  }
-
-  :global(body:has(#hero)) .mobileSubLink {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 2px;
-    color: var(--ink);
-    opacity: 0.85;
-    text-decoration: none;
-    font-size: 14.5px;
-  }
-  :global(body:has(#hero)) .mobileSubLink:first-child {
-    padding-top: 2px;
-  }
-  :global(body:has(#hero)) .mobileSubLink:last-child {
-    padding-bottom: 14px;
-  }
-  :global(body:has(#hero)) .mobileSubLinkIcon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    border-radius: 9px;
-    background: rgba(28, 43, 34, 0.06);
-    color: var(--green-deep);
-    flex-shrink: 0;
-  }
-  :global(body:has(#hero)) .mobileSubLinkIcon svg {
-    width: 13px;
-    height: 13px;
-  }
-
-  /* ".mobileNav > a" above also matches this (it's an <a> directly under
-     :global(body:has(#hero)) .mobileNav) and is more specific by one type selector, so it would
-     otherwise win and paint this text in --ink on the dark green pill —
-     the extra ".mobileNavPill" here is what makes this rule specific
-     enough to actually override it. */
-  :global(body:has(#hero)) .mobileNav > a.mobileNavPill {
-    margin-top: 16px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    background: var(--green-deep);
-    color: #fff;
-    text-decoration: none;
-    font-size: 15px;
-    font-weight: 500;
-    padding: 13px 20px;
-    border-radius: 999px;
-    border-bottom: none;
-  }
-
-  /* position:absolute (not fixed) so it resolves against .siteHeader —
-     the nearest positioned ancestor — the same way .mobileNav does;
-     position:fixed here would instead resolve top:100% against the
-     viewport and push it a full screen-height down. Starting right at
-     the header's bottom edge keeps it from ever covering the header's
-     own brand/menu-button content, so it doesn't need to out-stack them. */
-  :global(body:has(#hero)) .mobileNavScrim {
-    display: block;
-    position: absolute;
-    z-index: 1;
-    top: 100%;
-    left: 0;
-    right: 0;
-    height: 100vh;
-    height: 100dvh;
-    background: rgba(15, 30, 20, 0.35);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.25s ease, visibility 0.25s;
-  }
-  :global(body:has(#hero)) .siteHeader:global(.is-menu-open) .mobileNavScrim {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  :global(body:has(#hero)) .brand {
-    gap: 8px;
-    min-width: 0;
-  }
-
-  :global(body:has(#hero)) .brandMark {
-    width: clamp(28px, 9vw, 36px);
-    height: clamp(28px, 9vw, 36px);
-  }
-
-  :global(body:has(#hero)) .brandText {
-    min-width: 0;
-  }
-
-  :global(body:has(#hero)) .brandName {
-    font-size: clamp(13px, 4vw, 17px);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  :global(body:has(#hero)) .brandTagline {
-    font-size: 7.5px;
-    letter-spacing: 0.1em;
-  }
-
-  :global(body:has(#hero)) .siteHeaderActions {
-    gap: 8px;
-  }
-
-  /* The hamburger now gives full nav access, so the standalone search
-     button is redundant weight competing with the brand name for the
-     little width a phone header has. */
-  :global(body:has(#hero)) .iconBtn {
-    display: none;
-  }
-
-  :global(body:has(#hero)) .pillBtn {
-    padding: 8px clamp(10px, 3.2vw, 16px);
-    font-size: clamp(11px, 3.2vw, 13px);
-    gap: 6px;
-  }
-
-:global(body:has(#hero)) .siteHeaderInner{gap:8px;padding:10px 12px}
-:global(body:has(#hero)) .brand{flex:1;min-width:0}
-:global(body:has(#hero)) .siteHeaderActions{flex-shrink:0;gap:6px}
+.siteHeader{top:10px;left:12px;right:12px;max-width:760px}
+.siteHeaderInner{border-radius:22px;padding:10px 14px;gap:10px;z-index:4}
+.siteNav,.iconBtn{display:none}.menuBtn{display:flex}.brand{min-width:0;gap:8px}.brandName{font-size:17px}.brandMark{width:34px;height:34px}.brandTagline{font-size:7px}.siteHeaderActions{gap:8px}
+.mobileNav{display:flex;position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:3;flex-direction:column;padding:24px;background:#173c33;color:#f7f0dd;border:1px solid #aec2a541;border-radius:24px;max-height:calc(100dvh - 100px);overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#738b69 transparent;visibility:hidden;opacity:0;clip-path:inset(0 0 100% 0 round 24px);transform:translateY(-8px);transform-origin:top;transition:clip-path .48s cubic-bezier(.22,1,.36,1),transform .48s cubic-bezier(.22,1,.36,1),opacity .2s,visibility .48s;box-shadow:0 25px 70px #102c2940}
+.siteHeader:global(.is-menu-open) .mobileNav{visibility:visible;opacity:1;clip-path:inset(0 round 24px);transform:none}
+.mobileIntro{position:relative;padding:0 0 25px;margin-bottom:8px;border-bottom:1px solid #d9e0c632;min-height:90px}
+.mobileIntro>span{display:block;font:8px var(--font-ibm-plex-mono);letter-spacing:.17em;color:#c5ceac;margin-bottom:12px}
+.mobileIntro>strong{font:400 clamp(30px,6vw,42px)/1.1 var(--font-fraunces);letter-spacing:-.045em;position:relative;z-index:1}
+.mobileIntro em{font-style:normal;color:#d9bc7b}
+.mobileIntro .menuDrawing{position:absolute;right:-10px;bottom:0;width:130px;height:75px;color:#b1c29c;opacity:.65}
+.mobileNavGroup,.mobileNav>a:not(.mobileNavPill){border-bottom:1px solid #d9e0c625}
+.mobileNavGroupTrigger,.mobileNav>a:not(.mobileNavPill){display:flex;align-items:center;gap:14px;width:100%;padding:15px 0;color:#f7f0dd;font:400 23px/1.2 var(--font-fraunces);letter-spacing:-.035em;border-top:0;border-left:0;border-right:0;background:none;text-decoration:none;cursor:pointer;text-align:left}
+.mobileNavGroupTrigger{border-bottom:0}
+.menuNumber{font:9px var(--font-ibm-plex-mono);letter-spacing:0;color:#b1c29c;min-width:18px}
+.mobileNavGroupTrigger svg{width:13px;height:13px;margin-left:auto;transition:transform .3s;color:#d9bc7b}
+.mobileArrow{margin-left:auto;font-size:19px;color:#d9bc7b}
+.mobileNavGroup:global(.is-open) .mobileNavGroupTrigger svg{transform:rotate(180deg)}
+.mobileNavSubPanel{display:flex;flex-direction:column;max-height:0;overflow:hidden;visibility:hidden;opacity:0;transition:max-height .35s ease,opacity .25s,visibility .35s;padding-left:31px}
+.mobileNavGroup:global(.is-open) .mobileNavSubPanel{max-height:520px;visibility:visible;opacity:1}
+.mobileSubLink{display:flex;align-items:center;gap:10px;padding:10px 0;color:#e4e9da;font-size:13px;line-height:1.4;text-decoration:none}
+.mobileSubLink:last-child{padding-bottom:20px}.mobileSubLinkIcon{display:flex;align-items:center;justify-content:center;width:26px;height:26px;flex-shrink:0;border:1px solid #cad6ba33;border-radius:8px;color:#c7d1a9}.mobileSubLinkIcon svg{width:13px;height:13px}
+.mobileNavPill{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#e6cc93;color:#193f31;text-decoration:none;border-radius:14px;padding:16px 18px;margin-top:22px;font-size:14px;font-weight:600;flex-shrink:0}
+.mobileNavScrim{display:block;position:fixed;inset:-16px calc((min(100vw - 24px,760px) - 100vw)/2) auto;height:110dvh;background:#0e252b75;backdrop-filter:blur(6px);z-index:1;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.siteHeader:global(.is-menu-open) .mobileNavScrim{opacity:1;visibility:visible}
+.mobileNav{touch-action:pan-y;-webkit-overflow-scrolling:touch}
+.mobileNav>*{flex-shrink:0;opacity:0;transform:translateY(14px);transition:opacity .22s ease,transform .35s ease}
+.siteHeader:global(.is-menu-open) .mobileNav>*{opacity:1;transform:none;transition-delay:.08s}
+.siteHeader:global(.is-menu-open) .mobileNav>:nth-child(3){transition-delay:.11s}.siteHeader:global(.is-menu-open) .mobileNav>:nth-child(4){transition-delay:.14s}.siteHeader:global(.is-menu-open) .mobileNav>:nth-child(n+5){transition-delay:.17s}
 }
-@media(max-width:400px){:global(body:has(#hero)) .brandName{font-size:12px}:global(body:has(#hero)) .brandMark{width:26px;height:30px}:global(body:has(#hero)) .brand{gap:5px}:global(body:has(#hero)) .pillBtn{font-size:10px;padding:9px 10px}:global(body:has(#hero)) .siteHeaderInner{padding:10px;gap:5px}}
+@media(max-width:480px){.siteHeader{left:8px;right:8px}.siteHeaderInner{padding:10px;gap:6px;border-radius:20px}.brandName{font-size:14px}.brandMark{width:30px;height:32px}.brand{gap:6px;flex:1}.brandTagline{font-size:6px;letter-spacing:.1em}.siteHeaderActions{gap:6px}.pillBtn{font-size:10px;padding:11px 10px;gap:6px;border-radius:12px}.pillBtn svg{width:11px}.menuBtn{width:36px;height:36px;flex-shrink:0}.mobileNav{padding:22px 20px;border-radius:22px;max-height:calc(100dvh - 92px)}.mobileIntro .menuDrawing{opacity:.35;width:105px;right:-8px}.mobileNavGroupTrigger,.mobileNav>a:not(.mobileNavPill){font-size:22px;padding:14px 0}}
+@media(max-width:360px){.brandName{font-size:12px}.brandTagline{font-size:5.5px}.brandMark{width:26px}.siteHeaderInner{padding:9px 8px}.pillBtn{padding:10px 8px;font-size:9px}.pillBtn svg{display:none}.mobileIntro>strong{font-size:31px}}
+@media(prefers-reduced-motion:reduce){.siteHeader,.siteHeader *{animation:none!important;transition:none!important;scroll-behavior:auto!important}.megaEyePupil{transform:none!important}.drawTrail{stroke-dashoffset:0}.mobileNav>*{transform:none}}

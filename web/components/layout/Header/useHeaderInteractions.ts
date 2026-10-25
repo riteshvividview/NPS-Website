@@ -23,6 +23,7 @@ gsap.registerPlugin(ScrollTrigger);
 export function useHeaderInteractions() {
   useEffect(() => {
     const siteHeader = document.getElementById("site-header");
+    const cleanupFns: (() => void)[] = [];
 
     let closeMobileMenu = () => {};
     let closeAllDesktopDropdowns = () => {};
@@ -33,11 +34,12 @@ export function useHeaderInteractions() {
       // "header colors change on scroll" effect.
       const SCROLL_TINT_THRESHOLD = 10;
 
-      ScrollTrigger.create({
+      const scrollTrigger = ScrollTrigger.create({
         start: 0,
         end: "max",
         onUpdate: (self) => {
           siteHeader.classList.toggle("is-scrolled", window.scrollY > SCROLL_TINT_THRESHOLD);
+          if (siteHeader.classList.contains("is-menu-open")) return;
 
           if (window.scrollY < siteHeader.offsetHeight) {
             siteHeader.classList.remove("is-hidden");
@@ -50,9 +52,8 @@ export function useHeaderInteractions() {
           }
         },
       });
+      cleanupFns.push(() => scrollTrigger.kill());
     }
-
-    const cleanupFns: (() => void)[] = [];
 
     // ---------- Logo micro-tilt ----------
     // Cursor-driven tilt on the crest, same CSS-custom-property technique
@@ -133,6 +134,7 @@ export function useHeaderInteractions() {
       function open() {
         if (closeTimer) clearTimeout(closeTimer);
         if (isOpen) return;
+        closeAllDesktopDropdowns();
         isOpen = true;
         wrap.classList.add("is-open");
         trigger!.setAttribute("aria-expanded", "true");
@@ -268,6 +270,14 @@ export function useHeaderInteractions() {
         isOpen ? close() : open();
       };
       trigger.addEventListener("click", onTriggerClick);
+      const onFocusOut = (e: FocusEvent) => {
+        if (!wrap.contains(e.relatedTarget as Node)) scheduleClose();
+      };
+      const onPanelKey = (e: KeyboardEvent) => {
+        if (e.key === "Escape") { close(); trigger.focus(); }
+      };
+      wrap.addEventListener("focusout", onFocusOut);
+      panel.addEventListener("keydown", onPanelKey);
       window.addEventListener("nps:navigating", close);
       cleanupFns.push(() => window.removeEventListener("nps:navigating", close));
 
@@ -282,6 +292,8 @@ export function useHeaderInteractions() {
           el.removeEventListener("mouseleave", scheduleClose);
         });
         trigger.removeEventListener("click", onTriggerClick);
+        wrap.removeEventListener("focusout", onFocusOut);
+        panel.removeEventListener("keydown", onPanelKey);
         document.removeEventListener("click", onDocClick);
         if (closeTimer) clearTimeout(closeTimer);
       });
@@ -299,19 +311,24 @@ export function useHeaderInteractions() {
     const accordionCloseFns: (() => void)[] = [];
     document.querySelectorAll<HTMLElement>("[data-mobile-accordion]").forEach((group) => {
       const trigger = group.querySelector<HTMLButtonElement>("button");
+      const subPanel = group.querySelector<HTMLElement>("[id^='mobile-group-']");
       if (!trigger) return;
       let isOpen = false;
 
       function toggle() {
-        isOpen = !isOpen;
+        const next = !isOpen;
+        accordionCloseFns.forEach((fn) => fn());
+        isOpen = next;
         group.classList.toggle("is-open", isOpen);
         trigger!.setAttribute("aria-expanded", String(isOpen));
+        if (subPanel) subPanel.inert = !isOpen;
       }
       function collapse() {
         if (!isOpen) return;
         isOpen = false;
         group.classList.remove("is-open");
         trigger!.setAttribute("aria-expanded", "false");
+        if (subPanel) subPanel.inert = true;
       }
       accordionCloseFns.push(collapse);
 
@@ -326,6 +343,7 @@ export function useHeaderInteractions() {
 
     if (menuTrigger && mobileNav && mobileNavScrim) {
       let isOpen = false;
+      let previousOverflow = "";
 
       function open() {
         if (isOpen) return;
@@ -333,7 +351,10 @@ export function useHeaderInteractions() {
         siteHeader?.classList.add("is-menu-open");
         menuTrigger!.setAttribute("aria-expanded", "true");
         mobileNav!.removeAttribute("aria-hidden");
+        mobileNav!.inert = false;
+        previousOverflow = document.body.style.overflow;
         document.body.style.overflow = "hidden";
+        menuTrigger!.setAttribute("aria-label", "Close menu");
       }
 
       function close() {
@@ -342,7 +363,9 @@ export function useHeaderInteractions() {
         siteHeader?.classList.remove("is-menu-open");
         menuTrigger!.setAttribute("aria-expanded", "false");
         mobileNav!.setAttribute("aria-hidden", "true");
-        document.body.style.overflow = "";
+        mobileNav!.inert = true;
+        document.body.style.overflow = previousOverflow;
+        menuTrigger!.setAttribute("aria-label", "Open menu");
         collapseAllAccordions();
       }
       closeMobileMenu = close;
@@ -356,12 +379,19 @@ export function useHeaderInteractions() {
       mobileNavScrim.addEventListener("click", onScrimClick);
 
       const onLinkClick = (e: Event) => {
-        if ((e.target as HTMLElement).tagName === "A") close();
+        if ((e.target as HTMLElement).closest("a")) close();
       };
       mobileNav.addEventListener("click", onLinkClick);
 
       const onKeydown = (e: KeyboardEvent) => {
-        if (e.key === "Escape" && isOpen) close();
+        if (!isOpen) return;
+        if (e.key === "Escape") { close(); menuTrigger!.focus(); }
+        if (e.key === "Tab") {
+          const focusable = [menuTrigger!, ...Array.from(mobileNav!.querySelectorAll<HTMLElement>("a,button")).filter(el => !el.closest("[inert]") && el.getClientRects().length > 0)];
+          const index = focusable.indexOf(document.activeElement as HTMLElement);
+          const next = e.shiftKey ? (index <= 0 ? focusable.length - 1 : index - 1) : (index + 1) % focusable.length;
+          e.preventDefault(); focusable[next].focus();
+        }
       };
       document.addEventListener("keydown", onKeydown);
 
@@ -369,7 +399,8 @@ export function useHeaderInteractions() {
       // desktop window just getting wider) while the panel is open would
       // otherwise leave it stuck open under the now-visible desktop nav.
       const onResize = () => {
-        if (isOpen && window.innerWidth > 640) close();
+        if (isOpen && window.innerWidth > 1100) close();
+        if (window.innerWidth <= 1100) closeAllDesktopDropdowns();
       };
       window.addEventListener("resize", onResize);
 
@@ -379,7 +410,7 @@ export function useHeaderInteractions() {
         mobileNav.removeEventListener("click", onLinkClick);
         document.removeEventListener("keydown", onKeydown);
         window.removeEventListener("resize", onResize);
-        document.body.style.overflow = "";
+        close();
       });
     }
 
