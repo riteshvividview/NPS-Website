@@ -18,7 +18,7 @@ export default function HomeLoader() {
       document.documentElement.dataset.homeVisited = "true";
       setGone(true);
       const frame = requestAnimationFrame(() => {
-        document.querySelectorAll<HTMLImageElement>("main img, header img, footer img").forEach(img => { img.loading = "eager"; });
+        document.querySelectorAll<HTMLImageElement>("main img, header img, footer img").forEach(img => { if (img.getClientRects().length) img.loading = "eager"; });
         window.dispatchEvent(new Event("nps:home-ready"));
         ScrollTrigger.refresh();
       });
@@ -78,7 +78,7 @@ export default function HomeLoader() {
     });
     const frame = requestAnimationFrame(() => {
       const tasks: Promise<unknown>[] = [];
-      document.querySelectorAll<HTMLImageElement>("main img, header img, footer img").forEach(img => tasks.push(waitImage(img)));
+      document.querySelectorAll<HTMLImageElement>("main img, header img, footer img").forEach(img => { if (img.getClientRects().length) tasks.push(waitImage(img)); });
       // Include CSS artwork as well as responsive <img> elements.
       const backgrounds = new Set<string>();
       main?.querySelectorAll<HTMLElement>("*").forEach(el => {
@@ -87,6 +87,7 @@ export default function HomeLoader() {
       backgrounds.forEach(src => { const img = new window.Image(); img.src = src; tasks.push(waitImage(img)); });
       tasks.push(document.fonts.ready);
       document.querySelectorAll<HTMLVideoElement>("#hero video").forEach(video => {
+        if (!video.getClientRects().length) return;
         tasks.push(new Promise<void>(resolve => {
           if (video.readyState >= 3 || video.error) { resolve(); return; }
           const done = () => { video.removeEventListener("canplay", done); video.removeEventListener("error", done); resolve(); };

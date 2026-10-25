@@ -25,6 +25,17 @@ export default function Carousel({
   noteRightLine2: string;
 }) {
   const [index, setIndex] = useState(0);
+  const [compact, setCompact] = useState(false);
+  const [compactIndex, setCompactIndex] = useState(0);
+  const allSlides = groups.flat();
+  const compactPages = Math.ceil(allSlides.length / 2);
+  useEffect(() => {
+    const media = matchMedia("(max-width: 1100px)");
+    const update = () => setCompact(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
   const [clipPaths, setClipPaths] = useState<string[]>(() =>
     DEFAULT_SEEDS.map((seed) => generateOrganicPath(seed))
   );
@@ -37,6 +48,7 @@ export default function Carousel({
   }, []);
 
   function go(next: number) {
+    if (compact) { setCompactIndex((next + compactPages) % compactPages); return; }
     setIndex(((next % groups.length) + groups.length) % groups.length);
     // Fresh shapes every time the slide changes, not just on page load.
     setClipPaths(
@@ -52,9 +64,10 @@ export default function Carousel({
       { opacity: 0, y: 24 },
       { opacity: 1, y: 0, duration: 0.55, ease: "power3.out", stagger: 0.07 }
     );
-  }, [index]);
+  }, [index, compactIndex, compact]);
 
-  const activeGroup = groups[index];
+  const activeGroup = compact ? [allSlides[compactIndex * 2], allSlides[(compactIndex * 2 + 1) % allSlides.length]] : groups[index];
+  const pageIndex = compact ? compactIndex : index;
 
   return (
     <>
@@ -85,8 +98,8 @@ export default function Carousel({
                 src={slide.image}
                 alt={slide.alt}
                 fill
-                sizes="(max-width: 700px) 56vw, (max-width: 1200px) 32vw, 22vw"
-                quality={100}
+                sizes="(max-width: 1100px) 44vw, (max-width: 1200px) 32vw, 22vw"
+                quality={compact ? 75 : 100}
               />
             </div>
             <span className={styles.badge}>
@@ -106,14 +119,14 @@ export default function Carousel({
           <br />
           {noteRightLine2}
         </span>
-        <button className={styles.navBtn} onClick={() => go(index - 1)} aria-label="Previous">
+        <button className={styles.navBtn} onClick={() => go(pageIndex - 1)} aria-label="Previous">
           <ArrowLeft />
         </button>
         <span className={styles.dots}>
-          {groups.map((_, i) => (
+          {Array.from({length: compact ? compactPages : groups.length}).map((_, i) => (
             <button
               key={i}
-              className={`${styles.dot} ${i === index ? "is-active" : ""}`}
+              className={`${styles.dot} ${i === pageIndex ? "is-active" : ""}`}
               onClick={() => go(i)}
               aria-label={`Go to slide ${i + 1}`}
             />
@@ -121,7 +134,7 @@ export default function Carousel({
         </span>
         <button
           className={`${styles.navBtn} ${styles.navBtnNext}`}
-          onClick={() => go(index + 1)}
+          onClick={() => go(pageIndex + 1)}
           aria-label="Next"
         >
           <ArrowRight />

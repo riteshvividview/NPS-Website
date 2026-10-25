@@ -24,7 +24,7 @@ export default function RevealOnScroll({ children }: { children: React.ReactNode
           observer.disconnect();
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0, rootMargin: "0px 0px 80px 0px" }
     );
 
     observer.observe(el);

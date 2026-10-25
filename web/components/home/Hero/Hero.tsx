@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import ResponsiveArtwork from "../ResponsiveArtwork";
 import admissionsImage from "@/public/Home Page/01-hero/slider2.png";
 import friendshipImage from "@/public/Home Page/01-hero/slider3.png";
 import computerImage from "@/public/Home Page/01-hero/slider4.png";
@@ -34,13 +35,13 @@ export default function Hero({content}:{content:HomeContent["hero"]}){
  return <section id="hero" className={styles.carousel} tabIndex={0} aria-label="Discover Niraj Public School. Swipe or use arrow keys to change slides. Press space to pause or play." onKeyDown={e=>{if(e.target!==e.currentTarget)return;if(e.key==="ArrowRight"||e.key==="ArrowLeft"){e.preventDefault();setPaused(true);stepSlide(e.key==="ArrowRight"?1:-1)}if(e.key===" "){e.preventDefault();setPaused(v=>!v)}}} onPointerDown={e=>{if(moving.current||snap||(e.target as HTMLElement).closest('a,button'))return;pointer.current={x:e.clientX,y:e.clientY};e.currentTarget.setPointerCapture(e.pointerId);setPaused(true)}} onPointerMove={e=>{if(pointer.current)setDrag(Math.max(-100,Math.min(100,e.clientX-pointer.current.x)))}} onPointerUp={e=>{if(pointer.current){const dx=e.clientX-pointer.current.x,dy=e.clientY-pointer.current.y;if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy))stepSlide(dx<0?1:-1)}pointer.current=null;setDrag(0)}} onPointerCancel={()=>{pointer.current=null;setDrag(0)}}>
  <div ref={track} className={styles.carouselTrack} onTransitionEnd={e=>{if(e.target===e.currentTarget&&e.propertyName==='transform')finish()}} style={{transform:'translateX(calc(-'+slide*100+'% + '+drag+'px))',transition:snap||drag?'none':undefined}}>
  {[copy[3],...copy,copy[0]].map((item,position)=>{const i=(position+3)%4;const active=(slide+3)%4===i;return <article className={styles.carouselSlide} key={position} data-slide={i} aria-hidden={slide!==position} inert={slide!==position}>
- <div className={styles.carouselVisual}>{i===0?<div className={styles.composite}>          <div className={styles.imageZone}>
+ <div className={styles.carouselVisual}>{i===0?<><ResponsiveArtwork name="hero" alt="Students looking towards a brighter tomorrow at Niraj" className={styles.responsiveVisual} eager /><div className={styles.composite}>          <div className={styles.imageZone}>
             <div className={`${styles.layer} ${styles.layerSky}`}>
               <Image src={content.images.sky} alt="" fill style={{objectFit:"contain"}} priority />
             </div>
 
             <div className={`${styles.layer} ${styles.layerClouds}`} id={position===5?undefined:"layer-clouds"}>
-              <video className={styles.cloudCanvas} autoPlay muted loop playsInline preload="auto" aria-hidden="true"><source src="/home-sky.mp4" type="video/mp4" /></video>
+              <video className={styles.cloudCanvas} autoPlay muted loop playsInline preload="auto" aria-hidden="true"><source media="(min-width: 1101px)" src="/home-sky.mp4" type="video/mp4" /></video>
               <img
                 className={styles.cloudFallback}
                 id={position===5?undefined:"cloud-fallback"}
@@ -81,8 +82,8 @@ export default function Hero({content}:{content:HomeContent["hero"]}){
               <Image src={content.images.book} alt="" fill style={{objectFit:"contain"}} />
             </div>
           </div>
-</div>:<Image src={[admissionsImage,admissionsImage,friendshipImage,computerImage][i]} alt={['','Niraj Public School admissions announcement','Students enjoying friendship at school','Student exploring computers'][i]} fill loading="eager" sizes="100vw" style={{objectFit:'contain'}} draggable={false}/>}</div>
- {i !== 1 && <div className={styles.carouselCopy} data-active={active}><p>{item.tag}</p>{position===1?<h1>{item.title}</h1>:<h2>{item.title}</h2>}<div>{item.text}</div><a href={item.href}>{item.label} <span aria-hidden="true">&#8599;</span></a></div>}
+</div></>:<ResponsiveArtwork name={["hero","admissions","friendship","computer"][i]} desktop={[admissionsImage,admissionsImage,friendshipImage,computerImage][i]} alt={['','Niraj Public School admissions announcement','Students enjoying friendship at school','Student exploring computers'][i]} eager className={styles.slidePicture}/>}</div>
+ <div className={styles.carouselCopy} data-active={active}><p>{item.tag}</p>{position===1?<h1>{item.title}</h1>:<h2>{item.title}</h2>}<div>{item.text}</div><a href={item.href}>{item.label} <span aria-hidden="true">&#8599;</span></a></div>
  </article>})}
  </div>
  </section>

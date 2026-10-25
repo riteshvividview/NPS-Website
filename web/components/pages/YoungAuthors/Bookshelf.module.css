@@ -13,3 +13,35 @@
 @media(max-width:600px){.section{padding:55px 5vw 65px}.introArt{position:absolute;width:100px;top:40px;right:4%;opacity:.4}.intro>div{position:relative}.intro h2{max-width:8ch;font-size:44px}.introText{max-width:30ch}.searchRow{flex-direction:column;align-items:start;gap:10px;margin-bottom:35px}.searchRow>p{padding:0}.shelfBlock{padding:20px 14px 0;margin-top:32px}.shelfHeader{gap:10px}.shelfHeader h3{font-size:21px}.year{font-size:9px}.spines{gap:40px 12px;padding:48px 0 0;justify-content:center;min-height:260px}.book{flex-basis:48px;width:48px;height:210px}.book:nth-child(3n+2){height:200px}.book:nth-child(4n){height:220px}.spine{width:48px}.spineTitle{font-size:10px;max-height:160px}.book[data-open=true]{flex-basis:min(290px,100%);width:100%}.cover{width:140px}.author{left:159px;width:105px;bottom:8px}.portrait{width:95px;height:118px;border-width:4px;margin-bottom:12px}.author strong{font-size:14px}.authorLabel{font-size:6px}.ledge,.details{margin-inline:-15px}.details{padding:20px 16px;align-items:start}.details h4{font-size:21px}.details button{padding:0;flex-shrink:0}.details p{font-size:11px}}
 @media(max-width:360px){.author{left:139px;width:94px}.cover{width:122px}.portrait{width:86px;height:108px}.shelfHeader h3{font-size:19px}}
 @media(prefers-reduced-motion:reduce){.book,.spine,.cover,.author{transition:none}.details{animation:none}}
+
+/* Phone bookshelf: a tapped spine stays on its shelf while its story opens in
+   a separate preview. Desktop's inline 3D book opening remains unchanged. */
+@media(max-width:899px){
+ .book[data-open=true]{flex-basis:62px;width:62px;z-index:1}
+ .book[data-open=true] .spine{transform:translateY(-8px);opacity:1;box-shadow:inset 4px 0 4px #0002,7px 10px 16px #443a2633}
+ .book .cover,.book .author,.details{display:none}
+}
+@media(max-width:600px){.book[data-open=true]{flex-basis:48px;width:48px}}
+
+.mobilePreview{position:fixed;inset:0;z-index:10000;display:flex;align-items:flex-end;justify-content:center;isolation:isolate}
+.previewBackdrop{position:absolute;inset:0;width:100%;height:100%;border:0;background:#14251db8;backdrop-filter:blur(5px);cursor:pointer;touch-action:none;animation:previewDim .32s ease-out both}
+.previewSheet{position:relative;z-index:1;width:min(100%,480px);max-height:calc(100dvh - 12px);overflow-y:auto;overscroll-behavior:contain;padding:18px 22px max(26px,env(safe-area-inset-bottom));border-radius:24px 24px 0 0;background:linear-gradient(135deg,#fffaf0,#f1e8d5);box-shadow:0 -18px 55px #07190f55;animation:previewRise .42s cubic-bezier(.18,.78,.18,1) both}
+.previewHeader{display:flex;align-items:center;justify-content:space-between;gap:14px;color:#697b64;font:9px var(--font-ibm-plex-mono);letter-spacing:.16em}
+.previewClose{display:grid;place-items:center;flex:none;width:36px;height:36px;border:1px solid #b9b49d;border-radius:50%;background:#fffaf0;color:#284736;font:26px/1 var(--font-public-sans);cursor:pointer}
+.previewClose:focus-visible{outline:2px solid #927044;outline-offset:3px}
+.previewVisuals{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);align-items:end;gap:17px;margin:18px 0 20px}
+.previewCover{position:relative;width:100%;aspect-ratio:.72;border:6px solid #fffdf6;border-radius:4px;box-shadow:7px 10px 0 #ddd3bc,12px 16px 23px #43372035;transform:rotate(-3deg);animation:previewBook .48s .06s cubic-bezier(.18,.78,.18,1) both}
+.previewCover img{object-fit:contain;background:#fffdf6}
+.previewAuthor{display:flex;flex-direction:column;align-items:flex-start;min-width:0;padding-bottom:4px;color:#334c39}
+.previewPortrait{position:relative;width:min(100%,104px);aspect-ratio:4/5;border:5px solid #fffdf6;box-shadow:4px 8px 16px #43372025;transform:rotate(3deg);margin-bottom:15px}
+.previewPortrait img{object-fit:cover;object-position:center 18%}
+.previewAuthor>span,.previewTitle>span{font:8px var(--font-ibm-plex-mono);letter-spacing:.12em;color:#94784b}
+.previewAuthor strong{font:400 clamp(15px,4.7vw,22px)/1.18 var(--font-fraunces);overflow-wrap:anywhere;margin:7px 0}
+.previewAuthor small{font:11px var(--font-public-sans);color:#71806c}
+.previewTitle{border-top:1px solid #d1c6ad;padding-top:15px}
+.previewTitle i{font-style:normal;margin:0 7px;color:#b9ae96}
+.previewTitle h3{font:400 clamp(23px,7vw,32px)/1.12 var(--font-fraunces);margin:8px 0 0;overflow-wrap:anywhere;color:#233e2f}
+@keyframes previewDim{from{opacity:0}to{opacity:1}}
+@keyframes previewRise{from{opacity:.7;transform:translateY(36px)}to{opacity:1;transform:translateY(0)}}
+@keyframes previewBook{from{opacity:.3;transform:translateY(14px) rotate(-12deg) scale(.95)}to{opacity:1;transform:translateY(0) rotate(-3deg) scale(1)}}
+@media(prefers-reduced-motion:reduce){.previewBackdrop,.previewSheet,.previewCover{animation:none}}

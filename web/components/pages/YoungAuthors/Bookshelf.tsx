@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import styles from "./Bookshelf.module.css";
 import AuthorInk from "./AuthorInk";
 import type { YoungAuthorsShelf } from "@/content/pages/youngAuthors";
 import { youngAuthorsMedia } from "@/content/pages/youngAuthorsMedia";
+import MobileBookPreview from "./MobileBookPreview";
 
 const tones = ["#345b44", "#aa8534", "#42667b", "#ac7049", "#36433d"];
 type Selection = { shelfKey: string; index: number } | null;
@@ -15,6 +16,21 @@ export default function Bookshelf({ listEyebrow, listHeadline, listIntro, shelve
 }) {
   const [selected, setSelected] = useState<Selection>(null);
   const [query, setQuery] = useState("");
+  const [isMobile, setIsMobile] = useState(false);
+  const lastTrigger = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 899px)");
+    const update = () => { setIsMobile(media.matches); setSelected(null); };
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+  const closePreview = () => {
+    setSelected(null);
+    requestAnimationFrame(() => lastTrigger.current?.focus({ preventScroll: true }));
+  };
+  const activeShelf = selected ? shelves.find(shelf => shelf.key === selected.shelfKey) : undefined;
+  const activeBook = activeShelf && selected ? activeShelf.books[selected.index] : undefined;
   const matches = (book: YoungAuthorsShelf["books"][number]) =>
     [book.bookTitle, book.studentName, book.studentClass].join(" ").toLowerCase().includes(query.trim().toLowerCase());
   const count = shelves.reduce((sum, shelf) => sum + shelf.books.filter(matches).length, 0);
@@ -36,9 +52,9 @@ export default function Bookshelf({ listEyebrow, listHeadline, listIntro, shelve
             const open = selected?.shelfKey === shelf.key && selected.index === index;
             const media = youngAuthorsMedia[book.bookTitle];
             return <button type="button" key={book.bookTitle} className={styles.book} data-open={open} style={{"--book-tone": tones[(index + shelfIndex) % tones.length]} as React.CSSProperties}
-              onPointerEnter={event => { if(event.pointerType === "mouse") setSelected({shelfKey:shelf.key,index}); }}
-              onFocus={event => { if(event.currentTarget.matches(":focus-visible")) setSelected({shelfKey:shelf.key,index}); }}
-              onClick={() => setSelected({shelfKey:shelf.key,index})} aria-expanded={open} aria-label={book.bookTitle + " by " + book.studentName}>
+              onPointerEnter={event => { if(!isMobile && event.pointerType === "mouse") setSelected({shelfKey:shelf.key,index}); }}
+              onFocus={event => { if(!isMobile && event.currentTarget.matches(":focus-visible")) setSelected({shelfKey:shelf.key,index}); }}
+              onClick={event => { lastTrigger.current = event.currentTarget; setSelected({shelfKey:shelf.key,index}); }} aria-expanded={open} aria-haspopup={isMobile ? "dialog" : undefined} aria-label={book.bookTitle + " by " + book.studentName}>
               <span className={styles.spine}><span className={styles.spineRule} /><span className={styles.spineTitle}>{book.bookTitle}</span><span className={styles.spineNumber}>{String(index + 1).padStart(2,"0")}</span></span>
               <span className={styles.cover} aria-hidden={!open}>{media && <Image src={media.cover} alt={book.bookTitle + " book cover"} fill sizes="180px" className={styles.coverImage} />}<span className={styles.binding}/></span>
               <span className={styles.author} aria-hidden={!open}><span className={styles.portrait}>{media && <Image src={media.portrait} alt={book.studentName} fill sizes="140px" className={styles.portraitImage}/>}</span><span className={styles.authorLabel}>THE YOUNG AUTHOR</span><strong>{book.studentName}</strong><small>{book.studentClass}</small></span>
@@ -50,5 +66,6 @@ export default function Bookshelf({ listEyebrow, listHeadline, listIntro, shelve
       </div>;
     })}
     {count === 0 && <p className={styles.empty}>No matching books. Try another title or author.</p>}
+    {isMobile && activeShelf && activeBook && <MobileBookPreview key={`${selected?.shelfKey}-${selected?.index}`} book={activeBook} level={activeShelf.level} year={activeShelf.year} media={youngAuthorsMedia[activeBook.bookTitle]} onClose={closePreview} />}
   </section>;
 }

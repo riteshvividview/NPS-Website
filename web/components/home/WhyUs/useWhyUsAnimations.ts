@@ -34,7 +34,7 @@ export function useWhyUsAnimations() {
     if (!section) return;
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduceMotion) return;
+    if (reduceMotion || window.matchMedia("(max-width: 1100px)").matches) return;
 
     const triggers: ScrollTrigger[] = [];
     let cancelled = false;

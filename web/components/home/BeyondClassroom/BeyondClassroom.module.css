@@ -503,3 +503,12 @@
     height: 48px;
   }
 }
+
+@media(max-width:1100px){
+.section{padding:100px 6vw 20px}.layout{gap:28px}.carouselWrap{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;width:100%;padding:0;min-height:0}
+.card,.cardLeft,.cardRight,.cardCenter{display:block;width:100%;height:auto;aspect-ratio:3/4;margin:0;transform:none!important}
+.cardClip{clip-path:none!important;border-radius:18px}
+.badge{left:8px;right:8px;top:auto;bottom:10px;padding:9px;gap:6px;width:auto}
+.badgeText{font-size:9px;letter-spacing:.03em}.badgeIcon svg{width:20px;height:20px}
+.deco{display:none}.spacer{height:25px}.statBar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));padding:20px;gap:20px}.rightCol{margin-top:4px}
+}

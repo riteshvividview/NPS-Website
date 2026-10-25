@@ -1,4 +1,5 @@
 import Image from "next/image";
+import ResponsiveArtwork from "../ResponsiveArtwork";
 import styles from "./Section3.module.css";
 import type { HomeContent } from "@/content/home";
 
@@ -9,6 +10,7 @@ export default function Section3({ content }: { content: HomeContent["section3"]
     <section className={styles.section3} id="section3">
       <div className={styles.section3Canvas} id="section3-canvas">
         <div className={styles.section3Stage} id="section3-stage">
+          <ResponsiveArtwork name="roots" alt="Children exploring curiosity, knowledge, creativity, collaboration and kindness" className={styles.responsiveArt} />
           <div className={`${styles.layer} ${styles.s3Bg}`} data-depth="0.04">
             <Image
               src={content.images.bg}

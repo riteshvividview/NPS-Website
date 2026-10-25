@@ -389,3 +389,24 @@
     font-size: 32px;
   }
 }
+
+/* Homepage responsive revision 2026-10-24 */
+
+@media(max-width:1100px){
+ .grid {columns:2;column-gap:12px}
+ .tile {max-width:100%!important}
+ .prePrimaryGrid {grid-template-columns:1fr}
+ .prePrimaryPhotos {columns:2}
+}
+@media(max-width:640px){
+ .section {padding:56px 6vw}
+ .videoCaption {left:10px;bottom:10px}
+ .videoCaptionTitle {font-size:15px;line-height:1.1}
+ .videoCaptionTag {font-size:8px;margin-top:5px}
+ .playBtn {width:32px;height:32px;left:auto;right:8px;top:8px;transform:none}
+ .tileVideo:hover .playBtn {transform:scale(1.05)}
+ .videoDuration {display:none}
+}
+
+@media(max-width:1100px){.section{padding-top:100px}}
+@media(max-width:640px){.section{padding-top:56px}}

@@ -20,7 +20,8 @@ gsap.registerPlugin(ScrollTrigger);
  */
 export function useHomeAnimations() {
   useEffect(() => {
-    const context = gsap.context(() => {
+    const context = gsap.matchMedia();
+    context.add("(min-width: 1101px)", () => {
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;

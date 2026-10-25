@@ -205,3 +205,44 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Homepage responsive revision 2026-10-24 */
+
+.card {transition-duration:.4s;transform:translateY(14px)}
+.card:nth-child(2){transition-delay:.03s}.card:nth-child(3){transition-delay:.06s}.card:nth-child(4){transition-delay:.09s}
+@media(max-width:1100px) {
+ .section {padding:100px 6vw 125px}
+ .inner {gap:32px}
+ .inner > :last-child {width:100%;min-width:0}
+ .grid {grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 16px}
+ .headline {font-size:clamp(32px,5vw,42px)}
+ .intro {max-width:600px}
+ .description {max-width:52ch}
+ .readingBoy {right:0;height:140px}
+}
+@media(max-width:640px) {
+ .cardTitle {font-size:16px;margin-top:12px;line-height:1.2}
+ .cardDescription {font-size:12px;line-height:1.55}
+ .badge {width:28px;height:28px;left:9px;bottom:9px;font-size:10px}
+ .artWrap {border-radius:12px}
+ .readingBoy {height:115px}
+}
+@media(prefers-reduced-motion:reduce){.card{opacity:1;transform:none;transition:none}}
+
+/* On phones, give the reader a visible ledge instead of leaving him floating. */
+@media (max-width: 640px) {
+ .section {padding-bottom:155px}
+ .bookDrawing {
+  left:6vw;
+  right:6vw;
+  bottom:30px;
+  width:auto;
+  height:90px;
+  border:1px solid #d6cfbb;
+  border-radius:16px;
+  background:#f9f6ec;
+  box-shadow:0 10px 25px #243e2910;
+ }
+ .bookDrawing svg {left:12px;right:auto!important;bottom:8px!important;width:165px!important;height:72px!important}
+ .readingBoy {right:6vw;bottom:-10px;height:115px;transform:none}
+}

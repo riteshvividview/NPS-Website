@@ -733,3 +733,233 @@
     grid-template-columns: 1fr 180px;
   }
 }
+
+/* Homepage-only tablet navigation; other pages retain their existing breakpoints. */
+@media(max-width:1100px){
+  :global(body:has(#hero)) .siteHeader {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+  }
+
+  :global(body:has(#hero)) .siteHeaderInner {
+    border-radius: 26px;
+    padding: 12px clamp(14px, 4vw, 20px);
+    gap: 10px;
+  }
+
+  :global(body:has(#hero)) .siteNav {
+    display: none;
+  }
+
+  :global(body:has(#hero)) .menuBtn {
+    display: block;
+  }
+
+  /* Positioned below the floating inner bar via top:100% of the outer
+     :global(body:has(#hero)) .siteHeader (the nearest positioned ancestor, whose own box matches
+     the inner bar's rendered height) rather than a guessed pixel offset. */
+  :global(body:has(#hero)) .mobileNav {
+    display: flex;
+    position: absolute;
+    z-index: 2;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: var(--paper);
+    border-radius: 24px;
+    padding: 12px 20px 24px;
+    max-height: calc(100vh - 100px);
+    max-height: calc(100dvh - 100px);
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(20, 40, 30, 0.18);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+  }
+  :global(body:has(#hero)) .siteHeader:global(.is-menu-open) .mobileNav {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  :global(body:has(#hero)) .mobileNav > a {
+    padding: 14px 2px;
+    border-bottom: 1px solid rgba(28, 43, 34, 0.1);
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  :global(body:has(#hero)) .mobileNav > a:last-of-type {
+    border-bottom: none;
+  }
+
+  /* ---------- Mobile nav accordion (e.g. "The Place") ---------- */
+
+  :global(body:has(#hero)) .mobileNavGroup {
+    border-bottom: 1px solid rgba(28, 43, 34, 0.1);
+  }
+
+  :global(body:has(#hero)) .mobileNavGroupTrigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    border: none;
+    background: none;
+    padding: 14px 2px;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  :global(body:has(#hero)) .mobileNavGroupTrigger svg {
+    width: 11px;
+    height: 11px;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+  }
+  :global(body:has(#hero)) .mobileNavGroup:global(.is-open) .mobileNavGroupTrigger svg {
+    transform: rotate(180deg);
+  }
+
+  :global(body:has(#hero)) .mobileNavSubPanel {
+    display: flex;
+    flex-direction: column;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  :global(body:has(#hero)) .mobileNavGroup:global(.is-open) .mobileNavSubPanel {
+    max-height: 420px;
+  }
+
+  :global(body:has(#hero)) .mobileSubLink {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 2px;
+    color: var(--ink);
+    opacity: 0.85;
+    text-decoration: none;
+    font-size: 14.5px;
+  }
+  :global(body:has(#hero)) .mobileSubLink:first-child {
+    padding-top: 2px;
+  }
+  :global(body:has(#hero)) .mobileSubLink:last-child {
+    padding-bottom: 14px;
+  }
+  :global(body:has(#hero)) .mobileSubLinkIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 9px;
+    background: rgba(28, 43, 34, 0.06);
+    color: var(--green-deep);
+    flex-shrink: 0;
+  }
+  :global(body:has(#hero)) .mobileSubLinkIcon svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  /* ".mobileNav > a" above also matches this (it's an <a> directly under
+     :global(body:has(#hero)) .mobileNav) and is more specific by one type selector, so it would
+     otherwise win and paint this text in --ink on the dark green pill —
+     the extra ".mobileNavPill" here is what makes this rule specific
+     enough to actually override it. */
+  :global(body:has(#hero)) .mobileNav > a.mobileNavPill {
+    margin-top: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--green-deep);
+    color: #fff;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 13px 20px;
+    border-radius: 999px;
+    border-bottom: none;
+  }
+
+  /* position:absolute (not fixed) so it resolves against .siteHeader —
+     the nearest positioned ancestor — the same way .mobileNav does;
+     position:fixed here would instead resolve top:100% against the
+     viewport and push it a full screen-height down. Starting right at
+     the header's bottom edge keeps it from ever covering the header's
+     own brand/menu-button content, so it doesn't need to out-stack them. */
+  :global(body:has(#hero)) .mobileNavScrim {
+    display: block;
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 100vh;
+    height: 100dvh;
+    background: rgba(15, 30, 20, 0.35);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s;
+  }
+  :global(body:has(#hero)) .siteHeader:global(.is-menu-open) .mobileNavScrim {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  :global(body:has(#hero)) .brand {
+    gap: 8px;
+    min-width: 0;
+  }
+
+  :global(body:has(#hero)) .brandMark {
+    width: clamp(28px, 9vw, 36px);
+    height: clamp(28px, 9vw, 36px);
+  }
+
+  :global(body:has(#hero)) .brandText {
+    min-width: 0;
+  }
+
+  :global(body:has(#hero)) .brandName {
+    font-size: clamp(13px, 4vw, 17px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  :global(body:has(#hero)) .brandTagline {
+    font-size: 7.5px;
+    letter-spacing: 0.1em;
+  }
+
+  :global(body:has(#hero)) .siteHeaderActions {
+    gap: 8px;
+  }
+
+  /* The hamburger now gives full nav access, so the standalone search
+     button is redundant weight competing with the brand name for the
+     little width a phone header has. */
+  :global(body:has(#hero)) .iconBtn {
+    display: none;
+  }
+
+  :global(body:has(#hero)) .pillBtn {
+    padding: 8px clamp(10px, 3.2vw, 16px);
+    font-size: clamp(11px, 3.2vw, 13px);
+    gap: 6px;
+  }
+
+:global(body:has(#hero)) .siteHeaderInner{gap:8px;padding:10px 12px}
+:global(body:has(#hero)) .brand{flex:1;min-width:0}
+:global(body:has(#hero)) .siteHeaderActions{flex-shrink:0;gap:6px}
+}
+@media(max-width:400px){:global(body:has(#hero)) .brandName{font-size:12px}:global(body:has(#hero)) .brandMark{width:26px;height:30px}:global(body:has(#hero)) .brand{gap:5px}:global(body:has(#hero)) .pillBtn{font-size:10px;padding:9px 10px}:global(body:has(#hero)) .siteHeaderInner{padding:10px;gap:5px}}

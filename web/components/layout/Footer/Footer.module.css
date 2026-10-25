@@ -4,6 +4,23 @@
   overflow: hidden;
 }
 
+.footer a,
+.footer button {
+  -webkit-tap-highlight-color: transparent;
+}
+.brandRow,
+.socialBtn,
+.linkList a,
+.legalLinks a {
+  -webkit-user-select: none;
+  user-select: none;
+}
+.footer a:focus-visible,
+.footer button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
 /* ---------- Top: brand / nav columns / newsletter ---------- */
 
 .top {
@@ -139,6 +156,15 @@
   color: var(--gold);
   margin-top: 1px;
   flex-shrink: 0;
+}
+.contactList a {
+  color: inherit;
+  text-decoration: none;
+}
+.contactList a:hover {
+  color: var(--green-mid);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .newsletterDescription {

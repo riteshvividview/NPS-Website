@@ -43,7 +43,7 @@ export default function TeachingMethodology({
                     src={pillar.image}
                     alt={`${pillar.title} at Niraj Public School`}
                     fill
-                    sizes="(max-width: 560px) 88vw, (max-width: 1100px) 44vw, 18vw"
+                    sizes="(max-width: 1100px) 44vw, 18vw"
                     className={styles.cardImage}
                   />
                   <span className={styles.colorOverlay} aria-hidden="true" />

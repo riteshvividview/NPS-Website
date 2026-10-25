@@ -188,3 +188,25 @@
     max-width: 34ch;
   }
 }
+
+/* Homepage responsive revision 2026-10-24 */
+
+.responsiveArt {display:none}
+@media(max-width:1100px) {
+ .section3 {width:100%;min-height:0;background:var(--paper)}
+ .section3Canvas {height:auto}
+ .section3Stage {position:relative;inset:auto;width:100%;height:auto;transform:none!important;display:flex;flex-direction:column}
+ .layer:not(.s3Content) {display:none}
+ .s3Content {position:static;inset:auto;height:auto;display:block;padding:100px 6vw 32px;order:1}
+ .s3Nav {display:none}
+ .s3Copy {position:static;width:100%;background:none;padding:0;backdrop-filter:none;border-radius:0}
+ .s3Heading {font-size:clamp(32px,5vw,48px);margin-top:14px}
+ .s3Rule {margin:18px 0}
+ .s3Subcopy {font-size:15px}
+ .responsiveArt {display:block;order:2;width:100%}
+ .responsiveArt img {display:block;width:100%;height:auto}
+}
+@media(min-width:641px) and (max-width:1100px) {
+ .section3Stage {display:grid;grid-template-columns:1fr 1fr;align-items:center}
+ .s3Content {padding:100px 30px 45px}
+}

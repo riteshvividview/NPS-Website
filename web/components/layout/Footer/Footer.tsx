@@ -23,7 +23,7 @@ export default function Footer() {
           <p className={styles.description}>{c.description}</p>
           <div className={styles.socialRow}>
             {c.socials.map((s) => (
-              <Link className={styles.socialBtn} href={s.href} key={s.key} aria-label={s.key}>
+              <Link className={styles.socialBtn} href={s.href} key={s.key} aria-label={s.key} target="_blank" rel="noopener noreferrer">
                 {socialIcons[s.key]}
               </Link>
             ))}
@@ -36,7 +36,7 @@ export default function Footer() {
             <ul className={styles.linkList}>
               {col.links.map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href}>{link.label}</Link>
+                  <Link href={link.href} target={link.href.startsWith("http") ? "_blank" : undefined} rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}>{link.label}</Link>
                 </li>
               ))}
             </ul>
@@ -48,15 +48,15 @@ export default function Footer() {
           <ul className={styles.contactList}>
             <li>
               <span className={styles.contactIcon}>{contactIcons.location}</span>
-              {c.contact.location}
+              <a href="https://www.google.com/maps/search/?api=1&query=Niraj+Public+School%2C+6-3-864%2C+Ameerpet%2C+Hyderabad" target="_blank" rel="noopener noreferrer">{c.contact.location}</a>
             </li>
             <li>
               <span className={styles.contactIcon}>{contactIcons.phone}</span>
-              {c.contact.phone}
+              <a href={`tel:${c.contact.phone.replace(/[^\d+]/g, "")}`}>{c.contact.phone}</a>
             </li>
             <li>
               <span className={styles.contactIcon}>{contactIcons.mail}</span>
-              {c.contact.email}
+              <a href={`mailto:${c.contact.email}`}>{c.contact.email}</a>
             </li>
           </ul>
         </div>

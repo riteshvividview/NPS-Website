@@ -395,7 +395,7 @@
 .carouselSlide[data-slide="2"] .carouselCopy>p,.carouselSlide[data-slide="2"] .carouselCopy>div{display:none}
 .carouselSlide[data-slide="2"] .carouselCopy h2{margin:0;font-size:clamp(24px,3vw,42px);line-height:1.15;flex:1}
 .carouselSlide[data-slide="2"] .carouselCopy a{margin:0;white-space:nowrap;flex-shrink:0}
-.carouselSlide[data-slide="2"]::after{background:linear-gradient(0deg,#10251f70,transparent 40%)}
+.carouselSlide[data-slide="2"]::after{background:none}
 @media(max-width:760px){.carouselSlide[data-slide="2"]{padding:115px 16px 24px}.carouselSlide[data-slide="2"] .carouselCopy{gap:10px;padding:14px;flex-wrap:wrap}.carouselSlide[data-slide="2"] .carouselCopy h2{font-size:26px;flex-basis:100%}.carouselSlide[data-slide="2"] .carouselCopy a{padding:10px 16px;font-size:12px}}
 
 /* Dragging slides must not select their text or artwork. */
@@ -405,3 +405,125 @@
 .carouselSlide[data-slide="3"] .carouselCopy{margin-left:auto;text-align:right}.carouselSlide[data-slide="3"] .carouselCopy>div{margin-left:auto}
 
 .carouselSlide[data-slide="3"]::after{background:none}
+.responsiveVisual { display: none; }
+.slidePicture { display: block; position: absolute; inset: 0; }
+.slidePicture img { object-fit: cover; }
+
+/* Homepage responsive revision 2026-10-24 */
+
+.carouselCopy[data-active="true"] > * { animation-duration:.38s; animation-delay:0s; }
+@media(max-width:1100px) {
+ .carousel {min-height:0;background:var(--paper)}
+ .carouselTrack {align-items:stretch}
+ .carouselSlide,.carouselSlide[data-slide="0"],.carouselSlide[data-slide="2"],.carouselSlide[data-slide="3"] {display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;min-height:0;height:auto;padding:0;background:var(--paper)}
+ .carouselSlide::after {display:none}
+ .carouselVisual {position:relative;inset:auto;z-index:0;flex:none;width:100%;height:min(83vw,690px);overflow:hidden}
+ .composite {display:none}
+ .responsiveVisual {display:block;position:absolute;inset:0}
+ .responsiveVisual img,.slidePicture img {width:100%;height:100%;object-fit:cover!important;object-position:center 40%}
+ .carouselSlide[data-slide="1"], .carouselSlide[data-slide="1"] .carouselVisual {background:#211334}
+ .carouselSlide[data-slide="1"] .carouselVisual {height:100%;min-height:780px}
+ .carouselSlide[data-slide="1"] .slidePicture {inset:104px 0 18px}
+ .carouselSlide[data-slide="1"] .slidePicture img {object-fit:contain!important}
+ .carouselCopy,.carouselSlide[data-slide="0"] .carouselCopy,.carouselSlide[data-slide="2"] .carouselCopy,.carouselSlide[data-slide="3"] .carouselCopy {position:relative;inset:auto;width:100%;max-width:none;margin:0;padding:28px 6vw 34px;display:flex;flex-direction:column;align-items:flex-start;text-align:left;color:#1b382a;background:var(--paper);border-radius:0;gap:0;flex:1}
+ .carouselCopy h1,.carouselCopy h2,.carouselSlide[data-slide="2"] .carouselCopy h2 {font-size:clamp(30px,5.8vw,48px);line-height:1.08;max-width:22ch;margin:10px 0 16px;flex:none}
+ .carouselCopy > p {font-size:10px;color:#3c6b50;letter-spacing:.14em;margin:0}
+ .carouselCopy > div {font-size:14px;line-height:1.65;max-width:52ch;margin:0}
+ .carouselCopy > a,.carouselSlide[data-slide="2"] .carouselCopy > a {margin:22px 0 0;font-size:13px;padding:13px 20px}
+ .carouselSlide[data-slide="2"] .carouselCopy {background:#153d2b;color:#fff9e9}
+ .carouselSlide[data-slide="2"] .carouselCopy > a {background:#f2ecd9;color:#153d2b}
+}
+@media(max-width:640px) {
+ .carouselVisual {height:114vw;max-height:550px}
+ .carouselSlide[data-slide="1"] .carouselVisual {min-height:710px}
+ .carouselSlide[data-slide="1"] .slidePicture {inset:96px 12px 30px}
+ .carouselCopy,.carouselSlide[data-slide="0"] .carouselCopy,.carouselSlide[data-slide="2"] .carouselCopy,.carouselSlide[data-slide="3"] .carouselCopy {padding:25px 6vw 30px}
+}
+
+@media(max-width:1100px){.carouselVisual{height:auto;max-height:none;aspect-ratio:3/4}.responsiveVisual img,.slidePicture img{object-fit:contain!important}.carouselSlide[data-slide="1"] .carouselVisual{aspect-ratio:auto;height:100%;min-height:780px}}
+@media(max-width:640px){.carouselVisual{aspect-ratio:2/3}.carouselSlide[data-slide="1"] .carouselVisual{min-height:840px}}
+@media(min-width:641px) and (max-width:1100px){.carouselSlide,.carouselSlide[data-slide="0"],.carouselSlide[data-slide="2"],.carouselSlide[data-slide="3"]{display:grid;grid-template-columns:55% 45%;align-items:center;padding-top:100px}.carouselCopy,.carouselSlide[data-slide="0"] .carouselCopy,.carouselSlide[data-slide="2"] .carouselCopy,.carouselSlide[data-slide="3"] .carouselCopy{padding:30px}.carouselSlide[data-slide="1"]{display:block;padding-top:0}.carouselSlide[data-slide="1"] .carouselVisual{min-height:850px}.carouselSlide[data-slide="1"] .slidePicture{inset:104px 0 20px}}
+
+/* Admissions artwork has its own typography. Give it the same image area as
+   the other slides and keep the entire poster visible above the purple tail. */
+@media(max-width:1100px){
+ .carouselSlide[data-slide="1"]{
+  display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;
+  min-height:0;padding:0;background:#211334;
+ }
+ .carouselSlide[data-slide="1"] .carouselVisual{
+  flex:0 0 auto;width:100%;height:auto;min-height:0;aspect-ratio:3/4;
+  background:#211334;
+ }
+ .carouselSlide[data-slide="1"] .slidePicture{inset:0}
+ .carouselSlide[data-slide="1"] .slidePicture img{object-fit:contain!important;object-position:center top}
+}
+@media(max-width:640px){
+ .carouselSlide[data-slide="1"] .carouselVisual{aspect-ratio:2/3}
+}
+@media(max-width:1100px){
+ .carouselSlide[data-slide="1"] .carouselVisual{
+  height:calc(min(100vw, 600px) * 4 / 3 + 88px);aspect-ratio:auto;
+  background:radial-gradient(circle at 75% 78%,#42226a 0,transparent 44%),#211334;
+ }
+ .carouselSlide[data-slide="1"] .slidePicture{
+  top:88px;right:auto;bottom:auto;left:50%;transform:translateX(-50%);
+  width:min(100vw, 600px);height:calc(min(100vw, 600px) * 4 / 3);
+ }
+}
+@media(max-width:640px){
+ .carouselSlide[data-slide="1"] .carouselVisual{height:calc(100vw * 1.5 + 88px)}
+ .carouselSlide[data-slide="1"] .slidePicture{width:100vw;height:150vw}
+}
+
+/* The admissions poster uses its existing message as a matching mobile copy
+   panel. This fills the former empty tail without adding a new section. */
+.carouselSlide[data-slide="1"] .carouselCopy{display:none}
+@media(max-width:1100px){
+ .carouselSlide[data-slide="1"] .carouselVisual{
+  height:calc(min(100vw, 600px) * 1.25 + 88px);
+ }
+ .carouselSlide[data-slide="1"] .slidePicture{
+  height:calc(min(100vw, 600px) * 1.25);
+ }
+}
+@media(max-width:640px){
+ .carouselSlide[data-slide="1"] .carouselVisual{height:calc(100vw * 1.25 + 88px)}
+ .carouselSlide[data-slide="1"] .slidePicture{height:125vw}
+ .carouselSlide[data-slide="1"] .carouselCopy{
+  display:flex;min-height:0;background:#211334;color:#fff8ed;
+  padding:24px 6vw 34px;
+ }
+ .carouselSlide[data-slide="1"] .carouselCopy>p{color:#dfb75f}
+ .carouselSlide[data-slide="1"] .carouselCopy h1{
+  font-size:clamp(26px,7.2vw,34px);max-width:17ch;margin:8px 0 10px;color:#fff8ed
+ }
+ .carouselSlide[data-slide="1"] .carouselCopy>div{font-size:13px;line-height:1.5;color:#f4e9e2}
+ .carouselSlide[data-slide="1"] .carouselCopy>a{
+  margin-top:16px;background:#f6a32b;color:#211334;font-weight:600
+ }
+}
+@media(max-width:640px){
+ .carouselSlide[data-slide="1"] .carouselCopy,
+ .carouselSlide[data-slide="2"] .carouselCopy{
+  justify-content:center;
+ }
+ .carouselSlide[data-slide="2"] .carouselCopy{
+  flex-direction:column;align-items:flex-start;gap:0;
+  padding:25px 6vw 30px;
+ }
+ .carouselSlide[data-slide="2"] .carouselCopy>p,
+ .carouselSlide[data-slide="2"] .carouselCopy>div{display:block}
+ .carouselSlide[data-slide="2"] .carouselCopy>p{
+  color:#bdddc4;font-size:11px;letter-spacing:.14em;margin:0 0 9px
+ }
+ .carouselSlide[data-slide="2"] .carouselCopy h2{
+  flex:0 0 auto;width:100%;margin:0 0 11px;font-size:clamp(28px,8vw,36px)
+ }
+ .carouselSlide[data-slide="2"] .carouselCopy>div{
+  max-width:33ch;color:#e9f1e9;font-size:14px;line-height:1.5
+ }
+ .carouselSlide[data-slide="2"] .carouselCopy>a{
+  margin:17px 0 0;padding:12px 17px;font-size:13px
+ }
+}

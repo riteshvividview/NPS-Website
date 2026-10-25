@@ -5,6 +5,7 @@ import { featureIcons } from "./icons";
 import OurPeopleParallaxRunner from "./OurPeopleParallaxRunner";
 
 export default function OurPeople({ content }: { content: OurPeopleContent }) {
+  const noteBreak = content.noteLeft.lastIndexOf(" ");
   return (
     <section className={styles.section} id="our-people">
       {/* Shared clip-path for every portrait — the exact organic frame
@@ -72,7 +73,9 @@ export default function OurPeople({ content }: { content: OurPeopleContent }) {
             ))}
           </div>
 
-          <span className={styles.noteLeft} data-fx="wipe" data-fx-delay="1">{content.noteLeft}</span>
+          <span className={styles.noteLeft} data-fx="wipe" data-fx-delay="1">
+            {noteBreak > 0 ? <><span>{content.noteLeft.slice(0, noteBreak)}</span>{" "}<span>{content.noteLeft.slice(noteBreak + 1)}</span></> : content.noteLeft}
+          </span>
         </div>
 
         <div className={styles.portraitsCol}>

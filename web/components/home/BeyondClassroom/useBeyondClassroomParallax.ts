@@ -28,7 +28,7 @@ export function useBeyondClassroomParallax() {
     if (!section) return;
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduceMotion) return;
+    if (reduceMotion || window.matchMedia("(max-width: 1100px)").matches) return;
 
     let cancelled = false;
     const triggers: ScrollTrigger[] = [];
